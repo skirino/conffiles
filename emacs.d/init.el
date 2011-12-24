@@ -340,7 +340,7 @@
       )
   )
 )
-(key-chord-define-global "fo" 'my-toggle-follow-mode)
+(key-chord-define-global "fw" 'my-toggle-follow-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -356,7 +356,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; view-mode
 (require 'view)
 (setq view-read-only t)
-(key-chord-define-global "vi" 'view-mode)
+(key-chord-define-global "vm" 'view-mode)
 
 (define-key view-mode-map (kbd "/") 'isearch-forward)
 (define-key view-mode-map (kbd "G") 'end-of-buffer)
@@ -896,7 +896,13 @@
 ;; 日本語ファイル中のスペルチェックを可能にする
 
 ;; 環境依存
-(setq-default ispell-program-name "/usr/local/bin/ispell")
+(setq-default ispell-program-name
+  (first
+    (remove-if-not 'file-executable-p
+                   '("/usr/bin/aspell" "/usr/local/bin/aspell" "/usr/bin/ispell" "/usr/local/bin/ispell")
+    )
+  )
+)
 ;; aspellのときちょっと速くなるらしいけど観測可能な変化なし
 ;(setq ispell-list-command "list")
 
