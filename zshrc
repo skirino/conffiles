@@ -151,3 +151,12 @@ alias cduuuuu='cd ../../../../..'
 alias emnw='emacs -nw'
 
 
+# git command
+alias gst='git status'
+alias gbr='git branch -a'
+alias glog='git log'
+alias gdiff='git diff'
+alias gdiffc='git diff --cached'
+alias gci='git commit'
+alias gco='git checkout'
+alias gadd='git add'
