@@ -225,11 +225,9 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
-(require 'redo+)
-(global-set-key (kbd "C-?") 'redo)
-(setq undo-no-redo t) ; 過去のundoがredoされないようにする
-(setq undo-limit 100000)
-(setq undo-strong-limit 200000)
+(add-to-list 'load-path "~/.emacs.d/undo-tree/")
+(require 'undo-tree)
+(global-undo-tree-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
