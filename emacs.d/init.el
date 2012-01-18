@@ -35,6 +35,9 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
+;; ffap
+(ffap-bindings)
+
 ;; disable backup
 (setq backup-inhibited t)
 ;; disable auto save
@@ -219,7 +222,8 @@
 ;(require 'migemo)
 
 ;; M-x grepの検索結果を編集してファイルに反映
-(require 'grep-edit)
+(require 'wgrep)
+(define-key grep-mode-map (kbd "e") 'wgrep-change-to-wgrep-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
