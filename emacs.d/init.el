@@ -248,12 +248,7 @@
   (interactive)
   (newline)
   (indent-according-to-mode))
-(defun my-indent-newline-and-indent ()
-  (interactive)
-  (indent-according-to-mode)
-  (newline)
-  (indent-according-to-mode))
-(global-set-key "\C-m" 'my-indent-newline-and-indent)
+(global-set-key "\C-m" 'newline-and-indent)
 
 ;; "C-h"をbackspaceに (これで<C-backspace>が反応しなくなるので、bindしなおす)
 (global-set-key (kbd "C-h") 'delete-backward-char)
@@ -460,6 +455,7 @@
      anything-c-source-filelist)
    "*my-anything*"))
 (global-set-key (kbd "C-;") 'my-anything-for-file)
+(global-set-key (kbd "C-+") 'my-anything-for-file)
 
 ;; setup filelist (platform dependent)
 ;(setq my-filelist-ramfs "/dev/shm/")
@@ -800,7 +796,7 @@
 (define-key python-mode-map (kbd "RET") 'my-newline-and-indent)
 
 
-;; ruby, reset ruby-mode's sucking bindings
+;; ruby, reset ruby-mode's useless bindings
 (add-to-list 'load-path "~/.emacs.d/rinari/")
 (require 'starter-kit-ruby)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
@@ -829,6 +825,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 (require 'flymake)
 (key-chord-define-global "fm" 'flymake-mode)
+
+;; GUIのダイアログを抑制
+(setq flymake-gui-warnings-enabled nil)
 
 ;; gccsenseおよびgccsense-flymake
 (require 'gccsense)
@@ -865,7 +864,7 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "gdc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" "-I/home/skirino/code/D/dsss/include/d/" local-file))))
+    (list "gdc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" "-I/home/skirino/code/D/dsss/include/d/" "-I." "-I.." local-file))))
 (push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
 
 ;; 警告エラー行にカーソルがあれば、内容をMinibuf に出力
