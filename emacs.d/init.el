@@ -3,6 +3,7 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d"))
 (add-to-list 'load-path "~/.emacs.d/auto-install/")
 (add-to-list 'load-path "~/.emacs.d/manual-install/")
+(add-to-list 'load-path "~/.emacs.d/vendor/")
 (add-to-list 'load-path "~/.emacs.d/sdic/")
 (add-to-list 'load-path "~/.emacs.d/apel-10.8/")
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -229,7 +230,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
-(add-to-list 'load-path "~/.emacs.d/undo-tree/")
+(add-to-list 'load-path "~/.emacs.d/vendor/undo-tree/")
 (require 'undo-tree)
 (global-undo-tree-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -797,15 +798,33 @@
 
 
 ;; ruby, reset ruby-mode's useless bindings
-(add-to-list 'load-path "~/.emacs.d/rinari/")
+(add-to-list 'load-path "~/.emacs.d/vendor/rinari/")
 (require 'starter-kit-ruby)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
 
 
+;; JavaScript
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+;; CoffeeScript
+(add-to-list 'load-path "~/.emacs.d/vendor/coffee-mode/")
+(require 'coffee-mode)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+;; enable compile-on-save minor mode
+(add-hook 'coffee-mode-hook 'coffee-cos-mode)
+
+
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
+
+
+;; Zen encoding mode
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
 
 ;; GNU global
@@ -848,6 +867,7 @@
                        (file-name-directory buffer-file-name))))
     (list "gcc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 (push '("\\.c$" flymake-c-init) flymake-allowed-file-name-masks)
+
 (defun flymake-cc-init ()
   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
                        'flymake-create-temp-inplace))
@@ -858,6 +878,7 @@
 (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 (push '("\\.cxx$" flymake-cc-init) flymake-allowed-file-name-masks)
 (push '("\\.cc$" flymake-cc-init) flymake-allowed-file-name-masks)
+
 (defun flymake-d-init ()
   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
                        'flymake-create-temp-inplace))
@@ -866,6 +887,14 @@
                        (file-name-directory buffer-file-name))))
     (list "gdc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" "-I/home/skirino/code/D/dsss/include/" "-I/home/skirino/code/D/dsss/include/d/" "-I." "-I.." local-file))))
 (push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
+
+(defun flymake-gjslint-init ()
+  "Initialize flymake for gjslint"
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace)))
+    (list "gjslint" (list temp-file "--nosummary"))))
+(push '("\\.js$" flymake-gjslint-init) flymake-allowed-file-name-masks)
+
 
 ;; 警告エラー行にカーソルがあれば、内容をMinibuf に出力
 (defun my-flymake-show-help ()
