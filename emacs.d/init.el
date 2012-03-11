@@ -864,7 +864,7 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "gdc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" "-I/home/skirino/code/D/dsss/include/d/" "-I." "-I.." local-file))))
+    (list "gdc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" "-I/home/skirino/code/D/dsss/include/" "-I/home/skirino/code/D/dsss/include/d/" "-I." "-I.." local-file))))
 (push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
 
 ;; 警告エラー行にカーソルがあれば、内容をMinibuf に出力
