@@ -244,12 +244,7 @@
 (define-key global-map (kbd "S-<f8>") 'goto-last-change-reverse)
 
 ;; 自動インデント、RetやC-jも自動インデントになる
-;; (デフォルトのnewline-and-indentは空行のインデントを消してしまう)
-(defun my-newline-and-indent ()
-  (interactive)
-  (newline)
-  (indent-according-to-mode))
-(global-set-key "\C-m" 'newline-and-indent)
+(global-set-key "\C-m" 'reindent-then-newline-and-indent)
 
 ;; "C-h"をbackspaceに (これで<C-backspace>が反応しなくなるので、bindしなおす)
 (global-set-key (kbd "C-h") 'delete-backward-char)
@@ -794,6 +789,10 @@
 (require 'python)
 (add-to-list 'auto-mode-alist '("\\.gs$" . python-mode))
 ;; returnでカーソルのいた行もインデントするのはpythonだとダメ
+(defun my-newline-and-indent ()
+  (interactive)
+  (newline)
+  (indent-according-to-mode))
 (define-key python-mode-map (kbd "RET") 'my-newline-and-indent)
 
 
@@ -885,8 +884,12 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "gdc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" "-I/home/skirino/code/D/dsss/include/" "-I/home/skirino/code/D/dsss/include/d/" "-I." "-I.." local-file))))
+    (list "~/code/D/dsss/bin/dmd" (list "-unittest" "-c" "-w" "-I~/code/D/dsss/include/" "-I~/code/D/dsss/include/d/" "-I." "-I.." local-file))
+    ))
 (push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
+(add-to-list 'flymake-err-line-patterns
+             '("^\\([^ :]+\\)(\\([0-9]+\\)): \\(.*\\)$" 1 2 nil 3))
+
 
 (defun flymake-gjslint-init ()
   "Initialize flymake for gjslint"
