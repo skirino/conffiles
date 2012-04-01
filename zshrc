@@ -127,6 +127,10 @@ esac
 setopt complete_aliases     # aliased ls needs if file/dir completions work
 
 
+PROMPT="%U%B`uname -n`$%b%u "
+RPROMPT="[%~]"
+
+
 case "${OSTYPE}" in
 freebsd*|darwin*)
     alias ls="ls -G -w"
@@ -137,6 +141,9 @@ linux*)
     alias grep="grep -n --color=auto"
     ;;
 esac
+
+
+export PATH=~/bin:$PATH
 
 
 alias la='ls -al'
@@ -151,7 +158,7 @@ alias cduuuuu='cd ../../../../..'
 alias emnw='emacs -nw'
 
 
-# git command
+# aliases for git commands
 alias gst='git status'
 alias gbr='git branch -a'
 alias glog='git log'
@@ -160,3 +167,9 @@ alias gdiffc='git diff --cached'
 alias gci='git commit'
 alias gco='git checkout'
 alias gadd='git add'
+
+
+# D programming
+PATH=/opt/dmd/bin:$PATH
+
+
