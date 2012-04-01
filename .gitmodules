@@ -1,0 +1,9 @@
+[submodule "coffee-mode"]
+	path = emacs.d/vendor/coffee-mode
+	url = https://github.com/defunkt/coffee-mode.git
+[submodule "emacs.d/vendor/rinari"]
+	path = emacs.d/vendor/rinari
+	url = git://github.com/eschulte/rinari.git
+[submodule "emacs.d/vendor/undo-tree"]
+	path = emacs.d/vendor/undo-tree
+	url = http://www.dr-qubit.org/git/undo-tree.git
