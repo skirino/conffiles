@@ -1,0 +1,6 @@
+* Emacs keybindings
+  gconf-editor
+を起動する。 Windowsのレジストリエディタみたいなもの。
+  desktop->gnome->interface->gtk_key_theme
+をEmacsに書き換える。これでCtrl-*のキーバインドが使えるようになる。
+

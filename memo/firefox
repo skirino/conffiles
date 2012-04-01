@@ -1,0 +1,21 @@
+* Firefox basic settings
+
+** homepageの設定
+** ナビゲーションツールバーのみにする
+
+
+* Firefox addons
+
+** Firebug
+** Tab mix plus
+** 英辞郎 on the Web
+*** ショートカットをC-S-Dに設定
+** Keysnail
+
+
+* Keysnail settings
+
+** HoK
+** Tanything
+** $ ln -s <path to conffiles>/keysnail.js ~/.keysnail.js
+
