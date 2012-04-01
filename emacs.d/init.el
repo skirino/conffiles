@@ -884,7 +884,7 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "~/code/D/dsss/bin/dmd" (list "-unittest" "-c" "-w" "-I~/code/D/dsss/include/" "-I~/code/D/dsss/include/d/" "-I." "-I.." local-file))
+    (list "/opt/dmd/bin/dmd" (list "-unittest" "-c" "-w" "-I/opt/dmd/import/" "-I." "-I.." local-file))
     ))
 (push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
 (add-to-list 'flymake-err-line-patterns
