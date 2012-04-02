@@ -127,7 +127,7 @@ esac
 setopt complete_aliases     # aliased ls needs if file/dir completions work
 
 
-PROMPT="%U%B`uname -n`$%b%u "
+PROMPT="%U%B`uname -n`%(!.#.$)%b%u "
 RPROMPT="[%~]"
 
 
