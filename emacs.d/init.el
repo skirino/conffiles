@@ -289,6 +289,10 @@
 (defadvice kill-new (before ys:no-kill-new-duplicates activate)
   (setq kill-ring (delete (ad-get-arg 0) kill-ring))
 )
+
+
+;; "S-<Up>"などで範囲選択
+(pc-selection-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -306,8 +310,7 @@
 (global-set-key (kbd "C-=") 'split-window-vertically)
 (global-set-key (kbd "C-|") 'split-window-horizontally)
 
-;; "S-<Up>"などでウィンドウ移動、C-S-hjkl
-(windmove-default-keybindings)
+;; "C-S-hjkl"でウィンドウ移動
 (global-set-key (kbd "C-S-h") 'windmove-left)
 (global-set-key (kbd "C-S-j") 'windmove-down)
 (global-set-key (kbd "C-S-k") 'windmove-up)
@@ -393,6 +396,10 @@
       (define-key org-mode-map [C-S-left]  nil)
       (define-key org-mode-map [C-S-right] nil)
       (define-key org-mode-map (kbd "C-,") nil)
+      (define-key org-mode-map [S-up]    nil)
+      (define-key org-mode-map [S-down]  nil)
+      (define-key org-mode-map [S-left]  nil)
+      (define-key org-mode-map [S-right] nil)
     )
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
