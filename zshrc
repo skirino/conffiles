@@ -147,6 +147,7 @@ export PATH=~/bin:$PATH
 
 
 alias la='ls -al'
+alias sl='ls'
 alias du="du -h"
 alias df="df -h"
 alias vi='vim'
