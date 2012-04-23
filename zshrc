@@ -161,13 +161,21 @@ alias emnw='emacs -nw'
 
 # aliases for git commands
 alias gst='git status'
+compdef _git gst=git-status
 alias gbr='git branch -a'
+compdef _git gbr=git-branch
 alias glog='git log'
+compdef _git glog=git-log
 alias gdiff='git diff'
+compdef _git gdiff=git-diff
 alias gdiffc='git diff --cached'
+compdef _git gdiff=git-diff
 alias gci='git commit'
+compdef _git gci=git-commit
 alias gco='git checkout'
+compdef _git gco=git-checkout
 alias gadd='git add'
+compdef _git gadd=git-add
 
 
 # D programming
