@@ -1,4 +1,26 @@
-MacでVirtualBox Linux
-gnome環境を動かす際は、[システム][キーボード]で、左ALTとMETAを入れ替えられる
+* KeyRemap4MacBook
+** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック
+(JIS_YENではなくbackslashにすると、VirtualboxにおけるUnderscoreキーがなぜか']'になってしまう)
 
+* MacでVirtualBox Linux
+** gnome環境を動かす際は、[システム][キーボード]で、左ALTとMETAを入れ替えられる
+
+** トグルではない日本語 / 英語入力モード切り替え
+「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-M-@"と変換する
+----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
+<?xml version="1.0"?>
+<root>
+  <appdef>
+    <appname>VIRTUALBOX</appname>
+    <equal>org.virtualbox.app.VirtualBoxVM</equal>
+  </appdef>
+  <item>
+    <name>Kana to Option+Escape on VirtualBoxVM</name>
+    <identifier>private.virtualbox.keyswap</identifier>
+    <only>VIRTUALBOX</only>
+    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::JIS_ATMARK, ModifierFlag::CONTROL_L | ModifierFlag::COMMAND_L</autogen>
+  </item>
+</root>
+-----
+あとは、SCIM-bridge, SCIM-Anthyをインストールし、キー設定を行えばOK (iBusではキー設定の仕方を知らないので。できない?)
 
