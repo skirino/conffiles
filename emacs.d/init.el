@@ -374,7 +374,15 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; picture-mode
-(key-chord-define-global "pc" 'picture-mode)
+(key-chord-define-global "pc" 'toggle-picture-mode)
+(defun toggle-picture-mode ()
+  "Returns the major mode associated with a buffer."
+  (interactive)
+  (if (string= "picture-mode" major-mode)
+    (picture-mode-exit)
+    (picture-mode)
+  )
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
