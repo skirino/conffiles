@@ -182,3 +182,19 @@ compdef _git gadd=git-add
 PATH=/opt/dmd/bin:$PATH
 
 
+# OS-specific settings
+case "${OSTYPE}" in
+freebsd*|darwin*)
+  function emc(){
+    /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -e '(elscreen-create)' 2>/dev/null && /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n $* 2>/dev/null || open -a /Applications/Emacs.app $* &
+  }
+  ;;
+linux*)
+  function emc(){
+    emacsclient -n -a emacs $* > /dev/null 2>&1 &
+  }
+  # disable screen lock by C-s
+  stty -ixon
+  ;;
+esac
+
