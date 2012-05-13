@@ -22,6 +22,18 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; scim-bridge (Mintだとなぜか必要)
+(if (eq system-type 'gnu/linux)
+  (progn
+    (require 'scim-bridge-ja)
+    (global-set-key [zenkaku-hankaku] 'scim-mode-on)
+    (global-set-key (kbd "C-M-@")     'scim-mode-off)
+  )
+)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
 (setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
 ;;;;;;;;;;;;;;;;;;;;;;;;
