@@ -22,7 +22,7 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; scim-bridge (Mintだとなぜか必要)
+;;;;;;;;;;;;;;;;;;;;;;;; scim-bridge (Mintだとなぜか必要、Ubuntuでは不要かつ無害)
 (if (eq system-type 'gnu/linux)
   (progn
     (require 'scim-bridge-ja)
@@ -211,12 +211,8 @@
 (global-auto-complete-mode 1)
 
 ;; 括弧などの自動補完
-(global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "'") 'skeleton-pair-insert-maybe)
-(setq skeleton-pair 1)
+(require 'flex-autopair)
+(flex-autopair-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -349,6 +345,10 @@
   )
 )
 (key-chord-define-global "fw" 'my-toggle-follow-mode)
+
+;; popwin
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
