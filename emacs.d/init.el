@@ -241,6 +241,9 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/undo-tree/")
 (require 'undo-tree)
 (global-undo-tree-mode)
+
+;; \C-\の日本語入力の設定を無効にして、とりあえずundoにしておく
+(global-set-key (kbd "C-\\") 'undo-tree-undo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
