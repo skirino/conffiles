@@ -7,3 +7,6 @@
 [submodule "emacs.d/vendor/undo-tree"]
 	path = emacs.d/vendor/undo-tree
 	url = http://www.dr-qubit.org/git/undo-tree.git
+[submodule "emacs.d/vendor/jaunte"]
+	path = emacs.d/vendor/jaunte
+	url = https://github.com/kawaguchi/jaunte.el.git

@@ -272,6 +272,11 @@
 
 ;; 物理行単位で移動
 (setq line-move-visual nil)
+
+;; Hit a hint
+(add-to-list 'load-path "~/.emacs.d/vendor/jaunte/")
+(require 'jaunte)
+(global-set-key (kbd "C-:") 'jaunte)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
