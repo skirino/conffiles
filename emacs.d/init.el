@@ -227,8 +227,22 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 検索
-;; migemo, slightly modified version "~/.emacs.d/migemo.el" (toggle migemo by "M-m" in isearch-mode)
-;(require 'migemo)
+;; migemo
+;; slightly modified version "~/.emacs.d/migemo.el" (toggle migemo by "M-m" in isearch-mode)
+;; at present only on Linux:
+(if (eq system-type 'gnu/linux)
+  (progn
+    (require 'migemo)
+    (setq migemo-command "cmigemo")
+    (setq migemo-options '("-q" "--emacs"))
+    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (setq migemo-coding-system 'utf-8-unix)
+    (load-library "migemo")
+    (migemo-init)
+  )
+)
 
 ;; M-x grepの検索結果を編集してファイルに反映
 (require 'wgrep)
@@ -242,7 +256,7 @@
 (require 'undo-tree)
 (global-undo-tree-mode)
 
-;; \C-\の日本語入力の設定を無効にして、とりあえずundoにしておく
+;; C-\の日本語入力の設定を無効にして、とりあえずundoにしておく
 (global-set-key (kbd "C-\\") 'undo-tree-undo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
