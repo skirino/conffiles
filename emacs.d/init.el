@@ -875,6 +875,19 @@
 (add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
 
+;; Haskell mode
+(add-to-list 'load-path "~/.emacs.d/ghc-mod/")
+(autoload 'ghc-init "ghc" nil t)
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (ghc-init)
+            (flymake-mode)
+            (turn-on-haskell-doc-mode)
+            (turn-on-haskell-indent)
+          )
+)
+
+
 ;; GNU global
 (when (locate-library "gtags") (require 'gtags))
 (global-set-key "\M-t" 'gtags-find-tag)     ;関数の定義元へ
@@ -1137,7 +1150,7 @@
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(ecb-options-version "2.32")
- '(exec-path (quote ("/opt/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin")))
+ '(exec-path (quote ("/opt/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/.cabal/bin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(safe-local-variable-values (quote ((encoding . utf-8) (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))

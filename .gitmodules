@@ -10,3 +10,6 @@
 [submodule "emacs.d/vendor/jaunte"]
 	path = emacs.d/vendor/jaunte
 	url = https://github.com/kawaguchi/jaunte.el.git
+[submodule "emacs.d/vendor/haskell-mode"]
+	path = emacs.d/vendor/haskell-mode
+	url = https://github.com/haskell/haskell-mode.git

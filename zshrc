@@ -182,6 +182,9 @@ compdef _git gadd=git-add
 PATH=/opt/dmd/bin:$PATH
 
 
+# Haskell
+PATH=~/.cabal/bin:$PATH
+
 # OS-specific settings
 case "${OSTYPE}" in
 freebsd*|darwin*)
