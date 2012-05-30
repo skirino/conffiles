@@ -296,6 +296,13 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; kill ring、リージョン選択
+;; clipboard連携
+(cond (window-system
+       (setq x-select-enable-clipboard t)
+      )
+)
+
+
 ;; カーソル位置から行頭まで削除する
 (defun backward-kill-line (arg)
   "Kill chars backward until encountering the end of a line."
