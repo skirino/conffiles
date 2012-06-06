@@ -176,7 +176,7 @@ key.setEditKey([["C-x", "u"], ["C-/"]], function (ev) {
     goDoCommand("cmd_undo");
 }, 'アンドゥ', false);
 
-key.setEditKey('C-\\', function (ev) {
+key.setEditKey([['C-\\'], ['C-?']], function (ev) {
     display.echoStatusBar("Redo!", 2000);
     goDoCommand("cmd_redo");
 }, 'リドゥ', false);
