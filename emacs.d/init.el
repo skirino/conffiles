@@ -509,6 +509,33 @@
 (global-set-key (kbd "C-;") 'my-anything-for-file)
 (global-set-key (kbd "C-+") 'my-anything-for-file)
 
+
+;; Persistent action to switch or kill buffer
+(add-to-list 'anything-c-source-buffers+
+             '(persistent-action . (lambda (name)
+                                     (flet ((kill (item)
+                                                  (with-current-buffer item
+                                                    (if (and (buffer-modified-p)
+                                                             (buffer-file-name (current-buffer)))
+                                                        (progn
+                                                          (save-buffer)
+                                                          (kill-buffer item))
+                                                      (kill-buffer item))))
+                                            (goto (item)
+                                                  (switch-to-buffer item)))
+                                       (if current-prefix-arg
+                                           (progn
+                                             (kill name)
+                                             (anything-delete-current-selection))
+                                         (goto name))))))
+(define-key anything-map (kbd "C-j") 'anything-execute-persistent-action)
+(define-key anything-map (kbd "C-k") 'anything-kill-buffer-persistently)
+(defun anything-kill-buffer-persistently ()
+  (interactive)
+  (setq current-prefix-arg 1)
+  (anything-execute-persistent-action 'persistent-action))
+
+
 ;; setup filelist (platform dependent)
 ;(setq my-filelist-ramfs "/dev/shm/")
 (setq my-filelist-ramfs "~/.emacs.d/")
