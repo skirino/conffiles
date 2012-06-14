@@ -123,11 +123,11 @@ key.setGlobalKey(["C-x", "n"], function (ev) {
     OpenBrowserWindow();
 }, 'ウィンドウを開く', false);
 
-key.setGlobalKey('C-L', function (ev) {
+key.setGlobalKey([['C-L'], ['C->']], function (ev) {
     getBrowser().mTabContainer.advanceSelectedTab(1, true);
 }, 'ひとつ右のタブへ', false);
 
-key.setGlobalKey('C-H', function (ev) {
+key.setGlobalKey([['C-H'], ['C-<']], function (ev) {
     getBrowser().mTabContainer.advanceSelectedTab(-1, true);
 }, 'ひとつ左のタブへ', false);
 
