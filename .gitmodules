@@ -16,3 +16,6 @@
 [submodule "emacs.d/vendor/google-contacts"]
 	path = emacs.d/vendor/google-contacts
 	url = git://git.naquadah.org/google-contacts.el.git
+[submodule "emacs.d/vendor/yasnippet"]
+	path = emacs.d/vendor/yasnippet
+	url = https://github.com/capitaomorte/yasnippet.git

@@ -218,10 +218,14 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; yasnippet
-(add-to-list 'load-path "~/.emacs.d/yasnippet-0.6.1c/")
-(require 'yasnippet)
-(require 'yasnippet-config)
-(yas/setup "~/.emacs.d/yasnippet-0.6.1c/")
+(if (>= emacs-major-version 24)
+    (progn
+      (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet/")
+      (require 'yasnippet)
+      (require 'yasnippet-config)
+      (yas/setup "~/.emacs.d/vendor/yasnippet/")
+    )
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
