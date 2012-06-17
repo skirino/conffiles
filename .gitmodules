@@ -13,3 +13,6 @@
 [submodule "emacs.d/vendor/haskell-mode"]
 	path = emacs.d/vendor/haskell-mode
 	url = https://github.com/haskell/haskell-mode.git
+[submodule "emacs.d/vendor/google-contacts"]
+	path = emacs.d/vendor/google-contacts
+	url = git://git.naquadah.org/google-contacts.el.git

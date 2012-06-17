@@ -6,6 +6,7 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 (add-to-list 'load-path "~/.emacs.d/sdic/")
 (add-to-list 'load-path "~/.emacs.d/apel-10.8/")
+(add-to-list 'load-path "~/.emacs.d/elpa/oauth2-0.5/")
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -552,6 +553,35 @@
 )
 (update-anything-filelist)
 ;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; w3m
+(require 'w3m)
+(setq w3m-use-cookies t)
+(setq w3m-cookie-accept-bad-cookies t)
+(setq w3m-default-display-inline-images t)
+(setq browse-url-browser-function 'w3m-browse-url)
+(global-set-key "\C-xm" 'browse-url-at-point)
+
+(define-key w3m-mode-map (kbd "n"  ) 'w3m-next-anchor)
+(define-key w3m-mode-map (kbd "M-n") 'w3m-next-anchor)
+(define-key w3m-mode-map (kbd "p"  ) 'w3m-previous-anchor)
+(define-key w3m-mode-map (kbd "P"  ) 'w3m-previous-anchor)
+(define-key w3m-mode-map (kbd "M-p") 'w3m-previous-anchor)
+(define-key w3m-mode-map (kbd "b"  ) 'w3m-view-previous-page)
+;;;;;;;;;;;;;;;;;;;;;;;; w3m
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
+(if (>= emacs-major-version 24)
+    (progn
+      (add-to-list 'load-path "~/.emacs.d/vendor/google-contacts/")
+      (require 'google-contacts)
+    )
+)
+;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
 
 
 
@@ -1207,3 +1237,5 @@
   ;; If there is more than one, they won't work right.
   ;; '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "apple" :family "Monaco"))))
 )
+
+
