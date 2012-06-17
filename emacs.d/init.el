@@ -111,7 +111,6 @@
 
 ;; バッファ切り替えを強化
 (iswitchb-mode 1)
-(iswitchb-default-keybindings)
 (setq read-buffer-function 'iswitchb-read-buffer)
 ;; 部分文字列の代わりに正規表現を使う場合は t に設定する
 (setq iswitchb-regexp nil)
@@ -326,10 +325,6 @@
 (defadvice kill-new (before ys:no-kill-new-duplicates activate)
   (setq kill-ring (delete (ad-get-arg 0) kill-ring))
 )
-
-
-;; "S-<Up>"などで範囲選択
-(pc-selection-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -1175,6 +1170,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
 
 
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(if (>= emacs-major-version 24)
+    (progn
+      (when
+          (load
+           (expand-file-name "~/.emacs.d/elpa/package.el"))
+        (package-initialize))
+    )
+)
 
 
 (custom-set-variables
