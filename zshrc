@@ -156,7 +156,7 @@ alias cduu='cd ../..'
 alias cduuu='cd ../../..'
 alias cduuuu='cd ../../../..'
 alias cduuuuu='cd ../../../../..'
-alias emnw='emacs -nw'
+alias emnw='/usr/bin/emacs -nw'
 
 
 # aliases for git commands
@@ -199,7 +199,7 @@ freebsd*|darwin*)
   ;;
 linux*)
   function emc(){
-    emacsclient -n -a emacs $* > /dev/null 2>&1 &
+    /usr/bin/emacsclient -n -a /usr/bin/emacs $* > /dev/null 2>&1 &
   }
   # disable screen lock by C-s
   stty -ixon
