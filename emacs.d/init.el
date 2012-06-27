@@ -27,6 +27,9 @@
 (if (eq system-type 'gnu/linux)
   (progn
     (require 'scim-bridge-ja)
+    ;; turn on and off scim mode, just to input Japanese text by pressing "かな" first time.
+    (scim-mode-on)
+    (scim-mode-off)
     (global-set-key [zenkaku-hankaku] 'scim-mode-on)
     (global-set-key (kbd "C-M-@")     'scim-mode-off)
   )
