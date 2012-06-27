@@ -178,12 +178,17 @@ alias gadd='git add'
 compdef _git gadd=git-add
 
 
+# Ruby
+alias irb='irb -r irb/completion'
+
+
 # D programming
 PATH=/opt/dmd/bin:$PATH
 
 
 # Haskell
 PATH=~/.cabal/bin:$PATH
+
 
 # OS-specific settings
 case "${OSTYPE}" in
