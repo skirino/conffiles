@@ -425,9 +425,20 @@
       (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
       (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
       (setq org-remember-templates
-            '(("Note" ?n "** %?\n   %i\n   %a\n   %t" nil "Inbox"))
-            )
-      (global-set-key (kbd "M-m") 'org-remember)
+            '(("Log"  ?l "** %T %?"                  "log.org" "LOG")
+              ("Memo" ?m "** %?\n   %i\n   %a\n   %T" nil      "Inbox")
+             )
+      )
+      (defun my-org-remember-log ()
+        (interactive)
+        (org-remember '(0) "l")
+      )
+      (defun my-org-remember-memo ()
+        (interactive)
+        (org-remember '(0) "m")
+      )
+      (global-set-key (kbd "M-l") 'my-org-remember-log)
+      (global-set-key (kbd "M-m") 'my-org-remember-memo)
 
       ;; 要らないkey-bindingを無効化
       (define-key org-mode-map [C-S-left]  nil)
