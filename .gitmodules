@@ -19,3 +19,6 @@
 [submodule "emacs.d/vendor/yasnippet"]
 	path = emacs.d/vendor/yasnippet
 	url = https://github.com/capitaomorte/yasnippet.git
+[submodule "emacs.d/vendor/markdown-mode"]
+	path = emacs.d/vendor/markdown-mode
+	url = https://github.com/defunkt/markdown-mode.git

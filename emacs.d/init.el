@@ -950,6 +950,13 @@
 )
 
 
+;; markdown mode
+(add-to-list 'load-path "~/.emacs.d/vendor/markdown-mode/")
+(require 'markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+
+
 ;; GNU global
 (when (locate-library "gtags") (require 'gtags))
 (global-set-key "\M-t" 'gtags-find-tag)     ;関数の定義元へ
