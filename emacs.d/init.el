@@ -23,21 +23,6 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; scim-bridge (Mintだとなぜか必要、Ubuntuでは不要かつ無害)
-(if (eq system-type 'gnu/linux)
-  (progn
-    (require 'scim-bridge-ja)
-    ;; turn on and off scim mode, just to input Japanese text by pressing "かな" first time.
-    (scim-mode-on)
-    (scim-mode-off)
-    (global-set-key [zenkaku-hankaku] 'scim-mode-on)
-    (global-set-key (kbd "C-M-@")     'scim-mode-off)
-  )
-)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
 (setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
 ;;;;;;;;;;;;;;;;;;;;;;;;
