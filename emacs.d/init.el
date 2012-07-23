@@ -7,6 +7,7 @@
 (add-to-list 'load-path "~/.emacs.d/sdic/")
 (add-to-list 'load-path "~/.emacs.d/apel-10.8/")
 (add-to-list 'load-path "~/.emacs.d/elpa/oauth2-0.5/")
+(require 'cl)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -506,6 +507,9 @@
 (require 'anything-config)
 (require 'anything-match-plugin)
 (setq anything-input-idle-delay 0.1)
+
+(global-set-key (kbd "C-+") 'anything-resume)
+
 (defun my-anything-command ()
   (interactive)
   (anything-other-buffer
@@ -514,6 +518,7 @@
      anything-c-source-recentf)
    "*my-anything*"))
 (global-set-key (kbd "M-x") 'my-anything-command)
+
 (defun my-anything-for-file ()
   (interactive)
   (anything-other-buffer
@@ -523,7 +528,6 @@
      anything-c-source-filelist)
    "*my-anything*"))
 (global-set-key (kbd "C-;") 'my-anything-for-file)
-(global-set-key (kbd "C-+") 'my-anything-for-file)
 
 
 ;; Persistent action to switch or kill buffer
@@ -553,8 +557,7 @@
 
 
 ;; setup filelist (platform dependent)
-;(setq my-filelist-ramfs "/dev/shm/")
-(setq my-filelist-ramfs "~/.emacs.d/")
+(setq my-filelist-ramfs (find-if 'file-exists-p '("/run/shm/" "/dev/shm/" "~/.emacs.d/")))
 (setq my-filelist-basename "home.filelist")
 (setq anything-c-filelist-file-name (concat my-filelist-ramfs my-filelist-basename))
 (setq my-persistent-filelist-directory "~/.emacs.d/")
@@ -572,6 +575,13 @@
   )
 )
 (update-anything-filelist)
+
+
+;; anything-c-moccur.el
+(require 'anything-c-moccur)
+(setq moccur-split-word t)
+(global-set-key (kbd "M-s") 'anything-c-moccur-occur-by-moccur)
+(define-key isearch-mode-map (kbd "C-o") 'anything-c-moccur-from-isearch)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
