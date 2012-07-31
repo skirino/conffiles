@@ -55,7 +55,7 @@
 (add-hook 'after-init-hook 'session-initialize)
 
 ;; 履歴を保存
-(savehist-mode 1)
+(savehist-mode t)
 
 ;; 最近使ったファイル
 (setq recentf-max-saved-items 2000)
@@ -100,7 +100,7 @@
 
 
 ;; バッファ切り替えを強化
-(iswitchb-mode 1)
+(iswitchb-mode t)
 (setq read-buffer-function 'iswitchb-read-buffer)
 ;; 部分文字列の代わりに正規表現を使う場合は t に設定する
 (setq iswitchb-regexp nil)
@@ -197,11 +197,11 @@
 
 ;; auto-complete
 (require 'auto-complete-config)
-(global-auto-complete-mode 1)
+(global-auto-complete-mode t)
 
 ;; 括弧などの自動補完
 (require 'flex-autopair)
-(flex-autopair-mode 1)
+(flex-autopair-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -326,7 +326,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; key-chord
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.04)
-(key-chord-mode 1)
+(key-chord-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -619,9 +619,9 @@
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
 (if (>= emacs-major-version 23)
     (progn
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)
-      (menu-bar-mode -1)
+      (tool-bar-mode nil)
+      (scroll-bar-mode nil)
+      (menu-bar-mode nil)
     )
 )
 
@@ -638,12 +638,12 @@
 
 
 ;; 対応する括弧を表示させる
-(show-paren-mode 1)
+(show-paren-mode t)
 
 
 ;; 行番号・桁番号を表示
-(line-number-mode 1)
-(column-number-mode 1)
+(line-number-mode t)
+(column-number-mode t)
 
 
 ;; タブ、全角スペース、行末のスペースを見えるように (コメントを外すと改行が見えるように)
@@ -697,7 +697,7 @@
   (global-set-key [C-S-right] 'elscreen-next)
   (global-set-key (kbd "C->") 'elscreen-next)
   (global-set-key [C-S-left]  'elscreen-previous)
-  (global-set-key (kbd "C-<")  'elscreen-previous)
+  (global-set-key (kbd "C-<") 'elscreen-previous)
 
   ;; 新しくscreenを作ったら即分割する
   (defun my-elscreen-create ()
@@ -716,7 +716,7 @@
 
 (defun my-start-cui-emacs ()
   ;; ターミナルでマウスを有効にする
-  (xterm-mouse-mode 1)
+  (xterm-mouse-mode t)
   (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 5)))
   (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 5)))
 
@@ -1102,7 +1102,7 @@
 ;; text-mode及びその亜種でオンにし、すぐにバッファ全体をチェック
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda ()
-                   (flyspell-mode 1)
+                   (flyspell-mode t)
                    (flyspell-buffer))))
 ;; texの記法は無視
 (setq ispell-parser 'tex)
