@@ -426,8 +426,8 @@
       (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
       (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
       (setq org-remember-templates
-            '(("Log"  ?l "** %T %?"                  "log.org" "LOG")
-              ("Memo" ?m "** %?\n   %i\n   %a\n   %T" nil      "Inbox")
+            '(("Log"  ?l "** %T %?" "log.org" "LOG")
+              ("Memo" ?m "** %T %?" nil       "Inbox")
              )
       )
       (defun my-org-remember-log ()
@@ -988,7 +988,7 @@
 (when (locate-library "gtags") (require 'gtags))
 (global-set-key "\M-t" 'gtags-find-tag)     ;関数の定義元へ
 (global-set-key "\M-r" 'gtags-find-rtag)    ;関数の参照先へ
-(global-set-key "\M-s" 'gtags-find-symbol)  ;変数の定義元/参照先へ
+;(global-set-key "\M-s" 'gtags-find-symbol)  ;変数の定義元/参照先へ
 ;(global-set-key "\M-f" 'gtags-find-file)    ;ファイルにジャンプ (forward-wordを優先してコメントアウト)
 (global-set-key "\M-t" 'gtags-pop-stack)    ;前のバッファに戻る
 (add-hook 'c-mode-common-hook 'gtags-mode)
