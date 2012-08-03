@@ -941,6 +941,56 @@
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
 
+;; open test file associated with the currently-opened source file (and vice versa)
+(setq my-rails-app-test-signature-pairs
+      '(
+        ("app/controllers" . "test/functional")
+        ("app/models"      . "test/unit")
+        ("app/helpers"     . "test/unit/helpers")
+        ("app/mailers"     . "test/mailers")
+        ("app/decorators"  . "test/decorators") ;; decorators and their tests created by "draper" gem
+        ))
+
+(defun my-rails-app-test-pair (filepath)
+  (let ((app-filepath) (test-filepath))
+    (loop for pair in my-rails-app-test-signature-pairs do
+          (let* ((app-sign  (car pair))
+                 (test-sign (cdr pair))
+                 (app-regexp  (format "^\\(.*\\)/%s/\\(.*\\)\\.rb$"      app-sign))
+                 (test-regexp (format "^\\(.*\\)/%s/\\(.*\\)_test\\.rb$" test-sign)))
+            (when (string-match app-regexp filepath)
+              (let ((dir  (match-string 1 filepath))
+                    (name (match-string 2 filepath)))
+                (setq app-filepath  filepath)
+                (setq test-filepath (format "%s/%s/%s_test.rb" dir test-sign name))))
+            (when (string-match test-regexp filepath)
+              (let ((dir  (match-string 1 filepath))
+                    (name (match-string 2 filepath)))
+                (setq app-filepath  (format "%s/%s/%s.rb" dir app-sign name))
+                (setq test-filepath filepath)))))
+    (cons app-filepath test-filepath)))
+
+(defun my-open-both-app-and-test-files ()
+  (interactive)
+  (let* ((original-filepath (buffer-file-name))
+         (file-pair         (my-rails-app-test-pair original-filepath))
+         (app-filepath      (car file-pair))
+         (test-filepath     (cdr file-pair)))
+    (when (and app-filepath
+               test-filepath
+               (file-exists-p app-filepath)
+               (file-exists-p app-filepath))
+      (delete-other-windows)
+      (split-window-horizontally)
+      (find-file app-filepath)
+      (other-window 1)
+      (find-file test-filepath)
+      ;; move focus to the left window if originally-opened file is "app-filepath"
+      (when (equal original-filepath app-filepath)
+        (other-window 1)))))
+
+(define-key rinari-minor-mode-map (kbd "C-c ; o") 'my-open-both-app-and-test-files)
+
 
 ;; JavaScript
 (autoload 'js2-mode "js2" nil t)
