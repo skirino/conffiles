@@ -1005,6 +1005,10 @@
 (add-hook 'coffee-mode-hook 'coffee-cos-mode)
 
 
+;; Clojure
+(require 'clojure-mode)
+
+
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
 
