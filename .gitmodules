@@ -22,3 +22,6 @@
 [submodule "emacs.d/vendor/markdown-mode"]
 	path = emacs.d/vendor/markdown-mode
 	url = https://github.com/defunkt/markdown-mode.git
+[submodule "emacs.d/vendor/open-related-file"]
+	path = emacs.d/vendor/open-related-file
+	url = https://github.com/skirino/open-related-file.git

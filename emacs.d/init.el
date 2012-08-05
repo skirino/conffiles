@@ -67,6 +67,7 @@
 
 
 ;; (自作) 開いているファイルと関連したファイルを開く。関連するファイルは前もって登録しておく
+(add-to-list 'load-path "~/.emacs.d/vendor/open-related-file/")
 (require 'open-related-file)
 (global-set-key (kbd "C-c ; o") 'open-related-file-open)
 (open-related-file-append-group "%s/app/controllers/%s.rb" "%s/test/functional/%s_test.rb"  )
