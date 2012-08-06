@@ -952,8 +952,10 @@
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
 
+(defvar my-rinari-spork-branch nil)
 (defun my-rinari-spork ()
   (interactive)
+  (setq my-rinari-spork-branch (egg-HEAD))
   (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
     (shell-command command)))
 (define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-spork)
@@ -962,10 +964,11 @@
   "Start spork process if it is not running.
 Then run tests in a preferred window configuration on after-save."
   (interactive)
-  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
-    (when (= 0 (length grep-result))
+  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep"))
+        (branch-same (equal my-rinari-spork-branch (egg-HEAD))))
+    (when (or (not branch-same) (= 0 (length grep-result)))
       (my-rinari-spork)
-      (sleep-for 12))) ;; Ad hoc way to wait for startup of spork process
+      (sleep-for 10))) ;; Ad hoc way to wait for startup of spork process
   (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
          (orig-buffer  (current-buffer)))
     (when (open-related-file-open)
@@ -973,6 +976,7 @@ Then run tests in a preferred window configuration on after-save."
       (split-window-vertically)
       (rinari-test)
       (select-window (get-buffer-window orig-buffer)))))
+(define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test)
 (add-hook 'rinari-minor-mode-hook
           (lambda () (add-hook 'after-save-hook 'my-rinari-test nil t)))
 
