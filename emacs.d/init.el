@@ -949,10 +949,12 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/rinari/")
 (require 'starter-kit-ruby)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
+
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
-
+(setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
 (defvar my-rinari-spork-branch nil)
+
 (defun my-rinari-spork ()
   (interactive)
   (setq my-rinari-spork-branch (egg-HEAD))
@@ -1047,6 +1049,7 @@ Then run tests in a preferred window configuration on after-save."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 (require 'flymake)
+(setq flymake-check-start-time 5)
 (key-chord-define-global "fm" 'flymake-mode)
 
 ;; GUIのダイアログを抑制
