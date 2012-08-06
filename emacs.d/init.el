@@ -993,6 +993,10 @@ Then run tests in a preferred window configuration on after-save."
 ;; enable compile-on-save minor mode
 (add-hook 'coffee-mode-hook 'coffee-cos-mode)
 
+(add-to-list 'load-path "~/.emacs.d/vendor/flymake-coffee/")
+(require 'flymake-coffee)
+(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+
 
 ;; Clojure
 (require 'clojure-mode)

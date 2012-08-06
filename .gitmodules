@@ -25,3 +25,6 @@
 [submodule "emacs.d/vendor/open-related-file"]
 	path = emacs.d/vendor/open-related-file
 	url = https://github.com/skirino/open-related-file.git
+[submodule "emacs.d/vendor/flymake-coffee"]
+	path = emacs.d/vendor/flymake-coffee
+	url = https://github.com/purcell/flymake-coffee.git
