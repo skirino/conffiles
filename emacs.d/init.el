@@ -47,8 +47,8 @@
 (setq auto-save-default nil)
 
 ;; auto-save
-(require 'auto-save-buffers)
-(run-with-idle-timer 1 t 'auto-save-buffers) ; アイドル1秒で保存
+;(require 'auto-save-buffers)
+;(run-with-idle-timer 1 t 'auto-save-buffers) ; アイドル1秒で保存
 
 ;; session
 (require 'session)
@@ -951,6 +951,30 @@
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
+
+(defun my-rinari-spork ()
+  (interactive)
+  (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
+    (shell-command command)))
+(define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-spork)
+
+(defun my-rinari-test ()
+  "Start spork process if it is not running.
+Then run tests in a preferred window configuration on after-save."
+  (interactive)
+  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
+    (when (= 0 (length grep-result))
+      (my-rinari-spork)
+      (sleep-for 12))) ;; Ad hoc way to wait for startup of spork process
+  (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
+         (orig-buffer  (current-buffer)))
+    (when (open-related-file-open)
+      (unless is-test-file (other-window 1))
+      (split-window-vertically)
+      (rinari-test)
+      (select-window (get-buffer-window orig-buffer)))))
+(add-hook 'rinari-minor-mode-hook
+          (lambda () (add-hook 'after-save-hook 'my-rinari-test nil t)))
 
 
 ;; JavaScript
