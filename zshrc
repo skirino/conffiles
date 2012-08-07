@@ -159,6 +159,7 @@ alias cduuu='cd ../../..'
 alias cduuuu='cd ../../../..'
 alias cduuuuu='cd ../../../../..'
 alias emnw='/usr/bin/emacs -nw'
+alias xopen='xdg-open'
 
 
 # aliases for git commands
