@@ -1,0 +1,18 @@
+[user]
+    email = shunsuke.kirino@gmail.com
+    name = Shunsuke Kirino
+[github]
+    user = skirino
+    token = aaaaaaaaaaaaaa
+[core]
+    editor = vi
+    gitproxy = git-proxy.sh for heroku.com
+    whitespace = trailing-space
+[color]
+    ui = auto
+[color "diff"]
+    whitespace = red reverse
+[merge]
+    tool = mymeld
+[mergetool "mymeld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
