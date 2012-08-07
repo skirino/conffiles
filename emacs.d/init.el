@@ -1035,6 +1035,16 @@ Then run tests in a preferred window configuration on after-save."
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+;; save時にHTML変換したファイルを保存し、w3mで表示
+(defun my-markdown-export-and-view ()
+  (interactive)
+  (let ((orig-buffer (current-buffer)))
+    (markdown-export-and-view)
+    (w3m-redisplay-this-page)
+    (split-window-horizontally)
+    (switch-to-buffer orig-buffer)))
+(add-hook 'markdown-mode-hook
+          (lambda () (add-hook 'after-save-hook 'my-markdown-export-and-view nil t)))
 
 
 ;; GNU global
