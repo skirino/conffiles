@@ -131,6 +131,8 @@ wmctrl -r Firefox -t 1
 *** Clojure
 **** leiningenのスクリプトをgithubから落として実行可能な状態にし、一度走らせるだけ
 
+*** misc
+**** markdown (deb), redcarpet (gem)
 
 
 

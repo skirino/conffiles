@@ -1033,8 +1033,9 @@ Then run tests in a preferred window configuration on after-save."
 ;; markdown mode
 (add-to-list 'load-path "~/.emacs.d/vendor/markdown-mode/")
 (require 'markdown-mode)
-(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
+(setq markdown-command "redcarpet")
 ;; save時にHTML変換したファイルを保存し、w3mで表示
 (defun my-markdown-export-and-view ()
   (interactive)
@@ -1043,7 +1044,7 @@ Then run tests in a preferred window configuration on after-save."
     (w3m-redisplay-this-page)
     (split-window-horizontally)
     (switch-to-buffer orig-buffer)))
-(add-hook 'markdown-mode-hook
+(add-hook 'gfm-mode-hook
           (lambda () (add-hook 'after-save-hook 'my-markdown-export-and-view nil t)))
 
 
