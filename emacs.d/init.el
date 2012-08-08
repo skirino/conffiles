@@ -13,12 +13,10 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Macのキーボード
-(if (eq system-type 'darwin)
-    (progn
-      ;; swap command and option keys
-      (setq mac-command-modifier 'meta)
-      (setq mac-option-modifier 'super)
-    )
+(when (eq system-type 'darwin)
+  ;; swap command and option keys
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -80,25 +78,20 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; dired
-;; wdired
 (require 'wdired)
 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 
 ;; diredでフォルダを開く時, 新しいバッファを作成しない
 (require 'dired-single)
 (defun my-dired-init ()
-  "Bunch of stuff to run for dired, either immediately or when it's
-   loaded."
-  ;; <add other stuff here>
-  (define-key dired-mode-map [return] 'dired-single-buffer)
+  "Bunch of stuff to run for dired, either immediately or when it's loaded."
+  (define-key dired-mode-map [return]  'dired-single-buffer)
   (define-key dired-mode-map [mouse-1] 'dired-single-buffer-mouse)
   (define-key dired-mode-map "^"
-  (function
-   (lambda nil (interactive) (dired-single-buffer "..")))))
-   ;; if dired's already loaded, then the keymap will be bound
+    (function (lambda nil (interactive) (dired-single-buffer "..")))))
 (if (boundp 'dired-mode-map)
-  ;; we're good to go; just add our bindings
-  (my-dired-init)
+    ;; dired is already loaded; add our bindings
+    (my-dired-init)
   ;; it's not loaded yet, so add our bindings to the load-hook
   (add-hook 'dired-load-hook 'my-dired-init))
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -119,7 +112,7 @@
 (setq iswitchb-prompt-newbuffer nil)
 
 
-;; ファイル名がかぶったときのバッファ名
+;; ファイル名がかぶったときのバッファ名を適切に設定
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "*[^*]+*")
@@ -143,14 +136,14 @@
   '("*Help*" "*Compile-Log*" "*Mew completions*" "*Completions*"
     "*Shell Command Output*" "*Apropos*" "*Buffer List*"
     "*anything*" "*anything minibuffer-history*" "*anything complete*" "*my-anything*"))
-(defvar my-visible-blst nil)       ; 移動開始時の buffer list を保存
-(defvar my-bslen 15)               ; buffer list 中の buffer name の最大長
-(defvar my-blist-display-time 2)   ; buffer list の表示時間
+(defvar my-visible-blst       nil) ; 移動開始時の buffer list を保存
+(defvar my-bslen              15 ) ; buffer list 中の buffer name の最大長
+(defvar my-blist-display-time 2  ) ; buffer list の表示時間
 (defface my-cbface                 ; buffer list 中で current buffer を示す face
   '((t (:foreground "wheat" :underline t))) nil)
 
 (defun my-visible-buffers (blst)
-  (if (eq blst nil) '()
+  (unless (eq blst nil)
     (let ((bufn (buffer-name (car blst))))
       (if (or (= (aref bufn 0) ? ) (member bufn my-ignore-blst))
           ;; ミニバッファと無視するバッファには移動しない
@@ -186,8 +179,8 @@
     (my-show-buffer-list (if pos "[-->] " "[<--] ") (if pos " > "  " < " )))
   (setq this-command 'my-operate-buffer))
 
-(global-set-key [?\C-,] (lambda () (interactive) (my-operate-buffer nil)))
-(global-set-key [?\C-.] (lambda () (interactive) (my-operate-buffer t)))
+(global-set-key (kbd "C-,") (lambda () (interactive) (my-operate-buffer nil)))
+(global-set-key (kbd "C-.") (lambda () (interactive) (my-operate-buffer t)))
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
 
 
@@ -218,13 +211,11 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; yasnippet
-(if (>= emacs-major-version 24)
-    (progn
-      (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet/")
-      (require 'yasnippet)
-      (require 'yasnippet-config)
-      (yas/setup "~/.emacs.d/vendor/yasnippet/")
-    )
+(when (>= emacs-major-version 24)
+  (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet/")
+  (require 'yasnippet)
+  (require 'yasnippet-config)
+  (yas/setup "~/.emacs.d/vendor/yasnippet/")
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -234,18 +225,16 @@
 ;; migemo
 ;; slightly modified version "~/.emacs.d/migemo.el" (toggle migemo by "M-m" in isearch-mode)
 ;; at present only on Linux:
-(if (eq system-type 'gnu/linux)
-  (progn
-    (require 'migemo)
-    (setq migemo-command "cmigemo")
-    (setq migemo-options '("-q" "--emacs"))
-    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-    (setq migemo-user-dictionary nil)
-    (setq migemo-regex-dictionary nil)
-    (setq migemo-coding-system 'utf-8-unix)
-    (load-library "migemo")
-    (migemo-init)
-  )
+(when (eq system-type 'gnu/linux)
+  (require 'migemo)
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init)
 )
 
 ;; M-x grepの検索結果を編集してファイルに反映
@@ -273,7 +262,7 @@
 (define-key global-map (kbd "S-<f8>") 'goto-last-change-reverse)
 
 ;; 自動インデント、RetやC-jも自動インデントになる
-(global-set-key "\C-m" 'reindent-then-newline-and-indent)
+(global-set-key (kbd "C-m") 'reindent-then-newline-and-indent)
 
 ;; "C-h"をbackspaceに (これで<C-backspace>が反応しなくなるので、bindしなおす)
 (global-set-key (kbd "C-h") 'delete-backward-char)
@@ -285,8 +274,8 @@
   (interactive)
   (if (bolp)
       (back-to-indentation)
-      (beginning-of-line)))
-(define-key global-map [(C a)] 'u-move-beginning-of-line)
+    (beginning-of-line)))
+(global-set-key (kbd "C-a") 'u-move-beginning-of-line)
 
 ;; 物理行単位で移動
 (setq line-move-visual nil)
@@ -301,9 +290,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; kill ring、リージョン選択
 ;; clipboard連携
-(cond (window-system
-       (setq x-select-enable-clipboard t)
-      )
+(when window-system
+  (setq x-select-enable-clipboard t)
 )
 
 
@@ -322,7 +310,7 @@
 (require 'popup)
 (require 'pos-tip)
 (require 'popup-kill-ring)
-(global-set-key "\M-y" 'popup-kill-ring)
+(global-set-key (kbd "M-y") 'popup-kill-ring)
 (setq popup-kill-ring-interactive-insert t)
 
 
@@ -357,21 +345,19 @@
 (require 'follow)
 (defun my-toggle-follow-mode ()
   (interactive)
-  (if (eq follow-mode t)
-      (progn ; On => follow-modeをオフにして2分割に戻る
-        (follow-mode nil)
-        (delete-other-windows)
-        (split-window-horizontally)
-        (balance-windows)
-      )
-      (progn ; Off => 3分割してfollow-mode
-        (delete-other-windows)
-        (split-window-horizontally)
-        (split-window-horizontally)
-        (balance-windows)
-        (follow-mode)
-      )
-  )
+  (cond ((eq follow-mode t) ; On => follow-modeをオフにして2分割に戻る
+         (follow-mode nil)
+         (delete-other-windows)
+         (split-window-horizontally)
+         (balance-windows)
+         )
+        (t ; Off => 3分割してfollow-mode
+         (delete-other-windows)
+         (split-window-horizontally)
+         (split-window-horizontally)
+         (balance-windows)
+         (follow-mode)
+         ))
 )
 (key-chord-define-global "fw" 'my-toggle-follow-mode)
 
@@ -408,59 +394,56 @@
 
 ;; モードラインに色をつける
 (setq viewer-modeline-color-unwritable "tomato")
-(setq viewer-modeline-color-view "orange")
+(setq viewer-modeline-color-view       "orange")
 (viewer-change-modeline-color-setup)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; picture-mode
-(key-chord-define-global "pc" 'toggle-picture-mode)
 (defun toggle-picture-mode ()
   "Returns the major mode associated with a buffer."
   (interactive)
   (if (string= "picture-mode" major-mode)
-    (picture-mode-exit)
+      (picture-mode-exit)
     (picture-mode)
   )
 )
+(key-chord-define-global "pc" 'toggle-picture-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; org-mode
 ;; org-modeでメモを取る, Emacs23以降
-(if (>= emacs-major-version 23)
-    (progn
-      (require 'org)
-      (org-remember-insinuate)                                                  ; org-rememberの初期化
-      (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
-      (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
-      (setq org-remember-templates
-            '(("Log"  ?l "** %T %?" "log.org" "LOG")
-              ("Memo" ?m "** %T %?" nil       "Inbox")
-             )
-      )
-      (defun my-org-remember-log ()
-        (interactive)
-        (org-remember '(0) "l")
-      )
-      (defun my-org-remember-memo ()
-        (interactive)
-        (org-remember '(0) "m")
-      )
-      (global-set-key (kbd "M-l") 'my-org-remember-log)
-      (global-set-key (kbd "M-m") 'my-org-remember-memo)
+(when (>= emacs-major-version 23)
+  (require 'org)
+  (org-remember-insinuate)                                                  ; org-rememberの初期化
+  (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
+  (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
+  (setq org-remember-templates
+        '(("Log"  ?l "** %T %?" "log.org" "LOG")
+          ("Memo" ?m "** %T %?" nil       "Inbox")
+          ))
+  (defun my-org-remember-log ()
+    (interactive)
+    (org-remember '(0) "l")
+  )
+  (defun my-org-remember-memo ()
+    (interactive)
+    (org-remember '(0) "m")
+  )
+  (global-set-key (kbd "M-l") 'my-org-remember-log)
+  (global-set-key (kbd "M-m") 'my-org-remember-memo)
 
-      ;; 要らないkey-bindingを無効化
-      (define-key org-mode-map [C-S-left]  nil)
-      (define-key org-mode-map [C-S-right] nil)
-      (define-key org-mode-map (kbd "C-,") nil)
-      (define-key org-mode-map [S-up]    nil)
-      (define-key org-mode-map [S-down]  nil)
-      (define-key org-mode-map [S-left]  nil)
-      (define-key org-mode-map [S-right] nil)
-    )
+  ;; 要らないkey-bindingを無効化
+  (define-key org-mode-map [C-S-left]  nil)
+  (define-key org-mode-map [C-S-right] nil)
+  (define-key org-mode-map (kbd "C-,") nil)
+  (define-key org-mode-map [S-up]    nil)
+  (define-key org-mode-map [S-down]  nil)
+  (define-key org-mode-map [S-left]  nil)
+  (define-key org-mode-map [S-right] nil)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -472,11 +455,11 @@
 ;(setq inhibit-startup-message t)
 
 (setq howm-sample-directory (expand-file-name "~/docs/howm/"))
-(setq howm-directory howm-sample-directory)
-(setq howm-keyword-file (expand-file-name ".howm-keys" howm-sample-directory))
-(setq howm-history-file (expand-file-name ".howm-history" howm-sample-directory))
-(setq howm-menu-lang 'ja)
-(setq howm-history-limit nil)  ;; Don't erase my ~/.howm-history.
+(setq howm-directory        howm-sample-directory)
+(setq howm-keyword-file     (expand-file-name ".howm-keys"    howm-sample-directory))
+(setq howm-history-file     (expand-file-name ".howm-history" howm-sample-directory))
+(setq howm-menu-lang        'ja)
+(setq howm-history-limit    nil)  ;; Don't erase my ~/.howm-history.
 
 (require 'howm)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -487,29 +470,29 @@
 (require 'egg)
 
 ;; C-x v fでファイル単位のログを出す
-(define-key egg-file-cmd-map "f" 'egg-file-log)
+(define-key egg-file-cmd-map (kbd "f") 'egg-file-log)
 
 ;; C-x v dでファイルのdiff
 (define-key egg-file-cmd-map (kbd "d") 'egg-file-diff)
 
 ;; ログバッファ内、dで現在のworking copyとコミットとのdiff表示
-(define-key egg-log-commit-map "d" 'egg-log-buffer-diff-revs)
+(define-key egg-log-commit-map (kbd "d") 'egg-log-buffer-diff-revs)
 
 ;; ログバッファ内、spaceでdiff表示をtoggleする
 (defun egg-log-buffer-hide-show-dwim ()
   (interactive)
-  (let* ((pos (point))
+  (let* ((pos  (point))
          (next (next-single-property-change pos :diff))
          (sha1 (and next (get-text-property next :commit)))
          (nav (get-text-property pos :navigation)))
     (if (equal (get-text-property pos :commit) sha1)
         (egg-section-cmd-toggle-hide-show nav)
-        (egg-log-buffer-do-insert-commit pos)
+      (egg-log-buffer-do-insert-commit pos)
     )
   )
 )
 (define-key egg-log-commit-base-map (kbd "SPC") 'egg-log-buffer-hide-show-dwim)
-(define-key egg-hide-show-map (kbd "SPC") 'egg-section-cmd-toggle-hide-show)
+(define-key egg-hide-show-map       (kbd "SPC") 'egg-section-cmd-toggle-hide-show)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -603,7 +586,7 @@
 (setq w3m-cookie-accept-bad-cookies t)
 (setq w3m-default-display-inline-images t)
 (setq browse-url-browser-function 'w3m-browse-url)
-(global-set-key "\C-xm" 'browse-url-at-point)
+(global-set-key (kbd "C-x m") 'browse-url-at-point)
 
 (define-key w3m-mode-map (kbd "n"  ) 'w3m-next-anchor)
 (define-key w3m-mode-map (kbd "M-n") 'w3m-next-anchor)
@@ -616,11 +599,9 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
-(if (>= emacs-major-version 24)
-    (progn
-      (add-to-list 'load-path "~/.emacs.d/vendor/google-contacts/")
-      (require 'google-contacts)
-    )
+(when (>= emacs-major-version 24)
+  (add-to-list 'load-path "~/.emacs.d/vendor/google-contacts/")
+  (require 'google-contacts)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
 
@@ -628,12 +609,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
-(if (>= emacs-major-version 23)
-    (progn
-      (tool-bar-mode nil)
-      (scroll-bar-mode nil)
-      (menu-bar-mode nil)
-    )
+(when (>= emacs-major-version 23)
+  (tool-bar-mode nil)
+  (scroll-bar-mode nil)
+  (menu-bar-mode nil)
 )
 
 ;; 現在行をハイライト
@@ -688,9 +667,7 @@
 (defun my-start-gui-emacs ()
   ;; start server for emacsclient
   (require 'server)
-  (unless (server-running-p)
-    (server-start)
-  )
+  (unless (server-running-p) (server-start))
   ;; "C-x C-c"でサーバをkill
   (global-set-key (kbd "C-x C-c") 'server-edit)
   ;; "M-x exit"でemacsを終了
@@ -716,9 +693,8 @@
     (elscreen-create)
     (split-window-horizontally)
   )
-  (global-set-key (kbd "C-z c") 'my-elscreen-create)
+  (global-set-key (kbd "C-z c"  ) 'my-elscreen-create)
   (global-set-key (kbd "C-z C-c") 'my-elscreen-create)
-
 
   ;; GUIでの色付け
   (add-to-list 'default-frame-alist '(background-color . "black"))
@@ -729,7 +705,7 @@
   ;; ターミナルでマウスを有効にする
   (xterm-mouse-mode t)
   (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 5)))
-  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 5)))
+  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up   5)))
 
   ;; CUIではdefault-frame-alistを使わないほうが良さげ
   (set-background-color "black")
@@ -737,9 +713,8 @@
 
 
 ;;;;;;; Linux
-(if (eq system-type 'gnu/linux)
-  (progn
-    (if (eq window-system 'x)
+(when (eq system-type 'gnu/linux)
+  (if (eq window-system 'x)
       (progn ;; GUI
         (my-start-gui-emacs)
 
@@ -753,9 +728,7 @@
             (set-frame-parameter nil 'fullscreen
                                  (if (equal 'fullboth current-value)
                                      (if (boundp 'old-fullscreen) old-fullscreen nil)
-                                   (progn (setq old-fullscreen current-value) 'fullboth)
-                                 )
-            )
+                                   (progn (setq old-fullscreen current-value) 'fullboth)))
           )
         )
         (global-set-key [f11] 'toggle-fullscreen)
@@ -777,27 +750,40 @@
         )
         (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
       )
-      (progn ;; CUI
-        (my-start-cui-emacs)
-        (add-to-list 'default-frame-alist '(foreground-color . "brightwhite"))
-        (add-to-list 'default-frame-alist '(cursor-color . "brightwhite"))
-      )
+    (progn ;; CUI
+      (my-start-cui-emacs)
+      (add-to-list 'default-frame-alist '(foreground-color . "brightwhite"))
+      (add-to-list 'default-frame-alist '(cursor-color     . "brightwhite"))
     )
-
-    (custom-set-faces
-     ;; custom-set-faces was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(default ((t (:inherit nil :stipple nil :background nil :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Dejavu Sans Mono")))))
   )
+
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(default ((t (:inherit        nil
+                  :stipple        nil
+                  :background     nil
+                  :foreground     "white"
+                  :inverse-video  nil
+                  :box            nil
+                  :strike-through nil
+                  :overline       nil
+                  :underline      nil
+                  :slant          normal
+                  :weight         normal
+                  :height         113
+                  :width          normal
+                  :foundry        "unknown"
+                  :family         "Dejavu Sans Mono")))))
 )
 
 
+
 ;;;;;;; Mac
-(if (eq system-type 'darwin)
-  (progn
-    (if (eq window-system 'ns) ;; Cocoa Emacs (GUI)
+(when (eq system-type 'darwin)
+  (if (eq window-system 'ns) ;; Cocoa Emacs (GUI)
       (progn
         (my-start-gui-emacs)
 
@@ -819,9 +805,8 @@
           '("Hiragino Kaku Gothic Pro" . "iso10646-1")
         )
       )
-      (progn ;; no window, "emacs -nw"
-        (my-start-cui-emacs)
-      )
+    (progn ;; no window, "emacs -nw"
+      (my-start-cui-emacs)
     )
   )
 )
@@ -835,31 +820,24 @@
                     '("ＭＳ ゴシック" . "jisx0208-sjis"))
 )
 
-(if (eq system-type 'windows-nt) ;; GNU Emacs on Windows (GUI)
-  (progn
-    (set-font-on-windows)
-    (add-to-list 'default-frame-alist '(background-color . "black"))
+(when (eq system-type 'windows-nt) ;; GNU Emacs on Windows (GUI)
+  (set-font-on-windows)
+  (add-to-list 'default-frame-alist '(background-color . "black"))
 
-    ;; Windows用の最大化
-    (defun my-maximize ()
-      (interactive)
-      (w32-send-sys-command #xf030))
-    (run-with-idle-timer 0.2 nil 'my-maximize)
+  ;; Windows用の最大化
+  (defun my-maximize ()
+    (interactive)
+    (w32-send-sys-command #xf030))
+  (run-with-idle-timer 0.2 nil 'my-maximize)
 
-    ;; GUI用の初期化(server-startなど)
-    (if (eq window-system 'w32)
-      (progn
-        (my-start-gui-emacs)
-      )
-    )
-  )
+  ;; GUI用の初期化(server-startなど)
+  (when (eq window-system 'w32) (my-start-gui-emacs))
 )
+
 ;; On Cygwin command-line (CUI)
-(if (eq system-type 'cygwin)
-  (progn
-    (set-font-on-windows)
-    (my-start-cui-emacs)
-  )
+(when (eq system-type 'cygwin)
+  (set-font-on-windows)
+  (my-start-cui-emacs)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 
@@ -867,7 +845,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 ;; M-x compile
-(global-set-key "\C-xc" 'compile)
+(global-set-key (kbd "C-x c") 'compile)
 
 
 ;; C/C++
@@ -900,7 +878,7 @@
         )
   ;; keybindings for C, C++, and Objective-C.  We can put these in
   ;; c-mode-base-map because of inheritance ...
-  (define-key c-mode-base-map "\M-q" 'c-fill-paragraph)
+  (define-key c-mode-base-map (kbd "M-q") 'c-fill-paragraph)
   (setq c-recognize-knr-p nil)
 
   ;; disable c-electric-paren and use skeleton-pair-insert
@@ -928,8 +906,8 @@
 
 ;; vala-mode
 (autoload 'vala-mode "vala-mode" "Major mode for editing Vala code." t)
-(add-to-list 'auto-mode-alist '("\\.vala$" . vala-mode))
-(add-to-list 'auto-mode-alist '("\\.vapi$" . vala-mode))
+(add-to-list 'auto-mode-alist          '("\\.vala$" . vala-mode))
+(add-to-list 'auto-mode-alist          '("\\.vapi$" . vala-mode))
 (add-to-list 'file-coding-system-alist '("\\.vala$" . utf-8))
 (add-to-list 'file-coding-system-alist '("\\.vapi$" . utf-8))
 
@@ -991,11 +969,12 @@ Then run tests in a preferred window configuration on after-save."
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+
 ;; CoffeeScript
 (add-to-list 'load-path "~/.emacs.d/vendor/coffee-mode/")
 (require 'coffee-mode)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile"   . coffee-mode))
 ;; enable compile-on-save minor mode
 (add-hook 'coffee-mode-hook 'coffee-cos-mode)
 
@@ -1050,14 +1029,14 @@ Then run tests in a preferred window configuration on after-save."
 
 ;; GNU global
 (when (locate-library "gtags") (require 'gtags))
-(global-set-key "\M-t" 'gtags-find-tag)     ;関数の定義元へ
-(global-set-key "\M-r" 'gtags-find-rtag)    ;関数の参照先へ
-;(global-set-key "\M-s" 'gtags-find-symbol)  ;変数の定義元/参照先へ
-;(global-set-key "\M-f" 'gtags-find-file)    ;ファイルにジャンプ (forward-wordを優先してコメントアウト)
-(global-set-key "\M-t" 'gtags-pop-stack)    ;前のバッファに戻る
+(global-set-key (kbd "M-t") 'gtags-find-tag)     ;関数の定義元へ
+(global-set-key (kbd "M-r") 'gtags-find-rtag)    ;関数の参照先へ
+;(global-set-key (kbd "M-s") 'gtags-find-symbol)  ;変数の定義元/参照先へ
+;(global-set-key (kbd "M-f") 'gtags-find-file)    ;ファイルにジャンプ (forward-wordを優先してコメントアウト)
+(global-set-key (kbd "M-t") 'gtags-pop-stack)    ;前のバッファに戻る
 (add-hook 'c-mode-common-hook 'gtags-mode)
-(add-hook 'c++-mode-hook 'gtags-mode)
-(add-hook 'java-mode-hook 'gtags-mode)
+(add-hook 'c++-mode-hook      'gtags-mode)
+(add-hook 'java-mode-hook     'gtags-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 
 
@@ -1077,8 +1056,8 @@ Then run tests in a preferred window configuration on after-save."
             (flymake-mode)
             (local-set-key (kbd "C-.") 'ac-complete-gccsense)   ;gccsense補完
             (local-set-key (kbd "C-c .") 'ac-complete-gccsense) ;gccsense補完
-            (gccsense-flymake-setup)
-            ))
+            (gccsense-flymake-setup))
+)
 
 ;; handler without makefile
 (defun flymake-c-init ()
@@ -1107,8 +1086,7 @@ Then run tests in a preferred window configuration on after-save."
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "/opt/dmd/bin/dmd" (list "-unittest" "-c" "-w" "-I/opt/dmd/import/" "-I." "-I.." local-file))
-    ))
+    (list "/opt/dmd/bin/dmd" (list "-unittest" "-c" "-w" "-I/opt/dmd/import/" "-I." "-I.." local-file))))
 (push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
 (add-to-list 'flymake-err-line-patterns
              '("^\\([^ :]+\\)(\\([0-9]+\\)): \\(.*\\)$" 1 2 nil 3))
@@ -1138,14 +1116,14 @@ Then run tests in a preferred window configuration on after-save."
   (interactive)
   (flymake-goto-next-error)
   (next-error))
-(global-set-key "\M-p" 'my-goto-prev-error)
-(global-set-key "\M-n" 'my-goto-next-error)
+(global-set-key (kbd "M-p") 'my-goto-prev-error)
+(global-set-key (kbd "M-n") 'my-goto-next-error)
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; flyspell
-(if (eq system-type 'gnu/linux) (progn
+(when (eq system-type 'gnu/linux)
 
 (require 'flyspell)
 (ispell-change-dictionary "american")
@@ -1185,39 +1163,36 @@ Then run tests in a preferred window configuration on after-save."
   (flyspell-accept-buffer-local-defs)
   (let ((cursor-location (point))
         (word (flyspell-get-word nil)))
-    (if (consp word)
-        (let ((start (car (cdr word)))
-              (end (car (cdr (cdr word))))
-              (word (car word))
-              poss ispell-filter)
-          ;; now check spelling of word.
-          (ispell-send-string "%\n") ;put in verbose mode
-          (ispell-send-string (concat "^" word "\n"))
-          ;; wait until ispell has processed word
-          (while (progn
-                   (accept-process-output ispell-process)
-                   (not (string= "" (car ispell-filter)))))
-          ;; Remove leading empty element
-          (setq ispell-filter (cdr ispell-filter))
-          ;; ispell process should return something after word is sent.
-          ;; Tag word as valid (i.e., skip) otherwise
-          (or ispell-filter
-              (setq ispell-filter '(*)))
-          (if (consp ispell-filter)
-              (setq poss (ispell-parse-output (car ispell-filter))))
-          (cond
-           ((or (eq poss t) (stringp poss))
-            ;; don't correct word
-            t)
-           ((null poss)
-            ;; ispell error
-            (error "Ispell: error in Ispell process"))
-           (t
-            ;; The word is incorrect, we have to propose a replacement.
-            (flyspell-do-correct (popup-menu* (car (cddr poss)) :scroll-bar t :margin t)
-                                 poss word cursor-location start end cursor-location)))
-          (ispell-pdict-save t)
-        )
+    (when (consp word)
+      (let ((start (car (cdr word)))
+            (end (car (cdr (cdr word))))
+            (word (car word))
+            poss ispell-filter)
+        ;; now check spelling of word.
+        (ispell-send-string "%\n") ;put in verbose mode
+        (ispell-send-string (concat "^" word "\n"))
+        ;; wait until ispell has processed word
+        (while (progn
+                 (accept-process-output ispell-process)
+                 (not (string= "" (car ispell-filter)))))
+        ;; Remove leading empty element
+        (setq ispell-filter (cdr ispell-filter))
+        ;; ispell process should return something after word is sent.
+        ;; Tag word as valid (i.e., skip) otherwise
+        (or ispell-filter (setq ispell-filter '(*)))
+        (when (consp ispell-filter)
+          (setq poss (ispell-parse-output (car ispell-filter))))
+        (cond ((or (eq poss t) (stringp poss))
+               t) ;; don't correct word
+              ((null poss)
+               ;; ispell error
+               (error "Ispell: error in Ispell process"))
+              (t
+               ;; The word is incorrect, we have to propose a replacement.
+               (flyspell-do-correct (popup-menu* (car (cddr poss)) :scroll-bar t :margin t)
+                                    poss word cursor-location start end cursor-location)))
+        (ispell-pdict-save t)
+      )
     )
   )
 )
@@ -1225,20 +1200,17 @@ Then run tests in a preferred window configuration on after-save."
 ;; 修正したい単語の上にカーソルをもっていき, C-M-return を押すことで候補を選択
 (add-hook 'flyspell-mode-hook
           (lambda ()
-            (define-key flyspell-mode-map (kbd "<C-M-return>") 'flyspell-correct-word-popup-el)
-          )
-)
+            (define-key flyspell-mode-map (kbd "<C-M-return>") 'flyspell-correct-word-popup-el)))
 
 ;;; flyspell-mode を自動的に開始させたいファイルを指定 (お好みでアンコメントするなり, 変更するなり)
 (add-to-list 'auto-mode-alist '("\\.txt" . flyspell-mode))
 (add-to-list 'auto-mode-alist '("\\.tex" . flyspell-mode))
-;; (add-to-list 'auto-mode-alist '("\\.properties" . flyspell-mode))
-;; (add-to-list 'auto-mode-alist '("\\.dtd" . flyspell-mode))
 ;;; 要らないkey-bindingを無効化
 (define-key flyspell-mode-map (kbd "C-,") nil)
 (define-key flyspell-mode-map (kbd "C-.") nil)
 (define-key flyspell-mode-map (kbd "C-;") nil)
-))
+
+)
 ;;;;;;;;;;;;;;;;;;;;;;;; flyspell
 
 
@@ -1298,7 +1270,7 @@ Then run tests in a preferred window configuration on after-save."
   )
 )
 
-(global-set-key "\C-cp" 'my-sdic-describe-word-with-popup)
+(global-set-key (kbd "C-c p") 'my-sdic-describe-word-with-popup)
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
 
 
@@ -1309,13 +1281,10 @@ Then run tests in a preferred window configuration on after-save."
 ;;; interfacing with ELPA, the package archive.
 ;;; Move this code earlier if you want to reference
 ;;; packages in your .emacs.
-(if (>= emacs-major-version 24)
-    (progn
-      (when
-          (load
-           (expand-file-name "~/.emacs.d/elpa/package.el"))
-        (package-initialize))
-    )
+(when (>= emacs-major-version 24)
+  (when (load (expand-file-name "~/.emacs.d/elpa/package.el"))
+    (package-initialize)
+  )
 )
 
 
@@ -1332,12 +1301,3 @@ Then run tests in a preferred window configuration on after-save."
  '(safe-local-variable-values (quote ((encoding . utf-8) (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
  '(session-use-package t nil (session))
  '(show-paren-mode t))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  ;; '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "apple" :family "Monaco"))))
-)
-
-
