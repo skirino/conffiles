@@ -745,7 +745,7 @@
         ;; 起動時に最大化して分割、少し間を置かないとレイアウトがおかしくなる
         (defun my-maximize-and-split ()
           (interactive)
-          (toggle-maximize)
+          (toggle-fullscreen)
           (split-window-horizontally)
         )
         (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
