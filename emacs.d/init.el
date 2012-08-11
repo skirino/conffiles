@@ -205,7 +205,18 @@
 
 ;; 括弧などの自動補完
 (require 'flex-autopair)
-(flex-autopair-mode t)
+
+;; Lisp系ではparedit, flex-autopairをオンにしないようにする
+(setq flex-autopair-disable-modes '(emacs-lisp-mode
+                                    lisp-mode
+                                    lisp-interaction-mode
+                                    clojure-mode))
+(require 'paredit)
+(add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'ielm-mode-hook             'enable-paredit-mode)
+(define-key paredit-mode-map (kbd "C-h") 'paredit-backward-delete)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -984,6 +995,7 @@ Then run tests in a preferred window configuration on after-save."
 
 
 ;; Clojure
+(setq clojure-enable-paredit t)
 (require 'clojure-mode)
 
 
