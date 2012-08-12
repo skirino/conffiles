@@ -1,29 +1,29 @@
-
 ;;; d-mode.el --- D Programming Language mode for (X)Emacs
 ;;;               Requires a cc-mode of version 5.30 or greater
 
 ;; Author:     2007 William Baxter
+;; Contributors: Andrei Alexandrescu
 ;; Maintainer: William Baxter
 ;; Created:    March 2007
-;; Version:    2.0.1
+;; Version:    2.0.4 (February 2008)
 ;; Keywords:   D programming language emacs cc-mode
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2 of the License, or
 ;; (at your option) any later version.
-;;
+;; 
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;;
+;; 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;; Usage:
+;; Usage: 
 ;; Put these lines in your .emacs startup file.
 ;;   (autoload 'd-mode "d-mode" "Major mode for editing D code." t)
 ;;   (add-to-list 'auto-mode-alist '("\\.d[i]?\\'" . d-mode))
@@ -35,7 +35,7 @@
 ;; Commentary:
 ;;   This mode supports most of D's syntax, including nested /+ +/
 ;;   comments and backquote `string literals`.
-;;
+;;   
 ;;   This mode has been dubbed "2.0" because it is a complete rewrite
 ;;   from scratch.  The previous d-mode was based on cc-mode 5.28 or
 ;;   so.  This version is based on the cc-mode 5.30 derived mode
@@ -43,19 +43,19 @@
 ;;
 ;;
 ;; TODO:
-;;   * "else static if" doesn't work properly.
-;;     (Incidentally "static else if" is fine, but unfortunately it's
-;;      not valid D syntax.)
-;;
 ;;   * I tried making "with" "version" and "extern" be their own
 ;;     c-other-block-decl-kwds.  Which is supposed to mean that you
 ;;     can control the indentation on the block following them
 ;;     individually.  It didn't seem to work right though.
 ;;
 ;; History:
-;;   * 2007 March 3 - Release of 2.0.0 version
-;;   * 2007 March 3 - Verision 2.0.1 - bugfixes for emacs 21 &
+;;   * 2008 February - 2.0.4 - fixed "else static if" indentation problem, 
+;;      and also a problem with "debug if()" indentation.
+;;      Some D2 additions (invariant as type modifier etc).
+;;   * 2007 April - 2.0.3 - new 'ref' and 'macro' keywords.
+;;   * 2007 March 3 - Verision 2.0.1 - bugfixes for emacs 21 and
 ;;      user-installed cc-mode.  Byte compilation was failing.
+;;   * 2007 March 3 - Release of 2.0.0 version
 
 ;;----------------------------------------------------------------------------
 ;; Code:
@@ -67,6 +67,7 @@
 ;; related constants could additionally be put inside an
 ;; (eval-after-load "font-lock" ...) but then some trickery is
 ;; necessary to get them compiled.)
+;; Coment out 'when-compile part for debugging
 (eval-when-compile
   (require 'cc-langs)
   (require 'cc-fonts)
@@ -114,33 +115,34 @@
 parenthesis syntax classes that have uses other than as expression
 operators."
   d (append '("/+" "+/" "..." ".." "!" "*" "&")
-     '("{" "}" "(" ")" "[" "]" ";" ":" "," "=" "/*" "*/" "//")))
-
+	    (c-lang-const c-other-op-syntax-tokens)))
+  
 (c-lang-defconst c-block-comment-starter d "/*")
 (c-lang-defconst c-block-comment-ender   d "*/")
 
 (c-lang-defconst c-comment-start-regexp  d "/[*+/]")
 (c-lang-defconst c-block-comment-start-regexp d "/[*+]")
-(c-lang-defconst c-literal-start-regexp
- ;; Regexp to match the start of comments and string literals.
- d "/[*+/]\\|\"\\|`")
+(c-lang-defconst c-literal-start-regexp 
+  ;; Regexp to match the start of comments and string literals.
+  d "/[*+/]\\|\"\\|`")
+;;(c-lang-defconst c-comment-prefix-regexp d "//+\\|\\**")
 
 (c-lang-defconst c-doc-comment-start-regexp
  ;; doc comments for D use "///",  "/**" or doxygen's "/*!" "//!"
- d "/\\(\\*[*!]\\|/[/!]\\)")
+ d "/\\*[*!]\\|//[/!]")
 
 ;;----------------------------------------------------------------------------
 
 ;; Built-in basic types
 (c-lang-defconst c-primitive-type-kwds
-  d '("bit" "byte" "ubyte" "char" "delegate" "double" "float" "function"
-      "int" "long" "ubyte" "short" "uint" "ulong" "ushort" "cent" "ucent"
+  d '("bit" "byte" "ubyte" "char" "delegate" "double" "float" "function" 
+      "int" "long" "ubyte" "short" "uint" "ulong" "ushort" "cent" "ucent" 
       "real" "ireal" "ifloat" "creal" "cfloat" "cdouble"
       "wchar" "dchar" "void"))
 
 ;; Keywords that can prefix normal declarations of identifiers
 (c-lang-defconst c-modifier-kwds
-  d '("auto" "abstract" "const" "deprecated" "extern"
+  d '("auto" "abstract" "const" "deprecated" "extern" 
       "final" "lazy" "private" "protected" "public"
       "scope" "static" "synchronized" "volatile" "mixin"))
 
@@ -149,11 +151,11 @@ operators."
   ;; contains another declaration level that should be considered a class.
   d '("class" "struct" "union" "interface" "template"))
 
-(c-lang-defconst c-brace-list-decl-kwds
-  d '("enum"))
+;; (c-lang-defconst c-brace-list-decl-kwds
+;;   d '("enum"))
 
 (c-lang-defconst c-type-modifier-kwds
-  d '("const" "lazy" "volatile")
+  d '("const" "lazy" "volatile" "invariant" "enum")
 )
 (c-lang-defconst c-type-prefix-kwds
   ;; Keywords where the following name - if any - is a type name, and
@@ -164,17 +166,16 @@ operators."
 ;;(c-lang-defconst c-other-block-decl-kwds
 ;;  ;; Keywords where the following block (if any) contains another
 ;;  ;; declaration level that should not be considered a class.
-;;  ;; Each of these has associated offsets e.g.
-;;  ;;   'with-open', 'with-close' and 'inwith'
+;;  ;; Each of these has associated offsets e.g. 
+;;  ;;   'with-open', 'with-close' and 'inwith' 
 ;;  ;; that can be customized individually
 ;;  ;;   TODO: maybe also do this for 'static if' ?  in/out?
 ;;  ;;   TODO: figure out how to make this work properly
 ;;  d '("with" "version" "extern"))
 
 (c-lang-defconst c-typedef-decl-kwds
-  d (append (append (c-lang-const c-class-decl-kwds)
-      (c-lang-const c-brace-list-decl-kwds))
-     '("typedef" "alias")))
+  d (append (c-lang-const c-typedef-decl-kwds)
+	    '("typedef" "alias")))
 
 (c-lang-defconst c-decl-hangon-kwds
   d '("export"))
@@ -204,7 +205,7 @@ operators."
 (c-lang-defconst c-paren-nontype-kwds
   ;;Keywords that may be followed by a parenthesis expression that doesn't
   ;; contain type identifiers.
-  d '("version" "extern"))
+  d '("version" "extern" "macro" "mixin"))
 
 (c-lang-defconst c-paren-type-kwds
   ;; Keywords that may be followed by a parenthesis expression containing
@@ -213,13 +214,13 @@ operators."
 
 (c-lang-defconst c-block-stmt-1-kwds
   ;; Statement keywords followed directly by a substatement.
-  ;; 'static' is there for the "else static if (...) {}" usage.
-  d '("do" "else" "finally" "try" "in" "out" "debug" "body"))
+  d '("do" "else" "finally" "try" "in" "out" "body"))
 
 (c-lang-defconst c-block-stmt-2-kwds
   ;; Statement keywords followed by a paren sexp and then by a substatement.
   d '("for" "if" "switch" "while" "catch" "synchronized" "scope"
-      "foreach" "foreach_reverse" "with"))
+      "foreach" "foreach_reverse" "with" "unittest" 
+      "else static if" "else"))
 
 (c-lang-defconst c-simple-stmt-kwds
   ;; Statement keywords followed by an expression or nothing.
@@ -286,18 +287,18 @@ operators."
   "Syntax table used in d-mode buffers.")
 (or d-mode-syntax-table
     (setq d-mode-syntax-table
-  (let ((table (funcall (c-lang-const c-make-mode-syntax-table d))))
-    ;; Make it recognize D `backquote strings`
-    (modify-syntax-entry ?` "\"" table)
+	 (let ((table (funcall (c-lang-const c-make-mode-syntax-table d))))
+	   ;; Make it recognize D `backquote strings`
+	   (modify-syntax-entry ?` "\"" table)
 
-    ;; Make it recognize D's nested /+ +/ comments
-    (modify-syntax-entry ?+  ". 23n"   table)
-    table)))
+	   ;; Make it recognize D's nested /+ +/ comments 
+	   (modify-syntax-entry ?+  ". 23n"   table)
+	   table)))
 
 (defvar d-mode-abbrev-table nil
   "Abbreviation table used in d-mode buffers.")
 (c-define-abbrev-table 'd-mode-abbrev-table
-  ;; Use the abbrevs table to trigger indentation actions
+  ;; Use the abbrevs table to trigger indentation actions 
   ;; on keywords that, if they occur first on a line, might alter the
   ;; syntactic context.
   ;; Syntax for abbrevs is:
@@ -322,7 +323,7 @@ operators."
   t `(["Comment Out Region"     comment-region
        (c-fn-region-is-active-p)]
       ["Uncomment Region"       (comment-region (region-beginning)
-      (region-end) '(4))
+						(region-end) '(4))
        (c-fn-region-is-active-p)]
       ["Indent Expression"      c-indent-exp
        (memq (char-after) '(?\( ?\[ ?\{))]
@@ -334,15 +335,15 @@ operators."
       "----"
       ("Toggle..."
        ["Syntactic indentation" c-toggle-syntactic-indentation
- :style toggle :selected c-syntactic-indentation]
+	:style toggle :selected c-syntactic-indentation]
        ["Electric mode"         c-toggle-electric-state
- :style toggle :selected c-electric-flag]
+	:style toggle :selected c-electric-flag]
        ["Auto newline"          c-toggle-auto-newline
- :style toggle :selected c-auto-newline]
+	:style toggle :selected c-auto-newline]
        ["Hungry delete"         c-toggle-hungry-state
- :style toggle :selected c-hungry-delete-key]
+	:style toggle :selected c-hungry-delete-key]
        ["Subword mode"          c-subword-mode
- :style toggle :selected (and (boundp 'c-subword-mode)
+	:style toggle :selected (and (boundp 'c-subword-mode)
                                      c-subword-mode)])))
 
 (easy-menu-define d-menu d-mode-map "D Mode Commands"
@@ -365,9 +366,9 @@ Key bindings:
   (c-initialize-cc-mode t)
   (set-syntax-table d-mode-syntax-table)
   (setq major-mode 'd-mode
- mode-name "D"
- local-abbrev-table d-mode-abbrev-table
- abbrev-mode t)
+	mode-name "D"
+	local-abbrev-table d-mode-abbrev-table
+	abbrev-mode t)
   (use-local-map d-mode-map)
   (c-init-language-vars d-mode)
   (c-common-init 'd-mode)
@@ -375,6 +376,7 @@ Key bindings:
   (c-run-mode-hooks 'c-mode-common-hook 'd-mode-hook)
   (c-update-modeline))
 
+
 (provide 'd-mode)
 
 ;;; d-mode.el ends here
