@@ -28,3 +28,6 @@
 [submodule "emacs.d/vendor/flymake-coffee"]
 	path = emacs.d/vendor/flymake-coffee
 	url = https://github.com/purcell/flymake-coffee.git
+[submodule "emacs.d/vendor/clojure-mode"]
+	path = emacs.d/vendor/clojure-mode
+	url = git@github.com:technomancy/clojure-mode.git

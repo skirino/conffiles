@@ -23,7 +23,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
-(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
+(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin:~/bin"))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -995,8 +995,11 @@ Then run tests in a preferred window configuration on after-save."
 
 
 ;; Clojure
-(setq clojure-enable-paredit t)
+(add-to-list 'load-path "~/.emacs.d/vendor/clojure-mode/")
 (require 'clojure-mode)
+(defun turn-on-paredit () (paredit-mode 1))
+(add-hook 'clojure-mode-hook 'turn-on-paredit)
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
 
 ;; YaTeX
