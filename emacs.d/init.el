@@ -587,6 +587,10 @@
 (setq moccur-split-word t)
 (global-set-key (kbd "M-s") 'anything-c-moccur-occur-by-moccur)
 (define-key isearch-mode-map (kbd "C-o") 'anything-c-moccur-from-isearch)
+
+
+;; exuberant ctags
+(global-set-key (kbd "M-E") 'anything-c-etags-select)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 

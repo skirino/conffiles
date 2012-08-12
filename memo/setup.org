@@ -136,6 +136,7 @@ wmctrl -r Firefox -t 1
 *** misc packages
 **** markdown (deb), redcarpet (gem)
 **** freemind
+**** exuberant ctags
 
 
 
