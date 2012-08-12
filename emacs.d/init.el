@@ -972,8 +972,20 @@ Then run tests in a preferred window configuration on after-save."
            (my-rinari-test-core))
           )))
 (define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test)
+
+(defvar my-rinari-autotest-after-save nil)
+(defun my-rinari-test-toggle-test-after-save ()
+  (interactive)
+  (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
+  (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save))
+(define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-test-toggle-test-after-save)
+
+(defun my-rinari-test-with-check ()
+  (interactive)
+  (when my-rinari-autotest-after-save
+    (my-rinari-test)))
 (add-hook 'rinari-minor-mode-hook
-          (lambda () (add-hook 'after-save-hook 'my-rinari-test nil t)))
+          (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
 
 
 ;; JavaScript
