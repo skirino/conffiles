@@ -131,7 +131,9 @@ wmctrl -r Firefox -t 1
 **** nodejs, npmをインストール
 
 *** Clojure
-**** leiningenのスクリプトをgithubから落として実行可能な状態にし、一度走らせるだけ
+**** leiningen1.7.1 bin/leinをgithubから落として実行可能にし、一度走らせる
+**** $ lein plugin install swank-clojure 1.4.2
+**** $ lein plugin install lein-noir 1.2.1
 
 *** misc packages
 **** markdown (deb), redcarpet (gem)
