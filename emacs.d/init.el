@@ -760,6 +760,7 @@
         ;; 起動時に最大化して分割、少し間を置かないとレイアウトがおかしくなる
         (defun my-maximize-and-split ()
           (interactive)
+          (toggle-maximize)
           (toggle-fullscreen)
           (split-window-horizontally)
         )
@@ -954,6 +955,12 @@
   (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
     (shell-command command)))
 (define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-spork)
+
+(defun my-rinari-kill-spork ()
+  (interactive)
+  (let ((command "kill `ps x | /bin/grep 'ruby.*spork' | /bin/grep -v grep | sed -e 's/ .*$//'`"))
+    (shell-command command)))
+(define-key rinari-minor-mode-map (kbd "C-c ; S") 'my-rinari-kill-spork)
 
 (defun my-rinari-test-core ()
   (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
