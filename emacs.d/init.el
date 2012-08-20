@@ -998,6 +998,15 @@ Then run tests in a preferred window configuration on after-save."
 (add-hook 'rinari-minor-mode-hook
           (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
 
+;; アクセス修飾子のインデントを下げる (taken from ruby-mode.el)
+(push "public"    ruby-block-mid-keywords)
+(push "protected" ruby-block-mid-keywords)
+(push "private"   ruby-block-mid-keywords)
+(setq ruby-block-mid-re (regexp-opt ruby-block-mid-keywords))
+(setq ruby-negative
+      (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|"
+              ruby-block-end-re "\\|}\\|\\]\\)"))
+
 
 ;; JavaScript
 (autoload 'js2-mode "js2" nil t)
