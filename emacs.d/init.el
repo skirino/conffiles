@@ -68,11 +68,11 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/open-related-file/")
 (require 'open-related-file)
 (global-set-key (kbd "C-c ; o") 'open-related-file-open)
-(open-related-file-append-group "%s/app/controllers/%s.rb" "%s/test/functional/%s_test.rb"  )
-(open-related-file-append-group "%s/app/helpers/%s.rb"     "%s/test/unit/helpers/%s_test.rb")
-(open-related-file-append-group "%s/app/models/%s.rb"      "%s/test/unit/%s_test.rb"        )
-(open-related-file-append-group "%s/app/mailers/%s.rb"     "%s/test/mailers/%s_test.rb"     )
-(open-related-file-append-group "%s/app/decorators/%s.rb"  "%s/test/decorators/%s_test.rb"  ) ;; decorators and their tests created by "draper" gem
+(open-related-file-append-group "%1/app/controllers/%2.rb" "%1/test/functional/%2_test.rb"  )
+(open-related-file-append-group "%1/app/helpers/%2.rb"     "%1/test/unit/helpers/%2_test.rb")
+(open-related-file-append-group "%1/app/models/%2.rb"      "%1/test/unit/%2_test.rb"        )
+(open-related-file-append-group "%1/app/mailers/%2.rb"     "%1/test/mailers/%2_test.rb"     )
+(open-related-file-append-group "%1/app/decorator2/%s.rb"  "%1/test/decorators/%2_test.rb"  ) ;; decorators and their tests created by "draper" gem
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
