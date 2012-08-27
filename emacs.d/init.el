@@ -72,7 +72,7 @@
 (open-related-file-append-group "%1/app/helpers/%2.rb"     "%1/test/unit/helpers/%2_test.rb")
 (open-related-file-append-group "%1/app/models/%2.rb"      "%1/test/unit/%2_test.rb"        )
 (open-related-file-append-group "%1/app/mailers/%2.rb"     "%1/test/mailers/%2_test.rb"     )
-(open-related-file-append-group "%1/app/decorator2/%s.rb"  "%1/test/decorators/%2_test.rb"  ) ;; decorators and their tests created by "draper" gem
+(open-related-file-append-group "%1/app/decorators/%2.rb"  "%1/test/decorators/%2_test.rb"  ) ;; decorators and their tests created by "draper" gem
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -1006,6 +1006,9 @@ Then run tests in a preferred window configuration on after-save."
 (setq ruby-negative
       (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|"
               ruby-block-end-re "\\|}\\|\\]\\)"))
+
+;; rinari-rgrepのターゲットファイルを絞る
+(setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml")
 
 
 ;; JavaScript
