@@ -1013,7 +1013,9 @@ Then run tests in a preferred window configuration on after-save."
 (defun my-rinari-test-toggle-test-after-save ()
   (interactive)
   (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
-  (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save))
+  (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save)
+  (when my-rinari-autotest-after-save
+    (my-rinari-spork)))
 (define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-test-toggle-test-after-save)
 
 (defun my-rinari-test-with-check ()
