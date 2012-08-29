@@ -595,6 +595,31 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; terminal
+;; 普通にrequireすると背景色がなぜか反転するので、諸々の初期化後までrequireを遅延する
+(run-with-idle-timer 1.0 nil 'my-setup-multi-term)
+(defun my-setup-multi-term ()
+  (require 'multi-term)
+  (setq multi-term-program shell-file-name)
+  (global-set-key (kbd "C-c t") 'multi-term)
+  (global-set-key (kbd "C-c n") 'multi-term-next)
+  (global-set-key (kbd "C-c p") 'multi-term-prev)
+  (add-hook 'term-mode-hook
+            '(lambda ()
+               (define-key term-raw-map (kbd "C-h") 'term-send-backspace)
+               (define-key term-raw-map (kbd "C-y") 'term-paste)
+               (define-key term-raw-map (kbd "C-p") 'term-send-up)
+               (define-key term-raw-map (kbd "C-n") 'term-send-down)
+               (define-key term-raw-map (kbd "<up>"   ) 'previous-line)
+               (define-key term-raw-map (kbd "<down>" ) 'next-line)
+               (define-key term-raw-map (kbd "<left>" ) 'backward-char)
+               (define-key term-raw-map (kbd "<right>") 'forward-char)
+               ))
+)
+;;;;;;;;;;;;;;;;;;;;;;;; terminal
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; w3m
 (require 'w3m)
 (setq w3m-use-cookies t)
