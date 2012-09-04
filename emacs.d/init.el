@@ -1009,13 +1009,17 @@
       (rinari-test)
       (select-window (get-buffer-window orig-buffer)))))
 
+(defun my-rinari-is-spork-running ()
+  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
+    (< 0 (length grep-result))))
+
 (defun my-rinari-test ()
   "Start spork process if it is not running.
 Then run tests in a preferred window configuration on after-save."
   (interactive)
   (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep"))
         (branch-same (equal my-rinari-spork-branch (egg-HEAD))))
-    (cond ((or (not branch-same) (= 0 (length grep-result)))
+    (cond ((or (not branch-same) (not (my-rinari-is-spork-running)))
            (my-rinari-spork))
           (t
            (my-rinari-test-core))
@@ -1027,7 +1031,7 @@ Then run tests in a preferred window configuration on after-save."
   (interactive)
   (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
   (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save)
-  (when my-rinari-autotest-after-save
+  (when (and my-rinari-autotest-after-save (not (my-rinari-is-spork-running)))
     (my-rinari-spork)))
 (define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-test-toggle-test-after-save)
 
