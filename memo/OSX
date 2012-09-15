@@ -1,11 +1,13 @@
+* CapsLockキー
+Control扱いにする。
+システム環境設定 -> キーボード -> 修飾キー から。
+
+
 * KeyRemap4MacBook
 ** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック
 (JIS_YENではなくbackslashにすると、VirtualboxにおけるUnderscoreキーがなぜか']'になってしまう)
 
-* MacでVirtualBox Linux
-** gnome環境を動かす際は、[システム][キーボード]で、左ALTとMETAを入れ替えられる
-
-** トグルではない日本語 / 英語入力モード切り替え
+** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-M-@"と変換する
 ----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
 <?xml version="1.0"?>
@@ -22,3 +24,7 @@
   </item>
 </root>
 -----
+
+
+* Spacesの切り替えアニメーションをオフにする
+$ defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES && killall Dock
