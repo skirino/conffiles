@@ -1,6 +1,9 @@
-* CapsLockキー
-Control扱いにする。
-システム環境設定 -> キーボード -> 修飾キー から。
+* システム環境設定
+** -> キーボード
+*** -> 修飾キー: CapsLockキーをControl扱いにする。
+*** キーのバックライトをオフにする
+*** F1, F2, ..., Fnキーの扱い: F5でブラウザリロード等(音量変更とかはFnキーを押しながら)にする
+** -> 省エネルギー: 電源接続時はスリープなしにする
 
 
 * KeyRemap4MacBook
@@ -8,7 +11,8 @@ Control扱いにする。
 (JIS_YENではなくbackslashにすると、VirtualboxにおけるUnderscoreキーがなぜか']'になってしまう)
 
 ** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
-「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-M-@"と変換する
+「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-M-@"と変換する。
+以下のファイルを作っておくと、KeyRemap4Macの設定項目が追加されるので、これをチェック
 ----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
 <?xml version="1.0"?>
 <root>
