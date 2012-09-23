@@ -165,7 +165,8 @@ alias xopen='xdg-open'
 # aliases for git commands
 alias gst='git status'
 compdef _git gst=git-status
-alias gbr='git branch -a'
+alias gbr='git branch'
+alias gbra='git branch -a'
 compdef _git gbr=git-branch
 alias glog='git log'
 compdef _git glog=git-log
