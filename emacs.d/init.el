@@ -803,6 +803,24 @@
           (split-window-horizontally)
         )
         (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
+
+        ;; フォント設定
+        (let (my-font-height my-font my-font-ja my-font-size my-fontset)
+          (setq my-font-height 105)
+          (setq my-font "DejaVu Sans Mono")
+          (setq my-font-ja "IPAゴシック")
+          (setq face-font-rescale-alist '(("IPAゴシック" . 1.15)))
+          (set-face-attribute 'default nil :family my-font :height my-font-height)
+
+          ;; 日本語文字に別のフォントを指定
+          (when my-font-ja
+            (let ((fn (or my-fontset (frame-parameter nil 'font)))
+                  (rg "iso10646-1"))
+              (set-fontset-font fn 'katakana-jisx0201 `(,my-font-ja . ,rg))
+              (set-fontset-font fn 'japanese-jisx0208 `(,my-font-ja . ,rg))
+              (set-fontset-font fn 'japanese-jisx0212 `(,my-font-ja . ,rg)))
+          )
+        )
       )
     (progn ;; CUI
       (my-start-cui-emacs)
@@ -810,27 +828,6 @@
       (add-to-list 'default-frame-alist '(cursor-color     . "brightwhite"))
     )
   )
-
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(default ((t (:inherit        nil
-                  :stipple        nil
-                  :background     nil
-                  :foreground     "white"
-                  :inverse-video  nil
-                  :box            nil
-                  :strike-through nil
-                  :overline       nil
-                  :underline      nil
-                  :slant          normal
-                  :weight         normal
-                  :height         113
-                  :width          normal
-                  :foundry        "unknown"
-                  :family         "Dejavu Sans Mono")))))
 )
 
 
