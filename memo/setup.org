@@ -4,22 +4,23 @@
 ** 仮想マシンの設定
 *** CPU: 2個
 *** 仮想HD: 80GB
-*** メモリ1.5GB
+*** メモリ2.0GB
 
 ** Ubuntu 12.04 64bit
 *** synaptics, gnome-panelをソフトウェアセンターからインストール、再ログインしてgnome classicにする
-*** 上下のパネルを適切に調整 (上だけにする、システムモニタを追加)
+*** 上下のパネルを適切に調整 (上だけにする、システムモニタを追加。パネル上でWindows+ALT+右クリック、もしくは、ALT+右クリック)
 *** システム設定
 **** 画面のロックをオフにする
-**** キーボードレイアウトのオプションから、左WinとALTを入れ替え
+**** キーボードレイアウトのオプションから、左WinとALTを入れ替え(Mac keyboardの場合)
 **** キーボードから、リピートの速度を調整
-*** $ gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs"
+*** $ gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs" (gnome-tweak-toolからでもOK)
 *** ~/以下のデフォルトのディレクトリを消して、~/.config/user-dirs.dirsを編集
 *** パッケージのアップデート
-*** ubuntu-tweak-toolをインストール、themeを変更する
+*** gnome-tweak-toolをインストール、themeを変更する
 *** システム設定 -> キーボード -> キーボードショートカット
 **** 画面のロック(C-M-l)を無効化
-**** シャットダウン: "/usr/lib/indicator-session/gtk-logout-helper --shutdown"にキーを設定
+**** シャットダウン: "/usr/lib/indicator-session/gtk-logout-helper --shutdown"にキーを設定(Ctrl-Alt-Backspace)
+*** アカウント設定で、ロック解除、自動ログインをオンにする
 
 ** 日本語環境
 *** 日本語Remixのパッケージをインストール
@@ -29,7 +30,7 @@
 **** $ sudo apt-get update
 **** $ sudo apt-get upgrade
 **** $ sudo apt-get install ubuntu-defaults-ja
-*** iBusの設定から、キーボードショートカットを設定、Zenkaku_HankakuでON, C-S-@でOFFにする
+*** iBusの設定から、キーボードショートカットを設定、トグルではないキーを設定する(VirtualBoxのゲストでは、Zenkaku_HankakuでON, C-S-@でOFF。通常は、Henkan_ModeとKatakana_HiraganaでON, MuhenkanでOFF)。次のインプットメソッドは空にしておく
 *** iBus-anthyの設定 (iBusの設定で、言語パネルを表示させ、その中のアイコンから開く)
 **** 「記号・数字を半角にする」にチェック
 **** フォーカスアウトのときの動作を「確定」にする
@@ -40,7 +41,7 @@
 
 
 ** 自前設定のインストール
-*** skirino@githubからgit clone
+*** skirino@githubから各種リポジトリをgit clone
 
 *** zsh
 **** $ chsh
@@ -64,7 +65,7 @@
 *** firefox
 **** 言語設定で日本語を最優先にする
 **** smooth scrollingをdisable
-**** ダウンロードマネージャ => すべてのダウンロードが完了したら閉じるをチェック
+**** 一般 => ダウンロード => すべてのダウンロードが完了したら閉じるをチェック
 **** アドオンメニューからfirebug, tab mix plus, 英辞郎 on the Web, JSONViewをインストール
 **** tab mix plus
 ***** リンク -> シングルウィンドウモードをON
@@ -83,7 +84,7 @@
 
 *** Seta
 **** SetupDDevelopmentEnvironmentをgit clone, 中で./build_and_install.shを実行
-**** $ sudo ln -s /usr/lib/libvte.so.9 /usr/lib/libvte.so
+**** $ sudo ln -s /usr/lib/libvte.so.9 /usr/lib/libvte.so (.soが存在しない場合のみ)
 **** コンパイル、起動、設定ファイルを適当に変更
 
 
