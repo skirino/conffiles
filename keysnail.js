@@ -512,3 +512,20 @@ key.setCaretKey('M-n', function (ev) {
     command.walkInputElement(command.elementsRetrieverButton, false, true);
 }, '前のボタンへフォーカスを当てる', false);
 
+
+// bmany
+key.setViewKey([':', 'b'], function (ev, arg) {
+    ext.exec("bmany-list-all-bookmarks", arg, ev);
+}, 'ブックマーク');
+
+key.setViewKey([':', 'B'], function (ev, arg) {
+    ext.exec("bmany-list-bookmarklets", arg, ev);
+}, "bmany - ブックマークレットを一覧表示");
+
+key.setViewKey([':', 'k'], function (ev, arg) {
+    ext.exec("bmany-list-bookmarks-with-keyword", arg, ev);
+}, "bmany - キーワード付きブックマークを一覧表示");
+
+key.setViewKey([':', 't'], function (ev, arg) {
+    ext.exec("bmany-list-bookmarks-with-tag", arg, ev);
+}, "bmany - タグ付きブックマークを一覧表示");
