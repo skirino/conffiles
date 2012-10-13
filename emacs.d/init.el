@@ -426,9 +426,13 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; org-mode
-;; org-modeでメモを取る, Emacs23以降
 (when (>= emacs-major-version 23)
   (require 'org)
+
+  ;; 開いたときには一旦全展開
+  (setq org-startup-folded nil)
+
+  ;; org-modeでメモを取る, Emacs23以降
   (org-remember-insinuate)                                                  ; org-rememberの初期化
   (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
   (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
