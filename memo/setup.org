@@ -60,6 +60,7 @@
 **** emacs-w3m
 ***** w3mをインストール
 ***** w3m-el-snapshotをインストール(とりあえず。問題があればソースからにする)
+**** フォント: fonts-ipafont-gothicをインストール
 
 
 *** firefox
