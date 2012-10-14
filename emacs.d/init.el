@@ -1081,6 +1081,10 @@ Then run tests in a preferred window configuration on after-save."
 (add-hook 'clojure-mode-hook 'turn-on-paredit)
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
+(add-to-list 'load-path "~/.emacs.d/vendor/nrepl/")
+(require 'nrepl)
+(setenv "PATH" (concat (getenv "PATH") ":/usr/java/jdk1.7.0_07/bin")) ;; java path
+
 
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)

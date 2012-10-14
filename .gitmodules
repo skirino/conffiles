@@ -31,3 +31,6 @@
 [submodule "emacs.d/vendor/clojure-mode"]
 	path = emacs.d/vendor/clojure-mode
 	url = git@github.com:technomancy/clojure-mode.git
+[submodule "emacs.d/vendor/nrepl"]
+	path = emacs.d/vendor/nrepl
+	url = https://github.com/kingtim/nrepl.el.git
