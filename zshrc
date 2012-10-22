@@ -170,6 +170,8 @@ alias gbra='git branch -a'
 compdef _git gbr=git-branch
 alias glog='git log'
 compdef _git glog=git-log
+alias glog1='git log --oneline'
+compdef _git glog1=git-log
 alias gdiff='git diff'
 compdef _git gdiff=git-diff
 alias gdiffc='git diff --cached'
@@ -180,6 +182,10 @@ alias gco='git checkout'
 compdef _git gco=git-checkout
 alias gadd='git add'
 compdef _git gadd=git-add
+alias gmtool='git mergetool'
+compdef _git gmtool=git-mergetool
+alias gcherry='git cherry -v'
+compdef _git gcherry=git-cherry
 
 
 # Ruby
