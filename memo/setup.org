@@ -116,6 +116,8 @@ wmctrl -r Firefox -t 1
 **** ~/.gitconfigを設定
 **** remote addしておく
 
+*** postgresをインストール
+
 *** ruby
 **** ruby1.9.1-fullをインストール
 **** $ sudo gem install rubygems-update => $ sudo update_rubygems
@@ -140,6 +142,13 @@ wmctrl -r Firefox -t 1
 **** markdown (deb), redcarpet (gem)
 **** freemind
 **** exuberant ctags
+**** rlwrap
+**** valac, libwebkit3-dev
+**** org-mode(aptで最新をインストール)
+
+
+
+
 
 
 

@@ -426,53 +426,57 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; org-mode
-(when (>= emacs-major-version 23)
-  (require 'org)
+(require 'org)
 
-  ;; 開いたときには一旦全展開
-  (setq org-startup-folded nil)
+;; 開いたときには一旦全展開
+(setq org-startup-folded nil)
 
-  ;; org-modeでメモを取る, Emacs23以降
-  (org-remember-insinuate)                                                  ; org-rememberの初期化
-  (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
-  (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
-  (setq org-remember-templates
-        '(("Log"  ?l "** %T %?" "log.org" "LOG")
-          ("Memo" ?m "** %T %?" nil       "Inbox")
-          ))
-  (defun my-org-remember-log ()
-    (interactive)
-    (org-remember '(0) "l")
-  )
-  (defun my-org-remember-memo ()
-    (interactive)
-    (org-remember '(0) "m")
-  )
-  (global-set-key (kbd "M-l") 'my-org-remember-log)
-  (global-set-key (kbd "M-m") 'my-org-remember-memo)
-
-  (defun my-org-visit-file (filepath)
-    (setq org-startup-folded nil)
-    (find-file filepath)
-    (setq org-startup-folded t))
-  (defun my-org-visit-memo-file ()
-    (interactive)
-    (my-org-visit-file "~/docs/memo.org"))
-  (defun my-org-visit-log-file ()
-    (interactive)
-    (my-org-visit-file "~/docs/log.org"))
-  (global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
-  (global-set-key (kbd "C-c l") 'my-org-visit-log-file)
-
-  ;; 要らないkey-bindingを無効化
-  (define-key org-mode-map [C-S-left]  nil)
-  (define-key org-mode-map [C-S-right] nil)
-  (define-key org-mode-map (kbd "C-,") nil)
-  (define-key org-mode-map [S-up]    nil)
-  (define-key org-mode-map [S-down]  nil)
-  (define-key org-mode-map [S-left]  nil)
-  (define-key org-mode-map [S-right] nil)
+;; org-modeでメモを取る, Emacs23以降
+(org-remember-insinuate)                                                  ; org-rememberの初期化
+(setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
+(setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
+(setq org-remember-templates
+      '(("Log"  ?l "** %T %?" "log.org" "LOG")
+        ("Memo" ?m "** %T %?" nil       "Inbox")
+        ))
+(defun my-org-remember-log ()
+  (interactive)
+  (org-remember '(0) "l")
 )
+(defun my-org-remember-memo ()
+  (interactive)
+  (org-remember '(0) "m")
+)
+(global-set-key (kbd "M-l") 'my-org-remember-log)
+(global-set-key (kbd "M-m") 'my-org-remember-memo)
+
+(defun my-org-visit-file (filepath)
+  (setq org-startup-folded nil)
+  (find-file filepath)
+  (setq org-startup-folded t))
+(defun my-org-visit-memo-file ()
+  (interactive)
+  (my-org-visit-file "~/docs/memo.org"))
+(defun my-org-visit-log-file ()
+  (interactive)
+  (my-org-visit-file "~/docs/log.org"))
+(global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
+(global-set-key (kbd "C-c l") 'my-org-visit-log-file)
+
+;; 要らないkey-bindingを無効化
+(define-key org-mode-map [C-S-left]  nil)
+(define-key org-mode-map [C-S-right] nil)
+(define-key org-mode-map (kbd "C-,") nil)
+(define-key org-mode-map [S-up]    nil)
+(define-key org-mode-map [S-down]  nil)
+(define-key org-mode-map [S-left]  nil)
+(define-key org-mode-map [S-right] nil)
+
+
+;; org-html5presentation
+(require 'org-html5presentation)
+(define-key org-mode-map (kbd "<f5>") 'org-export-as-html5presentation)
+(define-key org-mode-map (kbd "<f6>") 'org-export-as-html5presentation-and-open)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
