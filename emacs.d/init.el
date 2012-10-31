@@ -532,6 +532,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; anything
 (require 'anything-config)
 (require 'anything-match-plugin)
+;(require 'anything-migemo)
+;(setq anything-use-migemo t)
 (setq anything-input-idle-delay 0.1)
 
 (global-set-key (kbd "C-+") 'anything-resume)
@@ -731,6 +733,7 @@
   (unless (server-running-p) (server-start))
   ;; "C-x C-c"でサーバをkill
   (global-set-key (kbd "C-x C-c") 'server-edit)
+  (global-set-key (kbd "C-c C-x C-c") 'save-buffers-kill-emacs)
   ;; "M-x exit"でemacsを終了
   (defalias 'exit 'save-buffers-kill-emacs)
 
