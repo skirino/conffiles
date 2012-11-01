@@ -433,6 +433,9 @@
 
 ;; org-modeでメモを取る, Emacs23以降
 (org-remember-insinuate)                                                  ; org-rememberの初期化
+(define-key org-remember-mode-map (kbd "C-x C-s") 'org-remember-finalize)
+(define-key org-remember-mode-map (kbd "C-x C-c") 'org-remember-kill)
+
 (setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
 (setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
 (setq org-remember-templates
@@ -471,6 +474,7 @@
 (define-key org-mode-map [S-down]  nil)
 (define-key org-mode-map [S-left]  nil)
 (define-key org-mode-map [S-right] nil)
+(define-key org-mode-map (kbd "C-c C-x C-c") nil)
 
 
 ;; org-html5presentation
@@ -731,7 +735,7 @@
   ;; start server for emacsclient
   (require 'server)
   (unless (server-running-p) (server-start))
-  ;; "C-x C-c"でサーバをkill
+  ;; "C-x C-c"でemacsclientによる編集を終了
   (global-set-key (kbd "C-x C-c") 'server-edit)
   (global-set-key (kbd "C-c C-x C-c") 'save-buffers-kill-emacs)
   ;; "M-x exit"でemacsを終了
@@ -988,6 +992,7 @@
 ;; ruby
 (add-to-list 'load-path "~/.emacs.d/vendor/rinari/")
 (require 'starter-kit-ruby)
+(define-key ruby-mode-map (kbd "C-c C-x") nil)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
 
 ;; to run tests using spork, overwrite the bin name
