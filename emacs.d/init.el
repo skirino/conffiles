@@ -98,6 +98,16 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; モードライン
+(setq display-time-day-and-date t)
+(setq display-time-24hr-format t)
+(setq display-time-format "%Y年%m月%d日 %H:%M")
+(setq display-time-load-average nil)
+(display-time)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
 ;; キーストロークをエコーエリアに早く表示する
 (setq echo-keystrokes 0.2)
