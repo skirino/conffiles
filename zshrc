@@ -12,32 +12,6 @@ case ${UID} in
 esac
 
 
-# auto change directory
-#
-setopt auto_cd
-
-# auto directory pushd that you can get dirs list by cd -[tab]
-#
-setopt auto_pushd
-setopt pushd_ignore_dups
-
-# command correct edition before each completion attempt
-#
-setopt correct
-
-# compacked complete list display
-#
-setopt list_packed
-
-# no remove postfix slash of command line
-#
-setopt noautoremoveslash
-
-# no beep sound when complete list displayed
-#
-setopt nolistbeep
-
-
 ## Keybind configuration
 #
 # emacs like keybind (e.x. Ctrl-a gets to line head and Ctrl-e gets
@@ -50,6 +24,8 @@ bindkey "^[[4~" end-of-line # End gets to line end
 bindkey "^[[3~" delete-char # Del
 bindkey "\e[1;5C" forward-word  # ctrl-right
 bindkey "\e[1;5D" backward-word # ctrl-left
+#bindkey '^\' undo
+#bindkey '^[\' redo
 
 # historical backward/forward search with linehead string binded to ^P/^N
 #
@@ -64,28 +40,6 @@ bindkey "\\en" history-beginning-search-forward-end
 # reverse menu completion binded to Shift-Tab
 #
 bindkey "\e[Z" reverse-menu-complete
-
-
-## Command history configuration
-#
-HISTFILE=${HOME}/.zsh_history
-HISTSIZE=50000
-SAVEHIST=50000
-setopt hist_ignore_dups     # ignore duplication command history list
-setopt share_history        # share command history data
-
-
-## Completion configuration
-#
-fpath=(${HOME}/.zsh/functions/Completion ${fpath})
-autoload -U compinit
-compinit
-
-
-## Prediction configuration
-#
-#autoload predict-on
-#predict-off
 
 
 ## terminal configuration
@@ -111,21 +65,94 @@ xterm|xterm-color|kterm|kterm-color)
 esac
 
 
+##############################################################
+
 ## Alias configuration
-#
 # expand aliases before completing
-#
 setopt complete_aliases     # aliased ls needs if file/dir completions work
 
 
-##############################################################
+## Command history configuration
+#
+HISTFILE=${HOME}/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt hist_ignore_dups     # ignore duplication command history list
+setopt share_history        # share command history data
+setopt extended_history     # zsh の開始, 終了時刻をヒストリファイルに書き込む
+setopt hist_ignore_space    # コマンドラインの先頭がスペースで始まる場合ヒストリに追加しない
+setopt hist_no_store        # history (fc -l) コマンドをヒストリリストから取り除く。
+
+# auto directory pushd that you can get dirs list by cd -[tab]
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+## 出力の文字列末尾に改行コードが無い場合でも表示
+unsetopt promptcr
+## 色を使う
+setopt prompt_subst
+## ビープを鳴らさない
+setopt nobeep
+# no beep sound when complete list displayed
+setopt nolistbeep
+## 内部コマンド jobs の出力をデフォルトで jobs -l にする
+setopt long_list_jobs
+## 補完候補一覧でファイルの種別をマーク表示
+setopt list_types
+## サスペンド中のプロセスと同じコマンド名を実行した場合はリジューム
+setopt auto_resume
+## 補完候補を一覧表示
+setopt auto_list
+## ファイル名で #, ~, ^ の 3 文字を正規表現として扱う
+setopt extended_glob
+## TAB で順に補完候補を切り替える
+setopt auto_menu
+## =command を command のパス名に展開する
+setopt equals
+## --prefix=/usr などの = 以降も補完
+setopt magic_equal_subst
+## ヒストリを呼び出してから実行する間に一旦編集
+setopt hist_verify
+## ファイル名の展開で辞書順ではなく数値的にソート
+setopt numeric_glob_sort
+## 出力時8ビットを通す
+setopt print_eight_bit
+## ディレクトリ名だけで cd
+setopt auto_cd
+## カッコの対応などを自動的に補完
+setopt auto_param_keys
+## ファイル名の展開でディレクトリにマッチした場合末尾に / を付加する
+setopt mark_dirs
+## ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
+setopt auto_param_slash
+## スペルチェック
+setopt correct
+## {a-c} を a b c に展開する機能を使えるようにする
+setopt brace_ccl
+## Ctrl+S/Ctrl+Q によるフロー制御を使わないようにする
+setopt NO_flow_control
+## 補完候補を詰めて表示
+setopt list_packed
+## 最後のスラッシュを自動的に削除しない
+setopt noautoremoveslash
+
+
+## Completion configuration
+fpath=(${HOME}/.zsh/functions/Completion ${fpath})
+autoload -U compinit
+compinit
+
+## 補完候補の色づけ
+eval `dircolors`
+export ZLS_COLORS=$LS_COLORS
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 ## incremental completion
 source ${HOME}/code/conffiles/zsh/incr-0.2.zsh
-#bindkey '^\' undo
-#bindkey '^[\' redo
+
 # そのまま補完、小文字->大文字にして補完、大文字->小文字にして補完を順に試す
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
+
 
 
 # Make prompt like this (skirino-... is underlined)
