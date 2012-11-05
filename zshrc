@@ -159,6 +159,8 @@ function backward-kill-line-incr
 }
 zle -N backward-kill-line-incr
 bindkey "^U" backward-kill-line-incr
+# rakeの補完が遅すぎて使い物にならないのでoff
+compdef -d rake
 
 # そのまま補完、小文字->大文字にして補完、大文字->小文字にして補完を順に試す
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
