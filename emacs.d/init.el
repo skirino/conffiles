@@ -464,9 +464,10 @@
 (global-set-key (kbd "M-m") 'my-org-remember-memo)
 
 (defun my-org-visit-file (filepath)
-  (setq org-startup-folded nil)
-  (find-file filepath)
-  (setq org-startup-folded t))
+  (let ((osf-orig org-startup-folded))
+    (setq org-startup-folded nil)
+    (find-file filepath)
+    (setq org-startup-folded osf-orig)))
 (defun my-org-visit-memo-file ()
   (interactive)
   (my-org-visit-file "~/docs/memo.org"))
@@ -475,6 +476,7 @@
   (my-org-visit-file "~/docs/log.org"))
 (global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
 (global-set-key (kbd "C-c l") 'my-org-visit-log-file)
+
 
 ;; 要らないkey-bindingを無効化
 (define-key org-mode-map [C-S-left]  nil)
