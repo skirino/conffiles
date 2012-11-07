@@ -103,8 +103,6 @@ setopt list_types
 setopt auto_resume
 ## 補完候補を一覧表示
 setopt auto_list
-## ファイル名で #, ~, ^ の 3 文字を正規表現として扱う
-setopt extended_glob
 ## TAB で順に補完候補を切り替える
 setopt auto_menu
 ## =command を command のパス名に展開する
