@@ -171,6 +171,10 @@ PROMPT="%U%B`uname -n`%(!.#.$)%b%u "
 RPROMPT="[%50<...<%~]"
 
 
+# autojump
+source /usr/share/autojump/autojump.zsh
+
+
 case "${OSTYPE}" in
 freebsd*|darwin*)
     alias ls="ls -G -w"

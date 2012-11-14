@@ -46,6 +46,7 @@
 *** zsh
 **** $ chsh
 **** ~/.zshrcを作って $ source ~/code/conffiles/zshrc
+**** autojumpをインストール
 
 *** emacs
 **** $ ln -s ~/code/conffiles/emacs.d ~/.emacs.d
