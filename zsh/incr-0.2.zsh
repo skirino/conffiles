@@ -5,11 +5,14 @@
 autoload -U compinit
 zle -N self-insert self-insert-incr
 zle -N backward-delete-char-incr
+zle -N backward-kill-line-incr
 zle -N expand-or-complete-prefix-incr
+
 compinit
 
 bindkey -M emacs '^h' backward-delete-char-incr
 bindkey -M emacs '^?' backward-delete-char-incr
+bindkey -M emacs '^U' backward-kill-line-incr
 bindkey -M emacs '^i' expand-or-complete-prefix-incr
 
 unsetopt automenu
@@ -19,6 +22,7 @@ compdef -d make
 compdef -d java
 compdef -d svn
 compdef -d cvs
+compdef -d rake
 
 # TODO:
 #     cp dir/
@@ -29,7 +33,7 @@ function limit-completion
 {
     if ((compstate[nmatches] <= 1)); then
         zle -M ""
-    elif ((compstate[list_lines] > 6)); then
+    elif ((compstate[list_lines] > 10)); then
         compstate[list]=""
         zle -M "too many matches."
     fi
@@ -112,5 +116,14 @@ function expand-or-complete-prefix-incr
     else
         remove-prediction
         zle expand-or-complete-prefix
+    fi
+}
+
+function backward-kill-line-incr
+{
+    correct-prediction
+    remove-prediction
+    if zle backward-kill-line; then
+        show-prediction
     fi
 }
