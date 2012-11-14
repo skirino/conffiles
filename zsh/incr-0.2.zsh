@@ -1,12 +1,13 @@
 # Incremental completion for zsh
-# by y.fujii <y-fujii at mimosa-pudica.net>, public domain
-
+# Original author: y.fujii <y-fujii at mimosa-pudica.net>, public domain
+# Some additions (and bugs!) by skirino
 
 autoload -U compinit
 zle -N self-insert self-insert-incr
 zle -N backward-delete-char-incr
 zle -N backward-kill-line-incr
 zle -N expand-or-complete-prefix-incr
+zle -N accept-line-incr
 
 compinit
 
@@ -14,6 +15,7 @@ bindkey -M emacs '^h' backward-delete-char-incr
 bindkey -M emacs '^?' backward-delete-char-incr
 bindkey -M emacs '^U' backward-kill-line-incr
 bindkey -M emacs '^i' expand-or-complete-prefix-incr
+bindkey -M emacs '^M' accept-line-incr
 
 unsetopt automenu
 compdef -d scp
@@ -24,8 +26,6 @@ compdef -d svn
 compdef -d cvs
 compdef -d rake
 
-# TODO:
-#     cp dir/
 
 now_predict=0
 
@@ -81,12 +81,6 @@ function show-prediction
     fi
 }
 
-function preexec
-{
-    remove-prediction
-    echo -n "\e[39m"
-}
-
 function self-insert-incr
 {
     correct-prediction
@@ -126,4 +120,11 @@ function backward-kill-line-incr
     if zle backward-kill-line; then
         show-prediction
     fi
+}
+
+function accept-line-incr
+{
+    remove-prediction
+    echo -n "\e[39m"
+    zle accept-line
 }
