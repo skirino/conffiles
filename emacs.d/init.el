@@ -35,6 +35,14 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; key-chord
+(require 'key-chord)
+(setq key-chord-two-keys-delay 0.04)
+(key-chord-mode t)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
 ;; ffap
 (ffap-bindings)
@@ -343,18 +351,17 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; key-chord
-(require 'key-chord)
-(setq key-chord-two-keys-delay 0.04)
-(key-chord-mode t)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 画面分割
 ;; "C-=" (C-S--), "C-|"で画面分割
 (global-set-key (kbd "C-=") 'split-window-vertically)
 (global-set-key (kbd "C-|") 'split-window-horizontally)
+
+;; dsで画面分割
+(defun my-show-buffer-in-two-window ()
+  (interactive)
+  (delete-other-windows)
+  (split-window-horizontally))
+(key-chord-define-global "ds" 'my-show-buffer-in-two-window)
 
 ;; "C-S-hjkl"でウィンドウ移動
 (global-set-key (kbd "C-S-h") 'windmove-left)
