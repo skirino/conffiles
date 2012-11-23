@@ -82,7 +82,9 @@
 **** ツールバーの要素を適当に並べる
 **** スタート時にはホームページを表示する、スタート時に開くURLを設定
 **** about:configで、mousewheel.withcontrolkey.actionを"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
-**** ブックマークを旧環境からインポートする
+**** ブックマークを旧環境からインポート
+**** HTTP Resource Testをインストール
+
 
 *** Seta
 **** SetupDDevelopmentEnvironmentをgit clone, 中で./build_and_install.shを実行
@@ -100,6 +102,7 @@
 *** 共有フォルダの設定を行う
 **** $ sudo gpasswd -a skirino vboxsf
 **** $ ln -s /media/sf_vbshare ~/vbshare としてsymlinkを作っておく
+*** ネットワークはNATでよいが、ブリッジにしておいた方がIPアドレスを使って接続しやすく、便利かも
 
 
 ** よく使うアプリケーションの登録
@@ -146,7 +149,7 @@ wmctrl -r Firefox -t 1
 **** rlwrap
 **** valac, libwebkit3-dev
 **** org-mode(aptで最新をインストール)
-
+**** pwgen
 
 
 

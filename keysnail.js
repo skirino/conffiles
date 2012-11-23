@@ -107,6 +107,10 @@ key.setGlobalKey('C-r', function (ev) {
     command.iSearchBackwardKs(ev);
 }, 'Emacs ライクな逆方向インクリメンタル検索', true);
 
+key.setGlobalKey('C-N', function (ev) {
+    BrowserOpenTab();
+}, '新しいタブ', false);
+
 key.setGlobalKey(["C-x", "k"], function (ev) {
     BrowserCloseTabOrWindow();
 }, 'タブ / ウィンドウを閉じる', false);
