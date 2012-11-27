@@ -81,7 +81,7 @@
 ***** (アドオンバーを見るとdisableされてる場合があるので、enableする)
 **** ツールバーの要素を適当に並べる
 **** スタート時にはホームページを表示する、スタート時に開くURLを設定
-**** about:configで、mousewheel.withcontrolkey.actionを"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
+**** about:configで、mousewheel.with_control.action(>= 17) / mousewheel.withcontrolkey.action(<= 16) を"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
 **** ブックマークを旧環境からインポート
 **** HTTP Resource Testをインストール
 
