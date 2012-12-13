@@ -182,6 +182,7 @@ export PATH=~/bin:$PATH
 # global aliases
 alias -g L='| less'
 alias -g G='| grep'
+alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | xclip -selection clipboard'
 
 
 # aliases
@@ -214,7 +215,7 @@ compdef _git glog1=git-log
 alias gdiff='git diff'
 compdef _git gdiff=git-diff
 alias gdiffc='git diff --cached'
-compdef _git gdiff=git-diff
+compdef _git gdiffc=git-diff
 alias gci='git commit'
 compdef _git gci=git-commit
 alias gco='git checkout'
@@ -225,6 +226,12 @@ alias gmtool='git mergetool'
 compdef _git gmtool=git-mergetool
 alias gcherry='git cherry -v'
 compdef _git gcherry=git-cherry
+alias gsubup='git submodule update'
+
+function ghash   () { git rev-parse ${1-master};    }
+function ghash^  () { git rev-parse ${1-master}^;   }
+function ghash^^ () { git rev-parse ${1-master}^^;  }
+function ghash^^^() { git rev-parse ${1-master}^^^; }
 
 
 # Ruby

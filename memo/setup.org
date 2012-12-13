@@ -150,8 +150,7 @@ wmctrl -r Firefox -t 1
 **** valac, libwebkit3-dev
 **** org-mode(aptで最新をインストール)
 **** pwgen
-
-
+**** xclip
 
 
 
