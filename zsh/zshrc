@@ -154,9 +154,21 @@ zle-line-init () {auto-fu-init;}; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zle -N zle-keymap-select auto-fu-zle-keymap-select
 
-zstyle ':auto-fu:var' postdisplay $''
+zstyle ':auto-fu:var' postdisplay ''
 zstyle ':auto-fu:highlight' completion fg=green,bold,underline
 zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
+
+afu-cancel() {
+    afu-clearing-maybe
+    ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
+}
+afu-accept-line-with-clearing() {
+    afu-cancel
+    zle afu+accept-line
+}
+zle -N afu-accept-line-with-clearing
+bindkey -M afu "^M" afu-accept-line-with-clearing
+bindkey -M afu "^J" afu-accept-line-with-clearing
 
 
 # そのまま補完、小文字->大文字にして補完、大文字->小文字にして補完を順に試す
