@@ -23,7 +23,8 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
-(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin:~/bin"))
+(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
+(setenv "PATH" (concat (getenv "PATH") (format ":%s/code/conffiles/bin" (getenv "HOME"))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -714,6 +715,29 @@
   (require 'google-contacts)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; ibus
+(when (eq system-type 'gnu/linux)
+  (when (eq window-system 'x)
+    ;; mini bufferではオフにし、戻るときに状態を復元する
+    (defvar ibus-enabled-before? nil)
+
+    (defun ibus-disable-and-save-status ()
+      (when (= (shell-command "ibus-off") 0)
+        (setq ibus-enabled-before? t)))
+    (defun ibus-restore-previous-status ()
+      (when ibus-enabled-before?
+        (setq ibus-enabled-before? nil)
+        (shell-command "ibus-on")))
+
+    (add-hook 'minibuffer-setup-hook 'ibus-disable-and-save-status)
+    (add-hook 'minibuffer-exit-hook  'ibus-restore-previous-status)
+    (add-hook 'isearch-mode-hook     'ibus-disable-and-save-status)
+    (add-hook 'isearch-mode-end-hook 'ibus-restore-previous-status)
+    ))
+;;;;;;;;;;;;;;;;;;;;;;;; ibus
 
 
 

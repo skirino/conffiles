@@ -198,7 +198,7 @@ linux*)
 esac
 
 
-export PATH=~/bin:$PATH
+export PATH=~/bin:~/code/conffiles/bin:$PATH
 
 
 # global aliases
