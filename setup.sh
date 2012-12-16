@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "
-source ~/code/conffiles/zshrc
+source ~/code/conffiles/zsh/zshrc
 " > ~/.zshrc
 
 ln -s code/conffiles/emacs.d ~/.emacs.d

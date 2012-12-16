@@ -34,3 +34,6 @@
 [submodule "emacs.d/vendor/nrepl"]
 	path = emacs.d/vendor/nrepl
 	url = https://github.com/kingtim/nrepl.el.git
+[submodule "zsh/auto-fu"]
+	path = zsh/auto-fu
+	url = https://github.com/skirino/auto-fu.zsh.git

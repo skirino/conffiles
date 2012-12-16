@@ -36,6 +36,8 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 bindkey "\\ep" history-beginning-search-backward-end
 bindkey "\\en" history-beginning-search-forward-end
+bindkey "^R" history-incremental-pattern-search-backward
+bindkey "^S" history-incremental-pattern-search-forward
 
 # reverse menu completion binded to Shift-Tab
 #
@@ -81,7 +83,7 @@ setopt hist_ignore_dups     # ignore duplication command history list
 setopt share_history        # share command history data
 setopt extended_history     # zsh の開始, 終了時刻をヒストリファイルに書き込む
 setopt hist_ignore_space    # コマンドラインの先頭がスペースで始まる場合ヒストリに追加しない
-setopt hist_no_store        # history (fc -l) コマンドをヒストリリストから取り除く。
+setopt hist_no_store        # history (fc -l) コマンドをヒストリリストから取り除く
 
 # auto directory pushd that you can get dirs list by cd -[tab]
 setopt auto_pushd
@@ -145,16 +147,23 @@ eval `dircolors`
 export ZLS_COLORS=$LS_COLORS
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
-## incremental completion
-source ${HOME}/code/conffiles/zsh/incr-0.2.zsh
+
+## incremental completion by auto-fu
+source ${HOME}/code/conffiles/zsh/auto-fu/auto-fu.zsh
+zle-line-init () {auto-fu-init;}; zle -N zle-line-init
+zstyle ':completion:*' completer _oldlist _complete
+zle -N zle-keymap-select auto-fu-zle-keymap-select
+
+zstyle ':auto-fu:var' postdisplay $''
+zstyle ':auto-fu:highlight' completion fg=green,bold,underline
+zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
 
 
 # そのまま補完、小文字->大文字にして補完、大文字->小文字にして補完を順に試す
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
 
 
-
-# Make prompt like this (skirino-... is underlined)
+# Make prompt like the following (skirino-... is underlined)
 # skirino-VirtualBox$                    [~/code]
 PROMPT="%U%B`uname -n`%(!.#.$)%b%u "
 RPROMPT="[%50<...<%~]"
