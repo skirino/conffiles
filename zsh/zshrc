@@ -133,8 +133,8 @@ setopt brace_ccl
 setopt NO_flow_control
 ## 補完候補を詰めて表示
 setopt list_packed
-## 最後のスラッシュを自動的に削除しない
-setopt noautoremoveslash
+## 最後のスラッシュを自動的に削除しない => auto-fu追加につき無効化
+#setopt noautoremoveslash
 
 
 ## Completion configuration
