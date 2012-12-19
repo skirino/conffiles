@@ -157,7 +157,7 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 zstyle ':auto-fu:var' postdisplay ''
 zstyle ':auto-fu:highlight' completion fg=green,bold,underline
 zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
-zstyle ':auto-fu:var' autoable-function/skiplines "rake*" "scp*"
+zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
 
 afu-cancel() {
     afu-clearing-maybe
