@@ -671,6 +671,7 @@
 (setq w3m-use-cookies t)
 (setq w3m-cookie-accept-bad-cookies t)
 (setq w3m-default-display-inline-images t)
+(setq w3m-session-load-crashed-sessions nil)
 (setq browse-url-browser-function 'w3m-browse-url)
 (global-set-key (kbd "C-x m") 'browse-url-at-point)
 
@@ -680,6 +681,15 @@
 (define-key w3m-mode-map (kbd "P"  ) 'w3m-previous-anchor)
 (define-key w3m-mode-map (kbd "M-p") 'w3m-previous-anchor)
 (define-key w3m-mode-map (kbd "b"  ) 'w3m-view-previous-page)
+
+(defun w3m-search-eijiro (query)
+  "w3mで英辞郎 on the Web検索"
+  (interactive (list
+                (let ((w (or (thing-at-point 'word) "") ))
+                  (read-string (format "[ALC] Search for (%s): " w) nil nil w))))
+  (w3m (concat "http://eow.alc.co.jp/" (w3m-url-encode-string query 'utf-8) "/UTF-8")))
+(global-set-key (kbd "C-c e"  ) 'w3m-search-eijiro)
+(global-set-key (kbd "C-c C-e") 'w3m-search-eijiro)
 ;;;;;;;;;;;;;;;;;;;;;;;; w3m
 
 
