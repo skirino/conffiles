@@ -668,6 +668,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; w3m
 (require 'w3m)
+(load-library "w3m-filter")
+(setq w3m-use-filter t)
 (setq w3m-use-cookies t)
 (setq w3m-cookie-accept-bad-cookies t)
 (setq w3m-default-display-inline-images t)
@@ -681,6 +683,11 @@
 (define-key w3m-mode-map (kbd "P"  ) 'w3m-previous-anchor)
 (define-key w3m-mode-map (kbd "M-p") 'w3m-previous-anchor)
 (define-key w3m-mode-map (kbd "b"  ) 'w3m-view-previous-page)
+
+(defun w3m-filter-alc-alt (url)
+  "英辞郎のヘッダ部分を取り除く"
+  (w3m-filter-delete-regions url "<!-- interest_match_relevant_zone_start -->" "<!-- ▼ 検索補助 ▼ -->"))
+(add-to-list 'w3m-filter-rules '("\\`http://eow\.alc\.co\.jp/[^/]+/UTF-8" w3m-filter-alc-alt))
 
 (defun w3m-search-eijiro (query)
   "w3mで英辞郎 on the Web検索"
