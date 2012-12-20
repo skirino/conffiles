@@ -71,6 +71,13 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
+;; 新規ファイルの属するディレクトリがなかった場合は作成する
+(defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
+  "Create parent directory if not exists while visiting file."
+  (unless (file-exists-p filename)
+    (let ((dir (file-name-directory filename)))
+      (unless (file-exists-p dir)
+        (make-directory dir t)))))
 
 ;; (自作) 開いているファイルと関連したファイルを開く。関連するファイルは前もって登録しておく
 (add-to-list 'load-path "~/.emacs.d/vendor/open-related-file/")
