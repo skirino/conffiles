@@ -4,6 +4,7 @@ import ibus
 bus = ibus.Bus()
 ic = ibus.InputContext(bus, bus.current_input_contxt())
 if ic.is_enabled():
+    print 'iBus disabled'
     ic.disable()
 else:
-    exit(1)
+    print 'iBus already disabled'

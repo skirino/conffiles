@@ -725,7 +725,7 @@
     (defvar ibus-enabled-before? nil)
 
     (defun ibus-disable-and-save-status ()
-      (when (= (shell-command "ibus-off") 0)
+      (when (string= (shell-command-to-string "ibus-off") "iBus disabled\n")
         (setq ibus-enabled-before? t)))
     (defun ibus-restore-previous-status ()
       (when ibus-enabled-before?
