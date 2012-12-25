@@ -248,12 +248,11 @@ alias gmtool='git mergetool'
 compdef _git gmtool=git-mergetool
 alias gcherry='git cherry -v'
 compdef _git gcherry=git-cherry
+alias gpick='git cherry-pick'
+compdef _git gpick=git-cherry-pick
 alias gsubup='git submodule update'
 
-function ghash   () { git rev-parse ${1-master};    }
-function ghash^  () { git rev-parse ${1-master}^;   }
-function ghash^^ () { git rev-parse ${1-master}^^;  }
-function ghash^^^() { git rev-parse ${1-master}^^^; }
+function ghash() { git rev-parse ${1-master};    }
 
 
 # Ruby
