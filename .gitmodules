@@ -1,38 +1,35 @@
-[submodule "coffee-mode"]
-	path = emacs.d/vendor/coffee-mode
+[submodule "emacs.d/submodules/coffee-mode"]
+	path = emacs.d/submodules/coffee-mode
 	url = https://github.com/defunkt/coffee-mode.git
-[submodule "emacs.d/vendor/rinari"]
-	path = emacs.d/vendor/rinari
-	url = git://github.com/eschulte/rinari.git
-[submodule "emacs.d/vendor/undo-tree"]
-	path = emacs.d/vendor/undo-tree
+[submodule "emacs.d/submodules/rinari"]
+	path = emacs.d/submodules/rinari
+	url = https://github.com/eschulte/rinari.git
+[submodule "emacs.d/submodules/undo-tree"]
+	path = emacs.d/submodules/undo-tree
 	url = http://www.dr-qubit.org/git/undo-tree.git
-[submodule "emacs.d/vendor/jaunte"]
-	path = emacs.d/vendor/jaunte
+[submodule "emacs.d/submodules/jaunte"]
+	path = emacs.d/submodules/jaunte
 	url = https://github.com/kawaguchi/jaunte.el.git
-[submodule "emacs.d/vendor/haskell-mode"]
-	path = emacs.d/vendor/haskell-mode
+[submodule "emacs.d/submodules/haskell-mode"]
+	path = emacs.d/submodules/haskell-mode
 	url = https://github.com/haskell/haskell-mode.git
-[submodule "emacs.d/vendor/google-contacts"]
-	path = emacs.d/vendor/google-contacts
-	url = git://git.naquadah.org/google-contacts.el.git
-[submodule "emacs.d/vendor/yasnippet"]
-	path = emacs.d/vendor/yasnippet
+[submodule "emacs.d/submodules/yasnippet"]
+	path = emacs.d/submodules/yasnippet
 	url = https://github.com/capitaomorte/yasnippet.git
-[submodule "emacs.d/vendor/markdown-mode"]
-	path = emacs.d/vendor/markdown-mode
+[submodule "emacs.d/submodules/markdown-mode"]
+	path = emacs.d/submodules/markdown-mode
 	url = https://github.com/defunkt/markdown-mode.git
-[submodule "emacs.d/vendor/open-related-file"]
-	path = emacs.d/vendor/open-related-file
+[submodule "emacs.d/submodules/open-related-file"]
+	path = emacs.d/submodules/open-related-file
 	url = https://github.com/skirino/open-related-file.git
-[submodule "emacs.d/vendor/flymake-coffee"]
-	path = emacs.d/vendor/flymake-coffee
+[submodule "emacs.d/submodules/flymake-coffee"]
+	path = emacs.d/submodules/flymake-coffee
 	url = https://github.com/purcell/flymake-coffee.git
-[submodule "emacs.d/vendor/clojure-mode"]
-	path = emacs.d/vendor/clojure-mode
-	url = git@github.com:technomancy/clojure-mode.git
-[submodule "emacs.d/vendor/nrepl"]
-	path = emacs.d/vendor/nrepl
+[submodule "emacs.d/submodules/clojure-mode"]
+	path = emacs.d/submodules/clojure-mode
+	url = https://github.com/technomancy/clojure-mode.git
+[submodule "emacs.d/submodules/nrepl"]
+	path = emacs.d/submodules/nrepl
 	url = https://github.com/kingtim/nrepl.el.git
 [submodule "zsh/auto-fu"]
 	path = zsh/auto-fu
