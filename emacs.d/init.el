@@ -3,7 +3,7 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d"))
 (add-to-list 'load-path "~/.emacs.d/auto-install/")
 (add-to-list 'load-path "~/.emacs.d/manual-install/")
-(add-to-list 'load-path "~/.emacs.d/vendor/")
+(add-to-list 'load-path "~/.emacs.d/submodules/")
 (add-to-list 'load-path "~/.emacs.d/sdic/")
 (add-to-list 'load-path "~/.emacs.d/apel-10.8/")
 (add-to-list 'load-path "~/.emacs.d/elpa/oauth2-0.5/")
@@ -81,7 +81,7 @@
         (make-directory dir t)))))
 
 ;; (自作) 開いているファイルと関連したファイルを開く。関連するファイルは前もって登録しておく
-(add-to-list 'load-path "~/.emacs.d/vendor/open-related-file/")
+(add-to-list 'load-path "~/.emacs.d/submodules/open-related-file/")
 (require 'open-related-file)
 (global-set-key (kbd "C-c ; o") 'open-related-file-open)
 (open-related-file-append-group "%1/app/controllers/%2.rb" "%1/test/functional/%2_test.rb"  )
@@ -249,10 +249,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; yasnippet
 (when (>= emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet/")
+  (add-to-list 'load-path "~/.emacs.d/submodules/yasnippet/")
   (require 'yasnippet)
   (require 'yasnippet-config)
-  (yas/setup "~/.emacs.d/vendor/yasnippet/")
+  (yas/setup "~/.emacs.d/submodules/yasnippet/")
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -282,7 +282,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
-(add-to-list 'load-path "~/.emacs.d/vendor/undo-tree/")
+(add-to-list 'load-path "~/.emacs.d/submodules/undo-tree/")
 (require 'undo-tree)
 (global-undo-tree-mode)
 
@@ -318,7 +318,7 @@
 (setq line-move-visual nil)
 
 ;; Hit a hint
-(add-to-list 'load-path "~/.emacs.d/vendor/jaunte/")
+(add-to-list 'load-path "~/.emacs.d/submodules/jaunte/")
 (require 'jaunte)
 (global-set-key (kbd "C-:") 'jaunte)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -711,7 +711,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
 (when (>= emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/vendor/google-contacts/")
+  (add-to-list 'load-path "~/.emacs.d/submodules/google-contacts/")
   (require 'google-contacts)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
@@ -1057,7 +1057,7 @@
 
 
 ;; ruby
-(add-to-list 'load-path "~/.emacs.d/vendor/rinari/")
+(add-to-list 'load-path "~/.emacs.d/submodules/rinari/")
 (require 'starter-kit-ruby)
 (define-key ruby-mode-map (kbd "C-c C-x") nil)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
@@ -1141,26 +1141,26 @@ Then run tests in a preferred window configuration on after-save."
 
 
 ;; CoffeeScript
-(add-to-list 'load-path "~/.emacs.d/vendor/coffee-mode/")
+(add-to-list 'load-path "~/.emacs.d/submodules/coffee-mode/")
 (require 'coffee-mode)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile"   . coffee-mode))
 ;; enable compile-on-save minor mode
 (add-hook 'coffee-mode-hook 'coffee-cos-mode)
 
-(add-to-list 'load-path "~/.emacs.d/vendor/flymake-coffee/")
+(add-to-list 'load-path "~/.emacs.d/submodules/flymake-coffee/")
 (require 'flymake-coffee)
 (add-hook 'coffee-mode-hook 'flymake-coffee-load)
 
 
 ;; Clojure
-(add-to-list 'load-path "~/.emacs.d/vendor/clojure-mode/")
+(add-to-list 'load-path "~/.emacs.d/submodules/clojure-mode/")
 (require 'clojure-mode)
 (defun turn-on-paredit () (paredit-mode 1))
 (add-hook 'clojure-mode-hook 'turn-on-paredit)
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
-(add-to-list 'load-path "~/.emacs.d/vendor/nrepl/")
+(add-to-list 'load-path "~/.emacs.d/submodules/nrepl/")
 (require 'nrepl)
 (setenv "PATH" (concat (getenv "PATH") ":/usr/java/jdk1.7.0_07/bin")) ;; java path
 
@@ -1188,7 +1188,7 @@ Then run tests in a preferred window configuration on after-save."
 
 
 ;; markdown mode
-(add-to-list 'load-path "~/.emacs.d/vendor/markdown-mode/")
+(add-to-list 'load-path "~/.emacs.d/submodules/markdown-mode/")
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
