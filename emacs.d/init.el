@@ -469,10 +469,12 @@
         ))
 (defun my-org-remember-log ()
   (interactive)
+  (ibus-disable-if-present)
   (org-remember '(0) "l")
 )
 (defun my-org-remember-memo ()
   (interactive)
+  (ibus-disable-if-present)
   (org-remember '(0) "m")
 )
 (global-set-key (kbd "M-l") 'my-org-remember-log)
@@ -724,8 +726,10 @@
     ;; mini bufferではオフにし、戻るときに状態を復元する
     (defvar ibus-enabled-before? nil)
 
+    (defun ibus-disable ()
+      (shell-command-to-string "ibus-off"))
     (defun ibus-disable-and-save-status ()
-      (when (string= (shell-command-to-string "ibus-off") "iBus disabled\n")
+      (when (string= (ibus-disable) "iBus disabled\n")
         (setq ibus-enabled-before? t)))
     (defun ibus-restore-previous-status ()
       (when ibus-enabled-before?
@@ -737,6 +741,11 @@
     (add-hook 'isearch-mode-hook     'ibus-disable-and-save-status)
     (add-hook 'isearch-mode-end-hook 'ibus-restore-previous-status)
     ))
+
+(defun ibus-disable-if-present ()
+  (when (eq system-type 'gnu/linux)
+    (when (eq window-system 'x)
+      (ibus-disable))))
 ;;;;;;;;;;;;;;;;;;;;;;;; ibus
 
 
