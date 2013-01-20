@@ -49,7 +49,6 @@
 **** autojumpをインストール
 
 *** emacs
-**** $ ln -s ~/code/conffiles/emacs.d ~/.emacs.d
 **** 中で $ git submodule init => $ git submodule update, vendor/rinariの中のsubmoduleでも同様
 **** aspell, sdic, edict, sdic-gene95の各パッケージをインストール, $ echo "lang en_US" > ~/.aspell.conf
 **** migemoの設定 (see http://d.hatena.ne.jp/samurai20000/20100907/1283791433)
@@ -76,14 +75,15 @@
 ***** キーボードショートカットをC-S-dに設定
 **** keysnail
 ***** 検索してファイルダウンロード、ドラッグアンドドロップでインストール
-***** プラグインTanything, HoK, BuiltinCommandAsExt, bmanyをインストール
-***** $ ln -s ~/code/conffiles/keysnail.js ~/.keysnail.js
+***** プラグインTanything, HoK, BuiltinCommandAsExt, bmany, LDRnailをインストール
 ***** (アドオンバーを見るとdisableされてる場合があるので、enableする)
 **** ツールバーの要素を適当に並べる
 **** スタート時にはホームページを表示する、スタート時に開くURLを設定
 **** about:configで、mousewheel.with_control.action(>= 17) / mousewheel.withcontrolkey.action(<= 16) を"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
 **** ブックマークを旧環境からインポート
 **** HTTP Resource Testをインストール
+**** Greasemonkeyをインストール
+***** AutoPagarize greasemonkeyスクリプト版をインストール
 
 
 *** Seta
@@ -152,182 +152,3 @@ wmctrl -r Firefox -t 1
 **** pwgen
 **** xclip
 
-
-
-
-* Mint環境構築の記録 (Gtk+のパッケージングの問題っぽい不具合がいろいろ発生。放棄)
-** 仮想マシンの設定
-*** CPU2個
-*** 仮想ディスクは60GB程度
-*** メモリ割り当て1.5GB程度 (状況次第で変更する)
-*** パフォーマンスを気にしてFileVaultの管理外に仮想ディスクイメージを移動してみる -> 体感で少し改善したような気がする。厳密に比較してはいない
-
-** Mint Lisa 64bit CD版
-*** SystemSettings -> ScreenのLockをOFFに
-*** SystemSettings -> LanguageSettingから言語サポート、日本語パッケージをインストール
-*** SystemSettings -> KeyboardのRepeat Keyを適当に設定
-*** SystemSettings -> KeyboardLayout -> Optionで、"Left ALT is swapped to Win"
-*** AdvancedSettings -> Theme -> KeyBindingsをEmacsに
-*** ~/以下のデフォルトのディレクトリを消して、~/.config/user-dirs.dirsを編集
-*** パッケージのアップデート
-*** build-essentials, emacs, vim, git, zsh, meldをインストール
-*** パネルにシステムモニタを追加
-*** デスクトップのthemeを適当に変更 (AdvancedSeetingsから)
-**** overlay-scrollbarをインストール
-**** システムのフォントを英字系にして、バックスラッシュが出るべきところで円マークが出ないようにする (Droid Sans系にしてみる)
-*** ログアウトのキーボードショートカットをC-M-Escapeにする(既存のC-M-Escapeのショートカットを削除)
-
-
-** input method
-*** scim-anthyをインストール
-*** 言語設定からIMをscim-bridgeに設定、SCIM-Gtkからキーボードショートカットを設定
-**** 全体 -> 終了 : C-M-@, 他は削除
-**** IMエンジン -> 全体 : 日本語のみチェック
-              -> Global settings : AnthyのホットキーをZenkaku_Hankakuに
-              -> Anthy : キーボードショートカットでひらがなモード : Zenkaku_Hankaku
-                       : key bindingsで、circle typing methodのショートカットを空にする
-                       : Use half-width characters for numbers and symbolsをチェック
-**** GTK -> メニュー : 表示しない
-*** デスクトップのthemeを適当に変更 (AdvancedSeetingsから)
-**** overlay-scrollbarをインストール
-**** システムのフォントを英字系にして、バックスラッシュが出るべきところで円マークが出ないようにする (Droid Sans系にしてみる)
-
-
-** 自前設定・ソフトのインストール
-*** skirino@githubからgit clone
-
-*** zsh
-**** $ chsh で/bin/zshにする。loginしなおす
-**** ~/.zshrcを作って $ source ~/code/conffiles/zshrc
-
-*** emacs
-**** $ ln -s ~/code/conffiles/emacs.d ~/.emacs.d
-**** 中で $ git submodule init => $ git submodule update, vendor/rinariの中のsubmoduleでも同様
-**** aspell, sdic, edict, sdic-gene95の各パッケージをインストール
-**** migemoの設定 (see http://d.hatena.ne.jp/samurai20000/20100907/1283791433)
-***** cmigemo最新版をダウンロード、unzip
-***** $ ./configure && make gcc (INT_MAXが見つからないというエラーになったので、適当な場所に #include <limits.h> を追加する)
-***** $ cd dict
-***** $ make utf-8
-***** $ sudo make gcc-install
-**** gccsense
-***** gcc-code-assistをダウンロード、解答
-***** flex, libmfpr-dev, libc6-dev-i386を入れておく
-***** (32/64bit対応のため) $ sudo ln -s x86_64-linux-gnu/crt?.o .
-***** $ ./configure && make && sudo make install
-***** libsqlite3-devをインストール、sqlite3-ruby gemをインストール
-**** emacs24をビルド
-***** bzrをインストール
-***** $ bzr branch bzr://bzr.savannah.gnu.org/emacs/trunk
-***** texinfo, libxpm-dev, libtinfo-devをインストール
-***** $ ./autogen.sh
-***** $ ./configure
-***** $ bzr pull
-***** $ make bootstrap
-***** $ make (不要かも?)
-***** $ sudo make install
-**** emacs-w3m
-***** $ cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login
-***** CVS password: (そのままRET)
-***** $ cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m
-***** $ autoconf
-***** $ ./configure
-***** $ make
-***** $ sudo make install
-**** google-contacts (emacs24 必須)
-***** easypgをインストール
-
-
-*** firefox
-**** 言語設定で日本語を最優先にする
-**** smooth scrollingをdisable
-**** ダウンロードマネージャ => すべてのダウンロードが完了したら閉じるをチェック
-**** 検索バーからAdd googleを押してgoogle検索を有効化
-**** browser-plugin-gnashをインストール
-**** アドオンメニューで、ubuntu, mintの拡張をenableする
-**** アドオンメニューからfirebug, tab mix plus, 英辞郎 on the Webをインストール
-**** tab mix plus
-***** リンク -> シングルウィンドウモードをON
-***** イベント -> タブを開く -> 検索バーにチェック
-**** 英辞郎 on the Web
-***** キーボードショートカットをC-S-dに設定
-**** keysnail
-***** 検索してファイルダウンロード、ドラッグアンドドロップでインストール
-***** プラグインTanything, HoKをインストール
-***** $ ln -s ~/code/conffiles/keysnail.js ~/.keysnail.js
-**** ツールバーの要素を適当に並べる
-**** ダウンロードマネージャ => すべてのダウンロードが完了したら閉じるをチェック
-**** スタート時にはホームページを表示する、スタート時に開くURLを設定
-**** about:configで、mousewheel.withcontrolkey.actionを"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
-**** いろんなサイトにログインしてパスワードを覚えさせる、かつ、ブックマークを登録
-
-*** Seta
-**** Dの開発環境をインストール (TODO: SetupDDevelopmentEnvironmentのREADMEに記載する)
-***** dmd, druntime, phobosのコンパイル時は64bit対応のためposix.makを書き換える(MODEL=32を64に)
-**** コンパイル($ sudo ln -s /usr/lib/libvte.so.9 /usr/lib/libvte.so が必要だった)
-**** .debを入れておく(アイコンのインストール)
-**** キーボードショートカットを設定(C-M-s, setaのバイナリをfullpath指定)
-
-*** gnome-do
-**** 起動時にwindowを隠す(静閑モード)にチェック
-**** Appearance -> Always show results windowにチェック
-**** Keybind -> Clear : C-g, Next item : C-n, Prev item : C-p
-
-
-** VirtualBoxGuestAdditionsをインストール
-*** 共有フォルダの設定を行う
-**** $ sudo gpasswd -a skirino vboxsf
-**** $ ln -s /media/sf_vbshare ~/vbshare などとしてsymlinkを作っておく
-
-
-** よく使うアプリケーションの登録
-*** SystemSettings -> Keyboardのショートカットに、Firefox(C-M-f), Emacs(C-M-e), Seta(C-M-s)を追加
-*** ログイン後にSeta, Emacs, Firefoxが自動起動するよう設定
-*** wmctrlをインストール
-*** 2x2の仮想デスクトップに対して、アプリのレイアウトが好みのものになるよう、以下の内容のスクリプトを作って自動で走るよう設定する。sleep 10は適当
-sleep 10
-wmctrl -r emacs   -t 2
-wmctrl -r Firefox -t 1
-
-
-** 開発環境のセットアップ
-*** git
-**** ~/.gitconfigを設定
-**** remote addしておく
-
-*** ruby
-**** ruby1.9.1-fullをインストール
-**** $ sudo gem install rubygems-update => $ sudo update_rubygems
-**** $ sudo ln -s /usr/bin/rake1.9.1 /usr/bin/rake (なぜかrakeだけはrake1.9.1へのsymlinkを作ってくれないので)
-**** $ sudo gem install bundler
-
-*** haskell
-**** haskell-platformをインストール
-**** 標準パッケージはghc 7.0.3であり、ghc-modが動かない? 7.0.4を手動で入れる
-***** follow instructions in https://gist.github.com/1524859 ($ sudo apt-get install libgmp3c2 も必要っぽい)
-**** cabal install ghc-mod
-***** (~/.cabal/share/ghc-mod/elispで、makeしてからghc*を.emacsに入れる)
-**** cabal install yesod
-
-
-** TODO
-*** multitouch gestures (toucheggでいける?)
-*** emacs 24
-**** follow mode
-**** help時にエラー make-local-hookがない
-**** SCIM2回プッシュしないと反応しない
-**** redo do not work
-*** Seta
-**** file_managerでalphabetを打っても反応しない。Mintだけ。C-sでサーチをONにできて、その後は期待動作。setEnableSearch(TRUE)しても効果無し
-**** page削除後、terminalの入力が応答しない、一度フォーカスを外すとOK
-**** public-keyでのログインのときにパスワード入力を要求するのはよくない。が、判別できるのか?
-**** SSHのダイアログに出るべきhome directoryは、GVFSを含まない。また、slashが末尾に2つあったりする
-**** GVFSのマウントがめちゃくちゃ遅い
-
-
-**** Ctrl-Enterで開く右クリックメニューの位置がずれてる
-**** Ctrl-gで、右クリックメニューのclose
-**** C-S-oでの左右syncは、ターミナルでもできて良い
-*** firefox
-**** 右クリックができない!?
-*** Upgrade to Mint 13
