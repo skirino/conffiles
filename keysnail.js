@@ -6,33 +6,15 @@
 //{{%PRESERVE%
 // ここにコードを入力して下さい
 
-//////////// Tanything
-key.setViewKey("C-;", function (ev, arg) {
-    ext.exec("tanything", arg);
-}, "タブを一覧表示", true);
-////////////
 
-//////////// bmany
-key.setViewKey('C-:', function (ev, arg) {
-    ext.exec("bmany-list-all-bookmarks", arg, ev);
-}, 'ブックマーク');
-
-key.setViewKey([':', 'B'], function (ev, arg) {
-    ext.exec("bmany-list-bookmarklets", arg, ev);
-}, "bmany - ブックマークレットを一覧表示");
-
-key.setViewKey([':', 'k'], function (ev, arg) {
-    ext.exec("bmany-list-bookmarks-with-keyword", arg, ev);
-}, "bmany - キーワード付きブックマークを一覧表示");
-
-key.setViewKey([':', 't'], function (ev, arg) {
-    ext.exec("bmany-list-bookmarks-with-tag", arg, ev);
-}, "bmany - タグ付きブックマークを一覧表示");
-
+// bmany
 plugins.options["bmany.keymap"] = {
     "C-RET" : "open-background-tab,cn"
 };
-////////////
+
+// history
+plugins.options['history.max-results'] = 10000;
+
 
 //}}%PRESERVE%
 // ========================================================================= //
@@ -185,6 +167,10 @@ key.setGlobalKey(["C-c", "C-c", "C-v"], function (ev) {
 key.setGlobalKey(["C-c", "C-c", "C-c"], function (ev) {
     command.clearConsole();
 }, 'Javascript コンソールの表示をクリア', true);
+
+key.setGlobalKey('C-M-v', function (ev) {
+    openUILinkIn('view-source:' + content.location.href, 'tab');
+}, 'ソースを表示');
 
 key.setEditKey(["C-x", "h"], function (ev) {
     command.selectAll(ev);
@@ -389,9 +375,13 @@ key.setViewKey(':', function (ev, arg) {
     shell.input(null, arg);
 }, 'コマンドの実行', true);
 
-key.setViewKey('R', function (ev) {
+key.setViewKey('r', function (ev) {
     BrowserReload();
 }, '更新', true);
+
+key.setViewKey('R', function (ev) {
+    BrowserReloadSkipCache();
+}, '更新(キャッシュを無視)', true);
 
 key.setViewKey('B', function (ev) {
     BrowserBack();
@@ -432,6 +422,35 @@ key.setViewKey(';', function (aEvent, aArg) {
 key.setViewKey(['C-c', 'C-e'], function (aEvent, aArg) {
     ext.exec("hok-start-continuous-mode", aArg);
 }, 'リンクを連続して開く Hit a Hint を開始', true);
+
+key.setViewKey('w', function (ev) {
+    command.setClipboardText(content.location.href);
+}, 'URLをコピー', true);
+
+key.setViewKey([['C-;'], [':', 't']], function (ev, arg) {
+    ext.exec("tanything", arg);
+}, "タブを一覧表示", true);
+
+key.setViewKey([['C-:'], [':', 'b']], function (ev, arg) {
+    ext.exec("bmany-list-all-bookmarks", arg, ev);
+}, 'ブックマーク');
+
+key.setViewKey([':', 'B'], function (ev, arg) {
+    ext.exec("bmany-list-bookmarklets", arg, ev);
+}, "bmany - ブックマークレットを一覧表示");
+
+key.setViewKey([':', 'k'], function (ev, arg) {
+    ext.exec("bmany-list-bookmarks-with-keyword", arg, ev);
+}, "bmany - キーワード付きブックマークを一覧表示");
+
+key.setViewKey([':', 'T'], function (ev, arg) {
+    ext.exec("bmany-list-bookmarks-with-tag", arg, ev);
+}, "bmany - タグ付きブックマークを一覧表示");
+
+key.setViewKey([['C-+'], [':', 'h']], function (ev, arg) {
+    ext.exec("history-show", arg, ev);
+}, 'History - リストを表示', true);
+
 
 key.setCaretKey([["C-a"], ["^"]], function (ev) {
     ev.target.ksMarked ? goDoCommand("cmd_selectBeginLine") : goDoCommand("cmd_beginLine");
@@ -510,10 +529,6 @@ key.setCaretKey([["C-SPC"], ["C-@"]], function (ev) {
 key.setCaretKey(':', function (ev, arg) {
     shell.input(null, arg);
 }, 'コマンドの実行', true);
-
-key.setCaretKey('R', function (ev) {
-    BrowserReload();
-}, '更新', true);
 
 key.setCaretKey('B', function (ev) {
     BrowserBack();
