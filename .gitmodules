@@ -34,3 +34,6 @@
 [submodule "zsh/auto-fu"]
 	path = zsh/auto-fu
 	url = https://github.com/skirino/auto-fu.zsh.git
+[submodule "emacs.d/submodules/anything-git-grep"]
+	path = emacs.d/submodules/anything-git-grep
+	url = https://github.com/jpablobr/anything-git-grep.git

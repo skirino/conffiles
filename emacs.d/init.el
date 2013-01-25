@@ -647,6 +647,12 @@
 
 ;; exuberant ctags
 (global-set-key (kbd "M-E") 'anything-c-etags-select)
+
+
+;; anything-git-grep
+(add-to-list 'load-path "~/.emacs.d/submodules/anything-git-grep/")
+(require 'anything-git-grep)
+(global-set-key (kbd "C-c g") 'anything-git-grep)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
