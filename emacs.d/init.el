@@ -1074,8 +1074,10 @@
 ;; ruby
 (add-to-list 'load-path "~/.emacs.d/submodules/rinari/")
 (require 'starter-kit-ruby)
-(define-key ruby-mode-map (kbd "C-c C-x") nil)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
+
+;; inf-rubyのキーバインドを無効化
+(remove-hook 'ruby-mode-hook 'inf-ruby-keys)
 
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
