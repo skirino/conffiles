@@ -48,8 +48,9 @@
 (setq auto-save-default nil)
 
 ;; auto-save
-;(require 'auto-save-buffers)
-;(run-with-idle-timer 1 t 'auto-save-buffers) ; アイドル1秒で保存
+(require 'auto-save-buffers)
+(setq auto-save-buffers-exclude-regexp "\.rb$")
+(run-with-idle-timer 1 t 'auto-save-buffers) ; アイドル1秒で保存
 
 ;; session
 (require 'session)
