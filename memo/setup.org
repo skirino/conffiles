@@ -104,8 +104,6 @@
 **** $ sudo gpasswd -a skirino vboxsf
 **** $ ln -s /media/sf_vbshare ~/vbshare としてsymlinkを作っておく
 *** ネットワークはNATでよいが、ブリッジにしておいた方がIPアドレスを使って接続しやすく、便利かも
-*** ゲストの時刻がホストとずれた場合の時刻同期を早く始めさせる
-**** $ sudo VBoxControl guestproperty set "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold" 60000
 
 
 ** よく使うアプリケーションの登録
