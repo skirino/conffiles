@@ -37,3 +37,6 @@
 [submodule "emacs.d/submodules/anything-git-grep"]
 	path = emacs.d/submodules/anything-git-grep
 	url = https://github.com/jpablobr/anything-git-grep.git
+[submodule "emacs.d/submodules/org-html5presentation"]
+	path = emacs.d/submodules/org-html5presentation
+	url = https://gist.github.com/509761.git
