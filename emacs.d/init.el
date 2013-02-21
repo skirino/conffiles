@@ -5,6 +5,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; package.el
+(require 'package)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa"     . "http://melpa.milkbox.net/packages/"))
+(package-initialize)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Macのキーボード
 (when (eq system-type 'darwin)
@@ -15,12 +22,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
 (setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
 (setenv "PATH" (concat (getenv "PATH") (format ":%s/code/conffiles/bin" (getenv "HOME"))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
@@ -29,13 +34,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;; key-chord
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.04)
 (key-chord-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
