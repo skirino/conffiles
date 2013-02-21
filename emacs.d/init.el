@@ -721,9 +721,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
 (when (>= emacs-major-version 23)
-  (tool-bar-mode nil)
-  (scroll-bar-mode nil)
-  (menu-bar-mode nil)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (menu-bar-mode 0)
 )
 
 ;; 現在行をハイライト
