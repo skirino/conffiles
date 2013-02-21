@@ -118,7 +118,7 @@
 	[(20130114 1335)
 	 nil "Writable grep buffer and apply the changes to files [source: github]" single])
  (weechat .
-	  [(20130221 1458)
+	  [(20130221 1642)
 	   nil "No description available. [source: github]" tar])
  (websocket .
 	    [(20130123 2144)
@@ -1014,7 +1014,7 @@
 		(0 1 6)))
 	      "nrepl extensions for ritz [source: github]" single])
  (nrepl-eval-sexp-fu .
-		     [(20121011 2145)
+		     [(20130220 2142)
 		      nil "Tiny functionality enhancements for evaluating sexps. [source: github]" single])
  (nrepl .
 	[(20130219 752)
