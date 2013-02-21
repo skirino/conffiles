@@ -21,6 +21,10 @@
 **** 画面のロック(C-M-l)を無効化
 **** シャットダウン: "/usr/lib/indicator-session/gtk-logout-helper --shutdown"にキーを設定(Ctrl-Alt-Backspace)
 *** アカウント設定で、ロック解除、自動ログインをオンにする
+*** boot時の"sparse file not found"というエラー
+**** btrfs時のbugらしい
+**** /etc/grub.d/00_headerの以下をコメントアウトする
+**** if [ -n "\${have_grubenv}" ]; then if [ -z "\${boot_once}" ]; then save_env \ recordfail; fi; fi
 
 ** 日本語環境
 *** 日本語Remixのパッケージをインストール
@@ -152,5 +156,6 @@ wmctrl -r Firefox -t 1
 **** org-mode(aptで最新をインストール)
 **** pwgen
 **** xclip
-**** scala, scala-doc, scala-mode-elをインストール
+**** curl
+**** heroku-toolbeltを検索してインストール
 
