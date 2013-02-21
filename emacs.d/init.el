@@ -703,14 +703,6 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
-(when (>= emacs-major-version 24)
-  (require 'google-contacts)
-)
-;;;;;;;;;;;;;;;;;;;;;;;; google-contacts
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; ibus
 (when (eq system-type 'gnu/linux)
   (when (eq window-system 'x)
