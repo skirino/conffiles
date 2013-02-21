@@ -1427,20 +1427,6 @@ Then run tests in a preferred window configuration on after-save."
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
 
 
-
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when (>= emacs-major-version 24)
-  (when (load (expand-file-name "~/.emacs.d/elpa/package.el"))
-    (package-initialize)
-  )
-)
-
-
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
