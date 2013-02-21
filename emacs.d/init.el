@@ -122,34 +122,19 @@
 ;; キーストロークをエコーエリアに早く表示する
 (setq echo-keystrokes 0.2)
 
-
 ;; バッファ切り替えを強化
 (iswitchb-mode t)
-(setq read-buffer-function 'iswitchb-read-buffer)
-;; 部分文字列の代わりに正規表現を使う場合は t に設定する
-(setq iswitchb-regexp nil)
-;; 新しいバッファを作成するときにいちいち聞かないように
-(setq iswitchb-prompt-newbuffer nil)
-
+(setq iswitchb-regexp nil)           ;; 部分文字列の代わりに正規表現を使う場合は t に設定する
+(setq iswitchb-prompt-newbuffer nil) ;; 新しいバッファを作成するときにいちいち聞かないように
 
 ;; ファイル名がかぶったときのバッファ名を適切に設定
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "*[^*]+*")
 
-
-;; mcompleteでミニバッファ編集時の候補を列挙
-(autoload 'mcomplete-mode "mcomplete"
-  "Toggle minibuffer completion with prefix and substring matching."
-  t nil)
-(autoload 'turn-on-mcomplete-mode "mcomplete"
-  "Turn on minibuffer completion with prefix and substring matching."
-  t nil)
-(autoload 'turn-off-mcomplete-mode "mcomplete"
-  "Turn off minibuffer completion with prefix and substring matching."
-  t nil)
-(turn-on-mcomplete-mode)
-
+;; ミニバッファの補完強化
+(require 'ido)
+(ido-mode t)
 
 ;; バッファ切り替え (C-, C-.)
 (defvar my-ignore-blst             ; 移動の際に無視するバッファのリスト
