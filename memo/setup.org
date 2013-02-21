@@ -55,6 +55,7 @@
 *** emacs
 **** 中で $ git submodule init => $ git submodule update, vendor/rinariの中のsubmoduleでも同様
 **** aspell, sdic, edict, sdic-gene95の各パッケージをインストール, $ echo "lang en_US" > ~/.aspell.conf
+**** apel, gettext-elをインストール
 **** migemoの設定 (see http://d.hatena.ne.jp/samurai20000/20100907/1283791433)
 ***** cmigemo最新版をダウンロード、unzip
 ***** $ ./configure && make gcc (INT_MAXが見つからないというエラーになったので、適当な場所に #include <limits.h> を追加する)
@@ -146,6 +147,10 @@ wmctrl -r Firefox -t 1
 *** Clojure
 **** leiningen1.7.1 bin/leinをgithubから落として実行可能にし、一度走らせる
 **** $ lein plugin install lein-noir 1.2.1
+
+*** scala, scala-docをインストール
+**** sbt(ホームページからdebをダウンロード)
+**** Emacsのensimeはscalaそのものとバージョンがマッチしていたほうが良いらしいので注意
 
 *** misc packages
 **** markdown (deb), redcarpet (gem)
