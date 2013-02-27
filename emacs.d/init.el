@@ -5,6 +5,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; package.el
+(require 'package)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa"     . "http://melpa.milkbox.net/packages/"))
+(package-initialize)
+
+(add-hook 'kill-emacs-hook 'save-packages)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Macのキーボード
 (when (eq system-type 'darwin)
@@ -15,12 +24,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
 (setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
 (setenv "PATH" (concat (getenv "PATH") (format ":%s/code/conffiles/bin" (getenv "HOME"))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
@@ -29,13 +36,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;; key-chord
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.04)
 (key-chord-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
@@ -122,34 +127,19 @@
 ;; キーストロークをエコーエリアに早く表示する
 (setq echo-keystrokes 0.2)
 
-
 ;; バッファ切り替えを強化
 (iswitchb-mode t)
-(setq read-buffer-function 'iswitchb-read-buffer)
-;; 部分文字列の代わりに正規表現を使う場合は t に設定する
-(setq iswitchb-regexp nil)
-;; 新しいバッファを作成するときにいちいち聞かないように
-(setq iswitchb-prompt-newbuffer nil)
-
+(setq iswitchb-regexp nil)           ;; 部分文字列の代わりに正規表現を使う場合は t に設定する
+(setq iswitchb-prompt-newbuffer nil) ;; 新しいバッファを作成するときにいちいち聞かないように
 
 ;; ファイル名がかぶったときのバッファ名を適切に設定
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "*[^*]+*")
 
-
-;; mcompleteでミニバッファ編集時の候補を列挙
-(autoload 'mcomplete-mode "mcomplete"
-  "Toggle minibuffer completion with prefix and substring matching."
-  t nil)
-(autoload 'turn-on-mcomplete-mode "mcomplete"
-  "Turn on minibuffer completion with prefix and substring matching."
-  t nil)
-(autoload 'turn-off-mcomplete-mode "mcomplete"
-  "Turn off minibuffer completion with prefix and substring matching."
-  t nil)
-(turn-on-mcomplete-mode)
-
+;; ミニバッファの補完強化
+(require 'ido)
+(ido-mode t)
 
 ;; バッファ切り替え (C-, C-.)
 (defvar my-ignore-blst             ; 移動の際に無視するバッファのリスト
@@ -736,9 +726,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
 (when (>= emacs-major-version 23)
-  (tool-bar-mode nil)
-  (scroll-bar-mode nil)
-  (menu-bar-mode nil)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (menu-bar-mode 0)
 )
 
 ;; 現在行をハイライト
@@ -1154,6 +1144,15 @@ Then run tests in a preferred window configuration on after-save."
 (setenv "PATH" (concat (getenv "PATH") ":/usr/java/jdk1.7.0_07/bin")) ;; java path
 
 
+;; Scala
+(require 'scala-mode2)
+(require 'ensime)
+;; This step causes the ensime-mode to be started whenever
+;; scala-mode is started for a buffer. You may have to customize this step
+;; if you're not using the standard scala mode.
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
 
@@ -1437,20 +1436,6 @@ Then run tests in a preferred window configuration on after-save."
 
 (global-set-key (kbd "C-c p") 'my-sdic-describe-word-with-popup)
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
-
-
-
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when (>= emacs-major-version 24)
-  (when (load (expand-file-name "~/.emacs.d/elpa/package.el"))
-    (package-initialize)
-  )
-)
 
 
 (custom-set-variables
