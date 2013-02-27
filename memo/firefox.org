@@ -1,0 +1,21 @@
+[firefox settings]
+* アドオンメニューからfirebug, tab mix plus, 英辞郎 on the Web, JSONView, HTTP Resource Test, FireFTP, tile tabs, Greasemonkeyをインストール
+* tab mix plus
+** リンク => シングルウィンドウモードをON
+** イベント => タブを開く => 検索バーにチェック
+* 英辞郎 on the Web
+** クイックサーチを有効にする
+** キーボードショートカットをC-S-dに設定
+* Greasemonkeyをインストール
+** AutoPagarize greasemonkeyスクリプト版をインストール
+* keysnail
+** 検索してファイルダウンロード、ドラッグアンドドロップでインストール
+** プラグインTanything, HoK, BuiltinCommandAsExt, bmany, LDRCnail, History from Keysnailをインストール
+** (アドオンバーを見るとdisableされてる場合があるので、enableする)
+* コンテンツ => 言語設定で日本語を最優先にする
+* 詳細 => 一般 => smooth scrollingをdisable
+* 一般 => ダウンロード => すべてのダウンロードが完了したら閉じるをチェック
+* ツールバーの要素を適当に並べる
+* スタート時にはホームページを表示する、スタート時に開くURLを設定
+* about:configで、mousewheel.with_control.action(>= 17) / mousewheel.withcontrolkey.action(<= 16) を"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
+* ブックマークを旧環境からインポート

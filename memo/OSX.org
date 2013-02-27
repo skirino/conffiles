@@ -35,4 +35,3 @@ $ defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES && kil
 
 
 * Spotlightの対象をすべて消す
-

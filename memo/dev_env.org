@@ -1,0 +1,51 @@
+[開発環境]
+* 自前設定のインストール
+** skirino@githubから各種リポジトリをgit clone
+
+
+* zsh
+** $ chsh
+** ~/.zshrcを作って $ source ~/code/conffiles/zshrc
+** autojumpをインストール
+
+
+* Seta
+** SetupDDevelopmentEnvironmentをgit clone, 中で./build_and_install.shを実行
+** $ sudo ln -s /usr/lib/libvte.so.9 /usr/lib/libvte.so (.soが存在しない場合のみ)
+** コンパイル、起動、設定ファイルを適当に変更
+
+
+* git
+** ~/.gitconfigを設定
+** remote addしておく
+
+
+* postgresをインストール
+
+
+* ruby
+** ruby1.9.1-fullをインストール
+** $ sudo gem install rubygems-update => $ sudo update_rubygems
+** rake1.9.1へのsymlinkを作成(ruby, gem, irbはパッケージが作るのでOK)
+** $ sudo gem install bundler
+
+
+* haskell
+** haskell-platform, haskell-modeをインストール
+** $ cabal update
+** $ cabal install ghc-mod
+*** (~/.cabal/share/ghc-mod/elispで、makeしてからghc*を.emacsに入れる)
+** $ cabal install yesod
+
+
+* JavaScript
+** nodejs, npmをインストール
+
+
+* Clojure
+** leiningen1.7.1 bin/leinをgithubから落として実行可能にし、一度走らせる
+** $ lein plugin install lein-noir 1.2.1
+
+
+* scala, sbt, playをインストール(ホームページからダウンロード、展開して配置するだけ)
+** Emacsのensimeはscalaそのものとバージョンがマッチしていたほうが良いらしいので注意。必要であればensimeをアップデートする

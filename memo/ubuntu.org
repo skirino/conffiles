@@ -1,0 +1,69 @@
+[Ubuntu (12.04 64bit) settings]
+* システム設定
+** パッケージのアップデート
+** boot時の"sparse file not found"というエラー
+*** btrfs時のbugらしい
+*** /etc/grub.d/00_headerの以下をコメントアウトする
+*** if [ -n "\${have_grubenv}" ]; then if [ -z "\${boot_once}" ]; then save_env \ recordfail; fi; fi
+
+
+* デスクトップ設定
+** アカウント設定で、ロック解除、自動ログインをオンにする
+** gnome-tweak-toolをインストール、themeを変更する
+** 画面のロックをオフにする
+** キーボードレイアウトのオプションから、左WinとALTを入れ替え(Mac keyboardの場合)
+** キーボードから、リピートの速度を調整
+** $ gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs" (gnome-tweak-toolからでもOK)
+** ~/以下のデフォルトのディレクトリを消して、~/.config/user-dirs.dirsを編集
+** synaptics, gnome-panelをソフトウェアセンターからインストール、再ログインしてgnome classicにする
+** 上下のパネルを適切に調整 (上だけにする、システムモニタを追加。パネル上でWindows+ALT+右クリック、もしくは、ALT+右クリック)
+** システム設定 -> キーボード -> キーボードショートカット
+*** 画面のロック(C-M-l)を無効化
+*** シャットダウン: "/usr/lib/indicator-session/gtk-logout-helper --shutdown"にキーを設定(Ctrl-Alt-Backspace)
+
+
+* 日本語環境
+** 日本語Remixのパッケージをインストール
+*** $ wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | sudo apt-key add -
+*** $ wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | sudo apt-key add -
+*** $ sudo wget https://www.ubuntulinux.jp/sources.list.d/precise.list -O /etc/apt/sources.list.d/ubuntu-ja.list
+*** $ sudo apt-get update
+*** $ sudo apt-get upgrade
+*** $ sudo apt-get install ubuntu-defaults-ja
+** iBusの設定から、キーボードショートカットを設定、トグルではないキーを設定する。「次のインプットメソッド」は空にしておく
+** iBus-anthyの設定 (iBusの設定で、言語パネルを表示させ、その中のアイコンから開く)
+*** 「記号・数字を半角にする」にチェック
+*** フォーカスアウトのときの動作を「確定」にする
+*** キーボードショートカットを変更して、かな入力モードにならないようにする
+** Mozc
+*** ibus-mozcをインストール
+*** iBusの設定で、input methodがMozc一択になるようにする
+
+
+* gnome-do
+** 起動時にwindowを隠す(静閑モード)にチェック
+** Appearance -> Always show results windowにチェック
+** Keybind -> Clear : C-g, Next item : C-n, Prev item : C-p
+
+
+* よく使うアプリケーションの登録
+** SystemSettings -> Keyboardのショートカットに、Firefox(C-M-f), Emacs(C-M-e), Seta(C-M-s)を追加
+** ログイン後にSeta, Emacs, Firefoxが自動起動するよう設定
+** wmctrlをインストール
+** 2x2の仮想デスクトップに対して、アプリのレイアウトが好みのものになるよう、以下の内容のスクリプトを作って自動で走るよう設定する。sleep 10は適当
+sleep 10
+wmctrl -r emacs   -t 2
+wmctrl -r Firefox -t 1
+
+
+* misc packages
+** markdown (deb), redcarpet (gem)
+** freemind
+** exuberant ctags
+** rlwrap
+** valac, libwebkit3-dev
+** org-mode(aptで最新をインストール)
+** pwgen
+** xclip
+** curl
+** heroku-toolbeltを検索してインストール

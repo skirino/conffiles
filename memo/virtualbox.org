@@ -1,0 +1,14 @@
+* Ubuntu 12.04 環境構築
+** 仮想マシンの設定
+*** CPU: 2個
+*** 仮想HD: 80GB
+*** メモリ2.0GB
+
+* VirtualBoxGuestAdditionsをインストール
+** 共有フォルダの設定を行う
+*** $ sudo gpasswd -a skirino vboxsf
+*** $ ln -s /media/sf_vbshare ~/vbshare としてsymlinkを作っておく
+** ネットワークはNATでよいが、ブリッジにしておいた方がIPアドレスを使って接続しやすく、便利かも
+
+* 日本語入力切り替え
+** Zenkaku_HankakuでON, C-S-@でOFFとしてみる (通常は、Henkan_ModeとKatakana_HiraganaでON, MuhenkanでOFF)
