@@ -1,0 +1,118 @@
+* システム環境設定
+** -> キーボード
+*** -> 修飾キー: CapsLockキーをControl扱いにする。
+*** キーのバックライトをオフにする
+*** F1, F2, ..., Fnキーの扱い: F5でブラウザリロード等(音量変更とかはFnキーを押しながら)にする
+*** キーボードのバックライトを消す(Fn + F5)
+
+** -> 省エネルギー: 電源接続時はスリープまで1時間にする
+
+** -> セキュリティとプライバシー
+*** スリープ解除にパスワードを要求: 15分後
+
+** -> Spotlight(使わない)
+*** 検索対象をすべて消す
+*** キーボードショートカットを消す
+
+** -> トラックパッド
+*** -> スクロールとズーム
+**** スクロールの方向を変える
+
+** -> アクセシビリティ
+*** -> ディスプレイ: カーソルのサイズを少し大きくする
+
+
+* Dock
+** 自動的に隠す機能をONに
+** ターミナルをDockに追加
+** 不要アプリをDockから削除
+
+
+* MissionControl
+** VirtualBox用のワークスペースを作成、VirtualBox Guestがそこで動くようにする
+** Dashboardを操作スペースとして表示をOFFに
+** 操作スペースを自動的に並び替えるをOFFに
+
+
+* Network
+** 元のマシン設定を元に適当に設定
+** .zshrcにネットワーク切り替えのコマンドを定義する(networksetupコマンドのmanを見る)
+
+
+* コマンドライン
+** chshでzshにする
+** gitのインストーラからインストール、パスを通す(/usr/local/git/binを$PATHに加える)
+** conffiles
+*** git clone, git submodule init/update
+*** ホームディレクトリ以下の設定ファイル
+**** symlinkを作る(memo/setup.shを走らせる)
+**** ~/.zshrcを微調整
+** Terminal.appを適当に設定(気が向いたらiTerm2をインストールしてもよい)
+
+
+* Skype
+** インストール、skype名/passを入れておく、Dockに追加
+
+
+* LibreOffice
+** インストール、Dockに追加
+
+
+* Synergy
+** (Macの)システム環境設定 -> アクセシビリティ -> "補助装置にアクセスできるようにする"をONに
+** サーバとして設定
+*** 全体設定 -> "Hide when server/client starts"をOFFに
+*** clientとして追加するディスプレイ側はmodifier keyのマッピングを設定する
+
+
+* Display
+** full resolution (dot by dot)にするため、Retina Display Menu(RDM)をインストール
+** Guest OS側で文字サイズを調整する。1.4倍ほどが適切か
+
+
+* Java RE
+** ダウンロード、インストール
+
+
+* VirtualBox
+** install, add to Dock
+** global setting -> "Host key"の設定で右Command keyに設定
+** 元のVirtualBox .vdiを使って仮想マシン作成
+*** 仮想ドライブ無しの仮想マシンを作成
+*** .vdiをリネームして作成した仮想マシンのイメージとしてふさわしい場所に置く
+*** $ VBoxManage internalcommands sethduuid vboximage.vdi (UUIDを再設定、これをしないとインポートできない。VBoxManage clonehdを使えばそもそも問題ないらしい)
+** VirtualBoxのGUIから
+*** ストレージ -> SATAコントローラ:
+**** .vdiファイルをディスクとして追加
+**** ホストのIOキャッシュを使うにチェック
+*** ディスプレイ -> ビデオ -> ビデオメモリー: 32MBに増やす(ある程度増やさないと2880 X 1800が表示できない)
+*** システム: CPU, memory等を設定
+*** 一般 -> 高度: クリップボードの共有を双方向に設定
+*** 共有フォルダ: /Users/skirino/vbshareをホストに作り、これを指定。自動マウントON、読み書き可
+*** Guest Additionを再インストール
+
+
+* KeyRemap4MacBook
+** インストール(要再起動)
+** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック
+(JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
+
+** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
+「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-M-@"と変換する。
+以下のファイルを作っておくと、KeyRemap4Macの設定項目が追加されるので、これをチェック
+----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
+<?xml version="1.0"?>
+<root>
+  <appdef>
+    <appname>VIRTUALBOX</appname>
+    <equal>org.virtualbox.app.VirtualBoxVM</equal>
+  </appdef>
+  <item>
+    <name>Kana to Option+Escape on VirtualBoxVM</name>
+    <identifier>private.virtualbox.keyswap</identifier>
+    <only>VIRTUALBOX</only>
+    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::JIS_ATMARK, ModifierFlag::CONTROL_L | ModifierFlag::COMMAND_L</autogen>
+  </item>
+</root>
+-----
+

@@ -1,5 +1,17 @@
 [firefox settings]
-* アドオンメニューからfirebug, tab mix plus, 英辞郎 on the Web, JSONView, HTTP Resource Test, FireFTP, tile tabs, Greasemonkeyをインストール
+* アドオンメニューから以下をインストール
+** firebug
+** YSlow
+** Web Developer
+** HTTP Resource Test
+** JSONView
+** tab mix plus
+** 英辞郎 on the Web
+** tile tabs
+** Greasemonkey
+** FireFTP
+** Default FullZoom Level
+
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
 ** イベント => タブを開く => 検索バーにチェック
