@@ -11,6 +11,7 @@
 ** Greasemonkey
 ** FireFTP
 ** Default FullZoom Level
+** Restartless Restart
 
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
