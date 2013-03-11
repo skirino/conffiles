@@ -67,3 +67,4 @@ wmctrl -r Firefox -t 1
 ** xclip
 ** curl
 ** heroku-toolbeltを検索してインストール
+** openssh-server
