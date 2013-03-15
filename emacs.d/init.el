@@ -1045,6 +1045,18 @@
 ;; inf-rubyのキーバインドを無効化
 (remove-hook 'ruby-mode-hook 'inf-ruby-keys)
 
+;; アクセス修飾子のインデントを下げる (taken from ruby-mode.el)
+(push "public"    ruby-block-mid-keywords)
+(push "protected" ruby-block-mid-keywords)
+(push "private"   ruby-block-mid-keywords)
+(setq ruby-block-mid-re (regexp-opt ruby-block-mid-keywords))
+(setq ruby-negative
+      (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|"
+              ruby-block-end-re "\\|}\\|\\]\\)"))
+
+;; カッコの内側の要素のインデントを、カッコ位置ではなく通常インデントにする
+(setq ruby-deep-indent-paren-style nil)
+
 ;; to run tests using spork, overwrite the bin name
 (setq ruby-compilation-executable "testdrb")
 (setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
@@ -1104,15 +1116,6 @@ Then run tests in a preferred window configuration on after-save."
     (my-rinari-test)))
 (add-hook 'rinari-minor-mode-hook
           (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
-
-;; アクセス修飾子のインデントを下げる (taken from ruby-mode.el)
-(push "public"    ruby-block-mid-keywords)
-(push "protected" ruby-block-mid-keywords)
-(push "private"   ruby-block-mid-keywords)
-(setq ruby-block-mid-re (regexp-opt ruby-block-mid-keywords))
-(setq ruby-negative
-      (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|"
-              ruby-block-end-re "\\|}\\|\\]\\)"))
 
 ;; rinari-rgrepのターゲットファイルを絞る
 (setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml")
