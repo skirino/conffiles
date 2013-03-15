@@ -183,7 +183,9 @@ RPROMPT="[%50<...<%~]"
 
 
 # autojump
-source /usr/share/autojump/autojump.zsh
+if [ -f /usr/share/autojump/autojump.zsh ]; then
+    source /usr/share/autojump/autojump.zsh
+fi
 
 
 case "${OSTYPE}" in
