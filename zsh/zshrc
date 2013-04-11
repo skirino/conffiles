@@ -274,7 +274,7 @@ function cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main 
 
 
 # Scala
-PATH=~/code/Scala/scala-2.10.0/bin:~/code/Scala/sbt/bin:~/code/Scala/play-2.1.0:$PATH
+PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:~/code/Scala/play:$PATH
 
 
 # Erlang
