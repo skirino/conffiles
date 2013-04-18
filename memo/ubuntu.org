@@ -68,3 +68,5 @@ wmctrl -r Firefox -t 1
 ** curl
 ** heroku-toolbeltを検索してインストール
 ** openssh-server
+** alien
+** xchat-gnome
