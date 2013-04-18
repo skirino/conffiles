@@ -1,1 +1,1 @@
-(wgrep viewer vala-mode scala-mode2 save-packages go-mode flymake-go flymake erlang)
+(erlang flymake flymake-go go-mode save-packages scala-mode2 vala-mode viewer wgrep)

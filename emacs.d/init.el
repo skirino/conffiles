@@ -5,13 +5,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; package.el
+;;;;;;;;;;;;;;;;;;;;;;;; packages
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa"     . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
-(add-hook 'kill-emacs-hook 'save-packages)
+(require 'save-packages)
+(add-hook 'kill-emacs-hook 'my-save-packages)
+
+;; taken from newer save-packages.el
+(defun my-save-packages (&optional filename)
+  "Save list of currently installed packages.
+The list is written to FILENAME, or `save-packages-file' by default."
+  (interactive (let ((insert-default-directory nil))
+                 (list (read-file-name "Save package list to file: " nil nil nil save-packages-file))))
+  (with-temp-buffer
+    (pp (sort (copy-sequence (mapcar 'car package-alist)) 'string<) (current-buffer))
+    (write-region (point-min) (point-max) (or filename save-packages-file))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
