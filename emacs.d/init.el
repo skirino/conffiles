@@ -249,11 +249,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; yasnippet
-(when (>= emacs-major-version 24)
-  (require 'yasnippet)
-  (require 'yasnippet-config)
-  (yas/setup "~/.emacs.d/submodules/yasnippet/")
-)
+(require 'yasnippet)
+(yas/global-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
