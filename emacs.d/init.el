@@ -54,6 +54,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; pomodoro
+(require 'tomatinho)
+(global-set-key (kbd "<f12>") 'tomatinho)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
 ;; ffap
 (ffap-bindings)
