@@ -431,7 +431,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; view-mode
 (require 'view)
-(setq view-read-only t)
 (key-chord-define-global "vm" 'view-mode)
 
 (define-key view-mode-map (kbd "/") 'isearch-forward)
@@ -442,8 +441,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key view-mode-map (kbd "l") 'forward-char)
 
 (require 'viewer)
-;; 書き込み不能なファイルではviewer-modeから抜けない
-(viewer-stay-in-setup)
+(viewer-stay-in-setup) ;; 書き込み不能なファイルではviewer-modeから抜けない
 
 ;; モードラインに色をつける
 (setq viewer-modeline-color-unwritable "tomato")
