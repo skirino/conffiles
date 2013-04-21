@@ -270,7 +270,7 @@ PATH=~/.cabal/bin:$PATH
 
 
 # Clojure
-function cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $1 }
+function cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
 
 # Scala
