@@ -1229,15 +1229,12 @@ Then run tests in a preferred window configuration on after-save."
 
 
 ;; GNU global
-(when (locate-library "gtags") (require 'gtags))
-(global-set-key (kbd "M-t") 'gtags-find-tag)     ;関数の定義元へ
-(global-set-key (kbd "M-r") 'gtags-find-rtag)    ;関数の参照先へ
-;(global-set-key (kbd "M-s") 'gtags-find-symbol)  ;変数の定義元/参照先へ
-;(global-set-key (kbd "M-f") 'gtags-find-file)    ;ファイルにジャンプ (forward-wordを優先してコメントアウト)
-(global-set-key (kbd "M-t") 'gtags-pop-stack)    ;前のバッファに戻る
+(require 'gtags)
+(define-key gtags-mode-map (kbd "M-t") 'gtags-find-tag)  ;関数の定義元へ
+(define-key gtags-mode-map (kbd "M-r") 'gtags-find-rtag) ;関数の参照先へ
+(define-key gtags-mode-map (kbd "M-t") 'gtags-pop-stack) ;前のバッファに戻る
 (add-hook 'c-mode-common-hook 'gtags-mode)
 (add-hook 'c++-mode-hook      'gtags-mode)
-(add-hook 'java-mode-hook     'gtags-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 
 
