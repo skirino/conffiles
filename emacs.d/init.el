@@ -275,6 +275,17 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; foreign-regexp
+(require 'foreign-regexp)
+(custom-set-variables
+ '(foreign-regexp/regexp-type 'ruby) ;; Choose by your preference.
+ '(reb-re-syntax 'foreign-regexp)    ;; Tell re-builder to use foreign regexp.
+ )
+(global-set-key (kbd "C-x C-r") 'foreign-regexp/query-replace)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
 (require 'undo-tree)
 (global-undo-tree-mode)
