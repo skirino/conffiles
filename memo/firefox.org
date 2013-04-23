@@ -12,6 +12,7 @@
 ** FireFTP
 ** Default FullZoom Level
 ** Restartless Restart
+** Tab Auto Reload
 
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
