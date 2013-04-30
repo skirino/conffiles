@@ -1,8 +1,8 @@
 * Ubuntu 12.04 環境構築
 ** 仮想マシンの設定
-*** CPU: 2個
+*** CPU: 4個
 *** 仮想HD: 80GB
-*** メモリ2.0GB
+*** メモリ4.0GB
 
 * VirtualBoxGuestAdditionsをインストール
 ** 共有フォルダの設定を行う
@@ -13,3 +13,8 @@
 
 * 日本語入力切り替え
 ** Zenkaku_HankakuでON, C-S-@でOFFとしてみる (通常は、Henkan_ModeとKatakana_HiraganaでON, MuhenkanでOFF)
+
+* Guest Additionの時刻調整機能の設定
+** デフォルトだと20分以内のずれはじわじわ合わせようとする。ズバッと変更するように20分 => 15秒に変更(ホスト側で以下を実行。Ubuntu-64の部分はVMの名前)
+** $ VBoxManage guestproperty set "Ubuntu-64" "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold" 15000
+** 設定後、反映させるためには $ sudo /etc/init.d/vboxadd-service restart

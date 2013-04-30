@@ -74,7 +74,7 @@
 ** ダウンロード、インストール
 
 
-* VirtualBox
+* VirtualBox(別のMacBookProからイメージを移行)
 ** install, add to Dock
 ** global setting -> "Host key"の設定で右Command keyに設定
 ** 元のVirtualBox .vdiを使って仮想マシン作成
