@@ -1,7 +1,6 @@
 [firefox settings]
 * アドオンメニューから以下をインストール
 ** firebug
-** YSlow
 ** Web Developer
 ** HTTP Resource Test
 ** JSONView
