@@ -1494,10 +1494,9 @@ Then run tests in a preferred window configuration on after-save."
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(ecb-options-version "2.32")
- '(exec-path (quote ("/opt/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "~/.cabal/bin" "/Applications/Emacs.app/Contents/MacOS/bin")))
+ '(exec-path (quote ("/opt/local/bin" "/usr/bin" "/bin" "/usr/local/bin" "~/bin" "~/.cabal/bin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(safe-local-variable-values (quote ((encoding . utf-8) (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
+ '(safe-local-variable-values (quote ((encoding . utf-8) (ruby-compilation-executable . "ruby1.9"))))
  '(session-use-package t nil (session))
  '(show-paren-mode t))
