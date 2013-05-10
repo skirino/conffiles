@@ -1477,7 +1477,7 @@ Then run tests in a preferred window configuration on after-save."
   )
 )
 
-(global-set-key (kbd "C-c p") 'my-sdic-describe-word-with-popup)
+(global-set-key (kbd "C-x p") 'my-sdic-describe-word-with-popup)
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
 
 

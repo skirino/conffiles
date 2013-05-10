@@ -1,1 +1,1 @@
-(erlang flymake flymake-go foreign-regexp go-mode gtags multiple-cursors save-packages scala-mode2 tomatinho vala-mode viewer wgrep)
+(dired-single erlang flymake flymake-go foreign-regexp go-mode goto-chg gtags key-chord multiple-cursors popup popwin pos-tip recentf-ext save-packages scala-mode2 tomatinho vala-mode viewer wgrep)
