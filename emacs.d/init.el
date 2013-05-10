@@ -66,13 +66,13 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;; disable backup
 (setq backup-inhibited t)
-;; disable auto save
+;; disable Emacs default auto-save
 (setq auto-save-default nil)
 
 ;; auto-save
-(require 'auto-save-buffers)
-(setq auto-save-buffers-exclude-regexp "\.rb$")
-(run-with-idle-timer 1 t 'auto-save-buffers) ; アイドル1秒で保存
+(require 'auto-save-buffers-enhanced)
+(setq auto-save-buffers-enhanced-interval 1.0) ; アイドル1秒で保存
+(auto-save-buffers-enhanced t)
 
 ;; session
 (require 'session)

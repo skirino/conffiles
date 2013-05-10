@@ -1,1 +1,1 @@
-(auto-complete dired-single erlang flymake flymake-go foreign-regexp go-mode goto-chg gtags key-chord multiple-cursors popup popwin pos-tip recentf-ext save-packages scala-mode2 tomatinho vala-mode viewer wgrep)
+(auto-complete auto-install auto-save-buffers-enhanced dired-single egg erlang flymake flymake-go foreign-regexp go-mode goto-chg gtags key-chord multi-term multiple-cursors popup popwin pos-tip recentf-ext save-packages scala-mode2 tomatinho vala-mode viewer wgrep)
