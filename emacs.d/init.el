@@ -289,6 +289,13 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
+(require 'idle-highlight-mode)
+(add-hook 'find-file-hook '(lambda () (idle-highlight-mode t)))
+;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; multiple-cursors
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c C-S-c") 'mc/edit-lines)
