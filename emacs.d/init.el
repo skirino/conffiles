@@ -663,6 +663,15 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; anything-git-grep
 (require 'anything-git-grep)
 (global-set-key (kbd "C-c g") 'anything-git-grep)
+
+
+;; neglect pressing the same key sequence twice
+(define-key anything-map (kbd "C-;") 'my-donothing)
+(define-key anything-map (kbd "C-+") 'my-donothing)
+(define-key anything-map (kbd "M-x") 'my-donothing)
+(define-key anything-map (kbd "M-s") 'my-donothing)
+(define-key anything-map (kbd "M-E") 'my-donothing)
+(defun my-donothing () (interactive) t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
