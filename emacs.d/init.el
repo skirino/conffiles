@@ -1090,7 +1090,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;; ruby
 (require 'starter-kit-ruby)
-(define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
+(setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
 
 ;; inf-rubyのキーバインドを無効化
 (remove-hook 'ruby-mode-hook 'inf-ruby-keys)
@@ -1107,17 +1107,22 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; カッコの内側の要素のインデントを、カッコ位置ではなく通常インデントにする
 (setq ruby-deep-indent-paren-style nil)
 
-;; to run tests using spork, overwrite the bin name
-(setq ruby-compilation-executable "testdrb")
-(setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
-(defvar my-rinari-spork-branch nil)
+;; rinari
+(define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
+(setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml") ;; rinari-rgrepのターゲットファイルを絞る
+(setq ruby-compilation-executable "testdrb") ;; to run tests using spork, overwrite the name of executable
 
-(defun my-rinari-spork ()
+;; original functions
+(defvar my-rinari-spork-branch nil)
+(defvar my-rinari-autotest-after-save nil)
+(defvar my-rinari-autotest-marker nil)
+
+(defun my-rinari-start-spork ()
   (interactive)
   (setq my-rinari-spork-branch (egg-HEAD))
   (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
     (shell-command command)))
-(define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-spork)
+(define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-start-spork)
 
 (defun my-rinari-kill-spork ()
   (interactive)
@@ -1125,50 +1130,67 @@ The list is written to FILENAME, or `save-packages-file' by default."
     (shell-command command)))
 (define-key rinari-minor-mode-map (kbd "C-c ; S") 'my-rinari-kill-spork)
 
-(defun my-rinari-test-core ()
+(defun my-rinari-is-spork-running? ()
+  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
+    (< 0 (length grep-result))))
+
+(defun my-rinari-test-on-appropriate-position ()
+  (save-excursion
+    (cond (my-rinari-autotest-marker
+           (with-current-buffer (marker-buffer my-rinari-autotest-marker)
+             (goto-char my-rinari-autotest-marker)
+             (rinari-test)))
+          (t ;; without marker
+           (rinari-test))
+          )))
+
+(defun my-rinari-test-with-preferred-window-configuration ()
   (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
          (orig-buffer  (current-buffer)))
     (when (open-related-file-open)
       (unless is-test-file (other-window 1))
       (split-window-vertically)
-      (rinari-test)
+      (my-rinari-test-on-appropriate-position)
       (select-window (get-buffer-window orig-buffer)))))
 
-(defun my-rinari-is-spork-running ()
-  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
-    (< 0 (length grep-result))))
-
-(defun my-rinari-test ()
+(defun my-rinari-test-using-spork ()
   "Start spork process if it is not running.
-Then run tests in a preferred window configuration on after-save."
+Then run tests in a preferred window configuration."
   (interactive)
-  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep"))
-        (branch-same (equal my-rinari-spork-branch (egg-HEAD))))
-    (cond ((or (not branch-same) (not (my-rinari-is-spork-running)))
-           (my-rinari-spork))
+  (let* ((same-branch          (equal my-rinari-spork-branch (egg-HEAD)))
+         (need-to-launch-spork (or (not same-branch) (not (my-rinari-is-spork-running?)))))
+    (cond (need-to-launch-spork
+           (my-rinari-start-spork))
           (t
-           (my-rinari-test-core))
+           (my-rinari-test-with-preferred-window-configuration))
           )))
-(define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test)
+(define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test-using-spork)
 
-(defvar my-rinari-autotest-after-save nil)
-(defun my-rinari-test-toggle-test-after-save ()
+(defun my-rinari-autotest-toggle-run-after-save ()
   (interactive)
   (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
   (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save)
-  (when (and my-rinari-autotest-after-save (not (my-rinari-is-spork-running)))
-    (my-rinari-spork)))
-(define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-test-toggle-test-after-save)
+  (when (and my-rinari-autotest-after-save (not (my-rinari-is-spork-running?)))
+    (my-rinari-start-spork)))
+(define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-autotest-toggle-run-after-save)
 
 (defun my-rinari-test-with-check ()
   (interactive)
   (when my-rinari-autotest-after-save
-    (my-rinari-test)))
+    (my-rinari-test-using-spork)))
 (add-hook 'rinari-minor-mode-hook
           (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
 
-;; rinari-rgrepのターゲットファイルを絞る
-(setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml")
+(defun my-rinari-autotest-set-marker ()
+  (interactive)
+  (setq my-rinari-autotest-marker (point-marker))
+  (message "rinari autotest marker is set"))
+(defun my-rinari-autotest-clear-marker ()
+  (interactive)
+  (setq my-rinari-autotest-marker nil)
+  (message "rinari autotest marker is removed"))
+(define-key rinari-minor-mode-map (kbd "C-c ; m") 'my-rinari-autotest-set-marker)
+(define-key rinari-minor-mode-map (kbd "C-c ; M") 'my-rinari-autotest-clear-marker)
 
 
 ;; JavaScript
