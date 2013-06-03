@@ -1192,6 +1192,16 @@ Then run tests in a preferred window configuration."
 (define-key rinari-minor-mode-map (kbd "C-c ; m") 'my-rinari-autotest-set-marker)
 (define-key rinari-minor-mode-map (kbd "C-c ; M") 'my-rinari-autotest-clear-marker)
 
+(defun my-rinari-rgrep ()
+  (interactive)
+  (rinari-rgrep)
+  (delete-other-windows)
+  (split-window-horizontally)
+  (other-window 1)
+  (switch-to-buffer "*grep*")
+  (other-window 1))
+(define-key rinari-minor-mode-map (kbd "C-c ; g") 'my-rinari-rgrep)
+
 
 ;; JavaScript
 (autoload 'js2-mode "js2" nil t)
