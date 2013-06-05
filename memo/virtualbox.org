@@ -16,5 +16,6 @@
 
 * Guest Additionの時刻調整機能の設定
 ** デフォルトだと20分以内のずれはじわじわ合わせようとする。ズバッと変更するように20分 => 15秒に変更
-** ホスト側(Ubuntu-64の部分はVMの名前、カーネルが入れ替わってGuestAdditionを入れなおすたびに実行する) : $ VBoxManage guestproperty set "Ubuntu-64" "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold" 15000
-** 設定反映のためにゲスト側 : $ sudo /etc/init.d/vboxadd-service restart
+** カーネルが入れ替わってGuestAdditionを入れなおすたびに以下を実行 (Ubuntu-64の部分はVMの名前)
+*** ホスト側 : $ VBoxManage guestproperty set "Ubuntu-64" "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold" 15000
+*** ゲスト側 : $ sudo /etc/init.d/vboxadd-service restart
