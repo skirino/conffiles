@@ -274,6 +274,22 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; M-x grepの検索結果を編集してファイルに反映
 (require 'wgrep)
 (define-key grep-mode-map (kbd "e") 'wgrep-change-to-wgrep-mode)
+
+;; git grepのカスタマイズ
+(defun my-git-grep (search-pattern)
+  (interactive (list
+                (let ((word (or (thing-at-point 'word) "")))
+                  (read-string (format "Search for (%s): " word) nil nil word))))
+  (grep (format "git --no-pager grep -nHe '%s'" search-pattern))
+  (my-grep-place-buffers))
+(global-set-key (kbd "C-x g") 'my-git-grep)
+
+(defun my-grep-place-buffers ()
+  (delete-other-windows)
+  (split-window-horizontally)
+  (other-window 1)
+  (switch-to-buffer "*grep*")
+  (other-window 1))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -1195,11 +1211,7 @@ Then run tests in a preferred window configuration."
 (defun my-rinari-rgrep ()
   (interactive)
   (rinari-rgrep)
-  (delete-other-windows)
-  (split-window-horizontally)
-  (other-window 1)
-  (switch-to-buffer "*grep*")
-  (other-window 1))
+  (my-grep-place-buffers))
 (define-key rinari-minor-mode-map (kbd "C-c ; g") 'my-rinari-rgrep)
 
 
