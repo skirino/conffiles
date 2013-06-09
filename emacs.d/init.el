@@ -275,14 +275,35 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'wgrep)
 (define-key grep-mode-map (kbd "e") 'wgrep-change-to-wgrep-mode)
 
-;; git grepのカスタマイズ
-(defun my-git-grep (search-pattern)
-  (interactive (list
-                (let ((word (or (thing-at-point 'word) "")))
-                  (read-string (format "Search for (%s): " word) nil nil word))))
-  (grep (format "git --no-pager grep -nHe '%s'" search-pattern))
-  (my-grep-place-buffers))
-(global-set-key (kbd "C-x g") 'my-git-grep)
+;; 自前grepコマンド定義
+(setq grep-use-null-device nil)
+
+(defun my-grep ()
+  (interactive)
+  (my-grep-impl ""))
+(global-set-key (kbd "C-x g") 'my-grep)
+
+(defun my-grep-i ()
+  (interactive)
+  (my-grep-impl "-i"))
+(global-set-key (kbd "C-x G") 'my-grep-i)
+
+(defun my-grep-impl (ignore-case-option)
+  (let* ((word (or (thing-at-point 'word) ""))
+         (search-pattern (read-string (format "Search for (%s): " word) nil nil word)))
+    (if (and (buffer-file-name) (egg-is-dir-in-git (buffer-file-name)))
+        (my-git-grep search-pattern ignore-case-option)
+      (my-rgrep search-pattern ignore-case-option))
+    (my-grep-place-buffers)))
+
+(defun my-git-grep (search-pattern ignore-case-option)
+  (let* ((repo-dir (file-name-directory (egg-git-dir)))
+         (rel-path (substring (file-name-directory (buffer-file-name)) (length repo-dir)))
+         (dir-arg  (replace-regexp-in-string "[^/]+" ".." rel-path)))
+    (grep (format "git --no-pager grep %s -nHe '%s' %s" ignore-case-option search-pattern dir-arg))))
+
+(defun my-rgrep (search-pattern ignore-case-option)
+  (grep (format "grep %s -rnHe '%s' ." ignore-case-option search-pattern)))
 
 (defun my-grep-place-buffers ()
   (delete-other-windows)
