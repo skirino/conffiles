@@ -65,8 +65,9 @@ wmctrl -r Firefox -t 1
 ** org-mode(aptで最新をインストール)
 ** pwgen
 ** xclip
-** curl
+** curl, libcurl4-openssl-dev(phobosのコンパイルのため)
 ** heroku-toolbeltを検索してインストール
 ** openssh-server
 ** alien
 ** xchat-gnome
+** libvte2_90-dev
