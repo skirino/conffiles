@@ -5,6 +5,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために環境変数を変更しておく
+(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
+(setenv "PATH" (concat (getenv "PATH") (format ":%s/code/conffiles/bin" (getenv "HOME"))))
+
+;; proxy
+(let ((proxy-line (shell-command-to-string "/bin/grep 'http_proxy' /etc/environment")))
+  (when (and proxy-line (string-match "\"\\(.*\\)\"" proxy-line))
+    (let ((proxy-host (match-string 1 proxy-line)))
+      (setenv "http_proxy" proxy-host))))
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; packages
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -32,12 +44,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super)
 )
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために、PATH環境変数を変更しておく
-(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
-(setenv "PATH" (concat (getenv "PATH") (format ":%s/code/conffiles/bin" (getenv "HOME"))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
