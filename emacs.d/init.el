@@ -960,7 +960,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
           (setq my-font-height 105)
           (setq my-font "DejaVu Sans Mono")
           (setq my-font-ja "IPAゴシック")
-          (setq face-font-rescale-alist '(("IPAゴシック" . 1.15)))
+          (setq face-font-rescale-alist '(("IPAゴシック" . 1.20)))
           (set-face-attribute 'default nil :family my-font :height my-font-height)
 
           ;; 日本語文字に別のフォントを指定
