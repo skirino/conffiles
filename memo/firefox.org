@@ -12,6 +12,7 @@
 ** Default FullZoom Level
 ** Restartless Restart
 ** Tab Auto Reload
+** Font Finder
 
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
