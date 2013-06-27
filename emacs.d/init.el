@@ -5,9 +5,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; 子プロセスのために環境変数を変更しておく
-(setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin"))
-(setenv "PATH" (concat (getenv "PATH") (format ":%s/code/conffiles/bin" (getenv "HOME"))))
+;;;;;;;;;;;;;;;;;;;;;;;; 環境変数
+(let* ((paths-with-newline (shell-command-to-string "source ~/.zshrc; echo $PATH"))
+       (paths (replace-regexp-in-string "[\r?\n]+" "" paths-with-newline)))
+  (setenv "PATH" paths)
+  (setq exec-path (append (split-string paths ":") exec-path)))
 
 ;; proxy
 (let ((proxy-line (shell-command-to-string "/bin/grep 'http_proxy' /etc/environment")))
@@ -1263,9 +1265,7 @@ Then run tests in a preferred window configuration."
 (defun turn-on-paredit () (paredit-mode 1))
 (add-hook 'clojure-mode-hook 'turn-on-paredit)
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
-
 (require 'nrepl)
-(setenv "PATH" (concat (getenv "PATH") ":/usr/java/jdk1.7.0_07/bin")) ;; java path
 
 
 ;; Scala
@@ -1565,7 +1565,6 @@ Then run tests in a preferred window configuration."
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(exec-path (quote ("/opt/local/bin" "/usr/bin" "/bin" "/usr/local/bin" "~/bin" "~/.cabal/bin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(safe-local-variable-values (quote ((encoding . utf-8) (ruby-compilation-executable . "ruby1.9"))))
