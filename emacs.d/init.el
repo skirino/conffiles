@@ -1271,10 +1271,13 @@ Then run tests in a preferred window configuration."
 ;; Scala
 (require 'scala-mode2)
 (require 'ensime)
-;; This step causes the ensime-mode to be started whenever
-;; scala-mode is started for a buffer. You may have to customize this step
-;; if you're not using the standard scala mode.
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+;; Run apk from within ensime
+(defun my-ensime-run-apk-in-emulator ()
+  (interactive)
+  (ensime-sbt-switch)
+  (ensime-sbt-action "android:start-emulator"))
+(define-key ensime-mode-map (kbd "C-c C-b a") 'my-ensime-run-apk-in-emulator)
 
 
 ;; YaTeX
