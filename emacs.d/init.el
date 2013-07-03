@@ -787,6 +787,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;; w3m
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; HTTP request
+(require 'request)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ibus
 (when (eq system-type 'gnu/linux)
