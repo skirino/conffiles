@@ -1283,6 +1283,11 @@ Then run tests in a preferred window configuration."
   (ensime-sbt-action "android:start-emulator"))
 (define-key ensime-mode-map (kbd "C-c C-b a") 'my-ensime-run-apk-in-emulator)
 
+(defun make-play-doc-url (type &optional member)
+  (ensime-make-java-doc-url-helper
+   "file:///home/rajish/bin/play2/documentation/api/scala/" type member))
+(add-to-list 'ensime-doc-lookup-map '("^play\\.api\\." . make-play-doc-url))
+
 
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
