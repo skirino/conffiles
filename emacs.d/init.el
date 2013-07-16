@@ -1318,8 +1318,7 @@ Then run tests in a preferred window configuration."
     (w3m-redisplay-this-page)
     (split-window-horizontally)
     (switch-to-buffer orig-buffer)))
-(add-hook 'gfm-mode-hook
-          (lambda () (add-hook 'after-save-hook 'my-markdown-export-and-view nil t)))
+(define-key gfm-mode-map (kbd "<f6>") 'my-markdown-export-and-view)
 
 
 ;; GNU global
