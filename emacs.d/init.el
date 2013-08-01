@@ -86,6 +86,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
 
+;; auto revert
+(global-auto-revert-mode)
+
 ;; 履歴を保存
 (savehist-mode t)
 
