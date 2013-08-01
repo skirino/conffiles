@@ -1317,7 +1317,7 @@ Then run tests in a preferred window configuration."
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
-(setq markdown-command "redcarpet")
+(setq markdown-command "redcarpet --parse-tables")
 ;; save時にHTML変換したファイルを保存し、w3mで表示
 (defun my-markdown-export-and-view ()
   (interactive)
