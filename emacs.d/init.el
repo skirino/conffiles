@@ -13,9 +13,13 @@
 
 ;; proxy
 (let ((proxy-line (shell-command-to-string "/bin/grep 'http_proxy' /etc/environment")))
-  (when (and proxy-line (string-match "\"\\(.*\\)\"" proxy-line))
-    (let ((proxy-host (match-string 1 proxy-line)))
-      (setenv "http_proxy" proxy-host))))
+  (if (string-match "\"\\(.*\\)\"" proxy-line)
+      (setenv "http_proxy" (match-string 1 proxy-line))
+    (setenv "http_proxy" nil)))
+(let ((proxy-line (shell-command-to-string "/bin/grep 'https_proxy' /etc/environment")))
+  (if (string-match "\"\\(.*\\)\"" proxy-line)
+      (setenv "https_proxy" (match-string 1 proxy-line))
+    (setenv "https_proxy" nil)))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
