@@ -284,8 +284,9 @@ PATH=${ANDROID_SDK_HOME}/platform-tools:$PATH
 alias avd_manager='${ANDROID_SDK_HOME}/tools/android avd'
 
 
-# Erlang
+# Erlang & Elixir
 function erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
+PATH=~/code/Erlang/elixir/bin:$PATH
 
 
 # OS-specific settings

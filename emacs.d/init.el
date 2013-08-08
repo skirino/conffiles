@@ -1313,6 +1313,13 @@ Then run tests in a preferred window configuration."
 )
 
 
+;; Erlang and Elixir
+(require 'erlang-start)
+(require 'elixir-mode)
+(require 'flymake-elixir)
+(add-hook 'elixir-mode-hook 'flymake-elixir-load)
+
+
 ;; markdown mode
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
