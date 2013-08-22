@@ -1069,48 +1069,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "C-x c") 'compile)
 
 
-;; C/C++
-;; taken from libssh2-style.el
-(defconst libssh2-c-style
-  '((c-basic-offset . 2)
-    (c-comment-only-line-offset . 0)
-    (c-hanging-braces-alist     . ((substatement-open before after)))
-    (c-offsets-alist . ((topmost-intro        . 0)
-                        (topmost-intro-cont   . 0)
-                        (substatement         . +)
-                        (substatement-open    . 0)
-                        (statement-case-intro . +)
-                        (statement-case-open  . 0)
-                        (case-label           . 0)
-                        ))
-  )
-  "Libssh2 C Programming Style"
-)
-
-;; Customizations for all of c-mode, c++-mode, and objc-mode
-(defun libssh2-c-mode-common-hook ()
-  "Libssh2 C mode hook"
-  ;; add libssh2 style and set it for the current buffer
-  (c-add-style "libssh2" libssh2-c-style t)
-  (setq tab-width 8
-        indent-tabs-mode nil            ; Use spaces, not tabs.
-        comment-column 40
-        c-font-lock-extra-types (append '("libssh2_int64_t" "LIBSSH2_USERAUTH_KBDINT_PROMPT" "LIBSSH2_SESSION" "LIBSSH2_CHANNEL" "ssize_t" "size_t" "uint32_t" "LIBSSH2_LISTENER" "LIBSSH2_POLLFD"))
-        )
-  ;; keybindings for C, C++, and Objective-C.  We can put these in
-  ;; c-mode-base-map because of inheritance ...
-  (define-key c-mode-base-map (kbd "M-q") 'c-fill-paragraph)
-  (setq c-recognize-knr-p nil)
-
-  ;; disable c-electric-paren and use skeleton-pair-insert
-  (define-key c-mode-base-map "(" nil)
-  (define-key c-mode-base-map ")" nil)
-  (define-key c-mode-base-map "{" nil)
-  (define-key c-mode-base-map "}" nil)
-)
-(add-hook 'c-mode-common-hook 'libssh2-c-mode-common-hook)
-
-
 ;; gdb
 (setq gdb-many-windows t)
 (setq gdb-use-separate-io-buffer t) ; "IO buffer" が必要ない場合は  nil で
@@ -1371,24 +1329,24 @@ Then run tests in a preferred window configuration."
 
 ;; handler without makefile
 (defun flymake-c-init ()
-  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-         (local-file  (file-relative-name
-                       temp-file
-                       (file-name-directory buffer-file-name))))
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name
+                      temp-file
+                      (file-name-directory buffer-file-name))))
     (list "gcc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 (push '("\\.c$" flymake-c-init) flymake-allowed-file-name-masks)
 
 (defun flymake-cc-init ()
-  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-         (local-file  (file-relative-name
-                       temp-file
-                       (file-name-directory buffer-file-name))))
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name
+                      temp-file
+                      (file-name-directory buffer-file-name))))
     (list "g++" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 (push '("\\.cxx$" flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.cc$" flymake-cc-init) flymake-allowed-file-name-masks)
+(push '("\\.cc$"  flymake-cc-init) flymake-allowed-file-name-masks)
 
 (defun flymake-d-init ()
   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
