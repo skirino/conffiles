@@ -261,6 +261,7 @@ function ghash() { git rev-parse ${1-master};    }
 
 # Ruby
 alias irb='irb -r irb/completion'
+PATH=/usr/local/heroku/bin:$PATH
 
 
 # D programming
