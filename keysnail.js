@@ -447,7 +447,7 @@ key.setViewKey([':', 'T'], function (ev, arg) {
     ext.exec("bmany-list-bookmarks-with-tag", arg, ev);
 }, "bmany - タグ付きブックマークを一覧表示");
 
-key.setViewKey([['C-+'], [':', 'h']], function (ev, arg) {
+key.setViewKey([['C-+'], ['C-h'], [':', 'h']], function (ev, arg) {
     ext.exec("history-show", arg, ev);
 }, 'History - リストを表示', true);
 
