@@ -115,11 +115,15 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; (自作) 開いているファイルと関連したファイルを開く。関連するファイルは前もって登録しておく
 (require 'open-related-file)
 (global-set-key (kbd "C-c ; o") 'open-related-file-open)
+;; rails
 (open-related-file-append-group "%1/app/controllers/%2.rb" "%1/test/functional/%2_test.rb"  )
 (open-related-file-append-group "%1/app/helpers/%2.rb"     "%1/test/unit/helpers/%2_test.rb")
 (open-related-file-append-group "%1/app/models/%2.rb"      "%1/test/unit/%2_test.rb"        )
 (open-related-file-append-group "%1/app/mailers/%2.rb"     "%1/test/mailers/%2_test.rb"     )
 (open-related-file-append-group "%1/app/decorators/%2.rb"  "%1/test/decorators/%2_test.rb"  ) ;; decorators and their tests created by "draper" gem
+;; Play! framework 2 for Scala
+(open-related-file-append-group "%1/app/controllers/%2.scala" "%1/test/controllers/%2Spec.scala")
+(open-related-file-append-group "%1/app/models/%2.scala"      "%1/test/models/%2Spec.scala")
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
