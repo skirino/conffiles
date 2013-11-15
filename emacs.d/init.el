@@ -1234,6 +1234,12 @@ Then run tests in a preferred window configuration."
 (add-hook 'coffee-mode-hook 'flymake-coffee-load)
 
 
+;; Jade
+(require 'jade-mode)
+;; use jade-mode for *.dt
+(add-to-list 'auto-mode-alist '("\\.dt$" . jade-mode))
+
+
 ;; Clojure
 (require 'clojure-mode)
 (defun turn-on-paredit () (paredit-mode 1))
