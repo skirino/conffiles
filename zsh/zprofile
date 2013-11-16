@@ -1,3 +1,6 @@
 
 # Android
 export ANDROID_SDK_HOME=$HOME/code/Android/sdk
+
+# Suppress auto repeat of keys in VirtualBox guest
+xset -r 49
