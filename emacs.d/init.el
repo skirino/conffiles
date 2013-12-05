@@ -1386,7 +1386,7 @@ Then run tests in a preferred window configuration."
       (if help (message "%s" help)))))
 (add-hook 'post-command-hook 'my-flymake-show-help)
 
-;; M-p/M-n で警告/エラー行に移動
+;; M-P/M-N で警告/エラー行に移動
 (defun my-goto-prev-error ()
   (interactive)
   (flymake-goto-prev-error)
@@ -1395,8 +1395,8 @@ Then run tests in a preferred window configuration."
   (interactive)
   (flymake-goto-next-error)
   (next-error))
-(global-set-key (kbd "M-p") 'my-goto-prev-error)
-(global-set-key (kbd "M-n") 'my-goto-next-error)
+(global-set-key (kbd "M-P") 'my-goto-prev-error)
+(global-set-key (kbd "M-N") 'my-goto-next-error)
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 
 
