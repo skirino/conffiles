@@ -700,13 +700,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (update-anything-filelist)
 
 
-;; anything-c-moccur.el
-(require 'anything-c-moccur)
-(setq moccur-split-word t)
-(global-set-key (kbd "M-s") 'anything-c-moccur-occur-by-moccur)
-(define-key isearch-mode-map (kbd "C-o") 'anything-c-moccur-from-isearch)
-
-
 ;; exuberant ctags
 (global-set-key (kbd "M-E") 'anything-c-etags-select)
 
