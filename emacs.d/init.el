@@ -1083,9 +1083,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (add-to-list 'file-coding-system-alist '("\\.vapi$" . utf-8))
 
 
-;; python, genieもpython-modeにする
+;; python
 (require 'python)
-(add-to-list 'auto-mode-alist '("\\.gs$" . python-mode))
 ;; returnでカーソルのいた行もインデントするのはpythonだとダメ
 (defun my-newline-and-indent ()
   (interactive)
