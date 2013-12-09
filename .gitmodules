@@ -1,6 +1,3 @@
-[submodule "emacs.d/submodules/coffee-mode"]
-	path = emacs.d/submodules/coffee-mode
-	url = https://github.com/defunkt/coffee-mode.git
 [submodule "emacs.d/submodules/rinari"]
 	path = emacs.d/submodules/rinari
 	url = https://github.com/eschulte/rinari.git
@@ -22,9 +19,6 @@
 [submodule "emacs.d/submodules/open-related-file"]
 	path = emacs.d/submodules/open-related-file
 	url = https://github.com/skirino/open-related-file.git
-[submodule "emacs.d/submodules/flymake-coffee"]
-	path = emacs.d/submodules/flymake-coffee
-	url = https://github.com/purcell/flymake-coffee.git
 [submodule "emacs.d/submodules/clojure-mode"]
 	path = emacs.d/submodules/clojure-mode
 	url = https://github.com/technomancy/clojure-mode.git
