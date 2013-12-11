@@ -34,3 +34,6 @@
 [submodule "emacs.d/submodules/d-mode"]
 	path = emacs.d/submodules/d-mode
 	url = https://github.com/Emacs-D-Mode-Maintainers/Emacs-D-Mode.git
+[submodule "emacs.d/submodules/sdic"]
+	path = emacs.d/submodules/sdic
+	url = https://github.com/emacsattic/sdic.git
