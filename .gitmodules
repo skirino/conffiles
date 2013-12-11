@@ -1,12 +1,6 @@
 [submodule "emacs.d/submodules/open-related-file"]
 	path = emacs.d/submodules/open-related-file
 	url = https://github.com/skirino/open-related-file.git
-[submodule "emacs.d/submodules/clojure-mode"]
-	path = emacs.d/submodules/clojure-mode
-	url = https://github.com/technomancy/clojure-mode.git
-[submodule "emacs.d/submodules/nrepl"]
-	path = emacs.d/submodules/nrepl
-	url = https://github.com/kingtim/nrepl.el.git
 [submodule "zsh/auto-fu"]
 	path = zsh/auto-fu
 	url = https://github.com/skirino/auto-fu.zsh.git
