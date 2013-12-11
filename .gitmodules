@@ -4,9 +4,6 @@
 [submodule "emacs.d/submodules/undo-tree"]
 	path = emacs.d/submodules/undo-tree
 	url = http://www.dr-qubit.org/git/undo-tree.git
-[submodule "emacs.d/submodules/jaunte"]
-	path = emacs.d/submodules/jaunte
-	url = https://github.com/kawaguchi/jaunte.el.git
 [submodule "emacs.d/submodules/yasnippet"]
 	path = emacs.d/submodules/yasnippet
 	url = https://github.com/capitaomorte/yasnippet.git
