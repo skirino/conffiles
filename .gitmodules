@@ -7,9 +7,6 @@
 [submodule "emacs.d/submodules/yasnippet"]
 	path = emacs.d/submodules/yasnippet
 	url = https://github.com/capitaomorte/yasnippet.git
-[submodule "emacs.d/submodules/markdown-mode"]
-	path = emacs.d/submodules/markdown-mode
-	url = https://github.com/defunkt/markdown-mode.git
 [submodule "emacs.d/submodules/open-related-file"]
 	path = emacs.d/submodules/open-related-file
 	url = https://github.com/skirino/open-related-file.git
