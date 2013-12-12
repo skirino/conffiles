@@ -255,8 +255,14 @@ compdef _git gpick=git-cherry-pick
 alias ggrep='git grep -n'
 compdef _git ggrep=git-grep
 alias gsubup='git submodule update'
+alias gfetch='git fetch'
+compdef _git gfetch=git-fetch
 
 function ghash() { git rev-parse ${1-master};    }
+function gpush() {
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  git push origin $branch:$branch
+}
 
 
 # Ruby
