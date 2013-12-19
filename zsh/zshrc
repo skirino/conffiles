@@ -263,6 +263,10 @@ function gpush() {
   local branch=$(git rev-parse --abbrev-ref HEAD)
   git push origin $branch:$branch
 }
+function gpushf() {
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  git push -f origin $branch:$branch
+}
 
 
 # Ruby
