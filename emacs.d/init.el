@@ -493,6 +493,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; auto-fill-modeをデフォルトでOFFにする
+(remove-hook 'text-mode-hook 'turn-on-auto-fill)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; view-mode
 (require 'view)
 (key-chord-define-global "vm" 'view-mode)
