@@ -206,7 +206,13 @@ export PATH=~/bin:~/code/conffiles/bin:$PATH
 # global aliases
 alias -g L='| less'
 alias -g G='| grep'
-alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | xclip -selection clipboard'
+if which pbcopy >/dev/null 2>&1 ; then
+    alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | pbcopy'
+elif which xsel >/dev/null 2>&1 ; then
+    alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | xsel --input --clipboard'
+elif which putclip >/dev/null 2>&1 ; then
+    alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | putclip'
+fi
 
 
 # aliases
