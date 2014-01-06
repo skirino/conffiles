@@ -251,13 +251,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-auto-complete-mode t)
 
 ;; 括弧などの自動補完
-(require 'flex-autopair)
+(global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+(global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+(setq skeleton-pair 1)
 
-;; Lisp系ではparedit, flex-autopairをオンにしないようにする
-(setq flex-autopair-disable-modes '(emacs-lisp-mode
-                                    lisp-mode
-                                    lisp-interaction-mode
-                                    clojure-mode))
 (require 'paredit)
 (add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
 (add-hook 'lisp-mode-hook             'enable-paredit-mode)
