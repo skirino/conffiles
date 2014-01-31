@@ -830,6 +830,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq hl-line-face 'my-hl-line-face)
 
 
+;; 行の折り返し
+(key-chord-define-global "kl" 'toggle-truncate-lines)
+
+
 ;; 対応する括弧を表示させる
 (show-paren-mode t)
 
