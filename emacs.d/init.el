@@ -125,6 +125,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (open-related-file-append-group "%1/app/controllers/%2.scala" "%1/test/controllers/%2Spec.scala")
 (open-related-file-append-group "%1/app/models/%2.scala"      "%1/test/models/%2Spec.scala")
 (open-related-file-append-group "%1/app/utils/%2.scala"       "%1/test/utils/%2Spec.scala")
+(open-related-file-append-group "%1/app/workers/%2.scala"     "%1/test/workers/%2Spec.scala")
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
