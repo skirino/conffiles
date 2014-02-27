@@ -307,7 +307,7 @@ PATH=~/code/Erlang/elixir/bin:$PATH
 
 
 # JS
-PATH=~/code/JS/node/bin:$PATH
+PATH=~/.nodebrew/current/bin:$PATH
 
 
 # OS-specific settings
