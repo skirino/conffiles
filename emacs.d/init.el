@@ -1055,6 +1055,11 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "C-x c") 'compile)
 
 
+;; shell script
+(setq sh-basic-offset 2)
+(setq sh-indentation 2)
+
+
 ;; gdb
 (setq gdb-many-windows t)
 (setq gdb-use-separate-io-buffer t) ; "IO buffer" が必要ない場合は  nil で
