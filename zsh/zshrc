@@ -236,8 +236,9 @@ alias xopen='xdg-open'
 alias gst='git status'
 compdef _git gst=git-status
 alias gbr='git branch'
-alias gbra='git branch -a'
 compdef _git gbr=git-branch
+alias gbra='git branch -a'
+compdef _git gbra=git-branch
 alias glog='git log'
 compdef _git glog=git-log
 alias glog1='git log --oneline'
@@ -246,30 +247,30 @@ alias gdiff='git diff'
 compdef _git gdiff=git-diff
 alias gdiffc='git diff --cached'
 compdef _git gdiffc=git-diff
+alias ggrep='git grep -n'
+compdef _git ggrep=git-grep
+alias gcherry='git cherry -v'
+compdef _git gcherry=git-cherry
+ghash() { git rev-parse ${1-HEAD}; }
+
 alias gci='git commit'
 compdef _git gci=git-commit
 alias gco='git checkout'
 compdef _git gco=git-checkout
 alias gadd='git add'
 compdef _git gadd=git-add
-alias gmtool='git mergetool'
-compdef _git gmtool=git-mergetool
-alias gcherry='git cherry -v'
-compdef _git gcherry=git-cherry
 alias gpick='git cherry-pick'
 compdef _git gpick=git-cherry-pick
-alias ggrep='git grep -n'
-compdef _git ggrep=git-grep
-alias gsubup='git submodule update'
 alias gfetch='git fetch'
 compdef _git gfetch=git-fetch
-
-function ghash() { git rev-parse ${1-master};    }
-function gpush() {
+alias gmtool='git mergetool'
+compdef _git gmtool=git-mergetool
+alias gsubup='git submodule update'
+gpush() {
   local branch=$(git rev-parse --abbrev-ref HEAD)
   git push origin $branch:$branch
 }
-function gpushf() {
+gpushf() {
   local branch=$(git rev-parse --abbrev-ref HEAD)
   git push -f origin $branch:$branch
 }
@@ -289,7 +290,7 @@ PATH=~/.cabal/bin:$PATH
 
 
 # Clojure
-function cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
+cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
 
 # Scala
@@ -302,7 +303,7 @@ alias avd_manager='${ANDROID_SDK_HOME}/tools/android avd'
 
 
 # Erlang & Elixir
-function erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
+erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
 PATH=~/code/Erlang/elixir/bin:$PATH
 
 
@@ -313,12 +314,12 @@ PATH=~/.nodebrew/current/bin:$PATH
 # OS-specific settings
 case "${OSTYPE}" in
 freebsd*|darwin*)
-  function emc(){
+  emc(){
     /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -e '(elscreen-create)' 2>/dev/null && /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n $* 2>/dev/null || open -a /Applications/Emacs.app $* &
   }
   ;;
 linux*)
-  function emc(){
+  emc(){
     /usr/bin/emacsclient -n -a /usr/bin/emacs $* > /dev/null 2>&1 &
   }
   # disable screen lock by C-s
