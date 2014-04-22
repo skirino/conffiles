@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; emacs lispのpathを通す
 (let ((default-directory "~/.emacs.d/"))
   (normal-top-level-add-subdirs-to-load-path))
+(push "/usr/local/share/emacs/site-lisp" load-path)
 (require 'cl)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -534,28 +535,28 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq org-startup-folded nil)
 
 ;; org-modeでメモを取る, Emacs23以降
-(org-remember-insinuate)                                                  ; org-rememberの初期化
-(define-key org-remember-mode-map (kbd "C-x C-s") 'org-remember-finalize)
-(define-key org-remember-mode-map (kbd "C-x C-c") 'org-remember-kill)
-
-(setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
-(setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
-(setq org-remember-templates
-      '(("Log"  ?l "** %T %?" "log.org" "LOG")
-        ("Memo" ?m "** %T %?" nil       "Inbox")
-        ))
-(defun my-org-remember-log ()
-  (interactive)
-  (ibus-disable-if-present)
-  (org-remember '(0) "l")
-)
-(defun my-org-remember-memo ()
-  (interactive)
-  (ibus-disable-if-present)
-  (org-remember '(0) "m")
-)
-(global-set-key (kbd "M-l") 'my-org-remember-log)
-(global-set-key (kbd "M-m") 'my-org-remember-memo)
+;(org-remember-insinuate)                                                  ; org-rememberの初期化
+;(define-key org-remember-mode-map (kbd "C-x C-s") 'org-remember-finalize)
+;(define-key org-remember-mode-map (kbd "C-x C-c") 'org-remember-kill)
+;
+;(setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
+;(setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
+;(setq org-remember-templates
+;      '(("Log"  ?l "** %T %?" "log.org" "LOG")
+;        ("Memo" ?m "** %T %?" nil       "Inbox")
+;        ))
+;(defun my-org-remember-log ()
+;  (interactive)
+;  (ibus-disable-if-present)
+;  (org-remember '(0) "l")
+;)
+;(defun my-org-remember-memo ()
+;  (interactive)
+;  (ibus-disable-if-present)
+;  (org-remember '(0) "m")
+;)
+;(global-set-key (kbd "M-l") 'my-org-remember-log)
+;(global-set-key (kbd "M-m") 'my-org-remember-memo)
 
 (defun my-org-visit-file (filepath)
   (let ((osf-orig org-startup-folded))
@@ -965,8 +966,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
         (let (my-font-height my-font my-font-ja my-font-size my-fontset)
           (setq my-font-height 105)
           (setq my-font "DejaVu Sans Mono")
-          (setq my-font-ja "IPAゴシック")
-          (setq face-font-rescale-alist '(("IPAゴシック" . 1.20)))
+          (setq my-font-ja "IPAGothic")
+          (setq face-font-rescale-alist '(("IPAGothic" . 1.20)))
           (set-face-attribute 'default nil :family my-font :height my-font-height)
 
           ;; 日本語文字に別のフォントを指定
@@ -1484,8 +1485,8 @@ Then run tests in a preferred window configuration."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
 (require 'sdic)
-(setq sdic-eiwa-dictionary-list '((sdicf-client "/usr/share/dict/gene.sdic")))   ; 英和
-(setq sdic-waei-dictionary-list '((sdicf-client "/usr/share/dict/jedict.sdic"))) ; 和英
+(setq sdic-eiwa-dictionary-list '((sdicf-client "/usr/local/share/dict/gene.sdic")))   ; 英和
+(setq sdic-waei-dictionary-list '((sdicf-client "/usr/local/share/dict/jedict.sdic"))) ; 和英
 
 ;; tooltipで表示
 (defun temp-cancel-read-only (function &optional jaspace-off)
