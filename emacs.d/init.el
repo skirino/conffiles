@@ -486,8 +486,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; CUA
 (cua-mode t)
-;; C-cやC-vの乗っ取りを阻止
-(setq cua-enable-cua-keys nil)
+(setq cua-enable-cua-keys nil)                     ;; C-cやC-vの乗っ取りを阻止
+(define-key cua-global-keymap (kbd "C-S-SPC") nil) ;; C-S-SPCを空ける
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -783,34 +783,13 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; ibus
-(when (eq system-type 'gnu/linux)
-  (when (eq window-system 'x)
-    ;; mini bufferではオフにし、戻るときに状態を復元する
-    (defvar ibus-enabled-before? nil)
-
-    (defun ibus-disable ()
-      (shell-command-to-string "ibus-off"))
-    (defun ibus-disable-and-save-status ()
-      (when (string= (ibus-disable) "iBus disabled\n")
-        (setq ibus-enabled-before? t)))
-    (defun ibus-restore-previous-status ()
-      (when ibus-enabled-before?
-        (setq ibus-enabled-before? nil)
-        (shell-command "ibus-on")))
-
-    (add-hook 'minibuffer-setup-hook 'ibus-disable-and-save-status)
-    (add-hook 'minibuffer-exit-hook  'ibus-restore-previous-status)
-    (add-hook 'isearch-mode-hook     'ibus-disable-and-save-status)
-    (add-hook 'isearch-mode-end-hook 'ibus-restore-previous-status)
-    ))
-
-(defun ibus-disable-if-present ()
-  (when (eq system-type 'gnu/linux)
-    (when (eq window-system 'x)
-      (ibus-disable))))
-;;;;;;;;;;;;;;;;;;;;;;;; ibus
-
+;;;;;;;;;;;;;;;;;;;;;;;; mozc
+(require 'mozc)
+(set-language-environment "Japanese")
+(setq default-input-method "japanese-mozc")
+(global-set-key (kbd "<zenkaku-hankaku>") '(lambda () (interactive) (mozc-mode t  )))
+(global-set-key (kbd "S-C-SPC"          ) '(lambda () (interactive) (mozc-mode nil)))
+;;;;;;;;;;;;;;;;;;;;;;;; mozc
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
@@ -910,6 +889,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
   ;; GUIでの色付け
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
+  ;; Transparency: should work but is not working within my environment
+  (set-frame-parameter (selected-frame) 'alpha '(85 50))
+  (add-to-list 'default-frame-alist '(alpha 85 50))
 )
 
 (defun my-start-cui-emacs ()
