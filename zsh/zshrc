@@ -1,5 +1,3 @@
-# users generic .zshrc file for zsh(1)
-
 ## Environment variable configuration
 #
 # LANG
@@ -204,9 +202,6 @@ linux*)
 esac
 
 
-export PATH=~/bin:~/code/conffiles/bin:$PATH
-
-
 # global aliases
 alias -g L='| less'
 alias -g G='| grep'
@@ -236,7 +231,7 @@ alias emnw='/usr/bin/emacs -nw'
 alias xopen='xdg-open'
 
 
-# aliases for git commands
+# git utilities
 alias gst='git status'
 compdef _git gst=git-status
 alias gbr='git branch'
@@ -280,42 +275,36 @@ gpushf() {
 }
 
 
+########## Programming
 # Ruby
 alias irb='irb -r irb/completion'
 PATH=/usr/local/heroku/bin:$PATH
 
-
 # D programming
 PATH=/opt/dmd/bin:$PATH
-
 
 # Haskell
 PATH=~/.cabal/bin:$PATH
 
-
 # Clojure
 cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
-
 # Scala
 PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:~/code/Scala/play:$PATH
-
 
 # Android
 PATH=${ANDROID_SDK_HOME}/platform-tools:$PATH
 alias avd_manager='${ANDROID_SDK_HOME}/tools/android avd'
 
-
 # Erlang & Elixir
 erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
 PATH=~/code/Erlang/elixir/bin:$PATH
-
 
 # JS
 PATH=~/.nodebrew/current/bin:$PATH
 
 
-# OS-specific settings
+########## OS-specific settings
 case "${OSTYPE}" in
 freebsd*|darwin*)
   emc(){

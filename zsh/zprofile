@@ -1,6 +1,17 @@
-
-# Android
-export ANDROID_SDK_HOME=$HOME/code/Android/sdk
+########## X windows settings
+# Key repeat settings
+xset r rate 250 40
 
 # Suppress auto repeat of keys in VirtualBox guest
 xset -r 49
+
+# Wallpaper
+feh --bg-fill ~/docs/Pictures/wallpaper.png
+
+
+########## environment variables
+# PATH
+export PATH=~/bin:~/code/conffiles/bin:$PATH
+
+# Android
+export ANDROID_SDK_HOME=$HOME/code/Android/sdk
