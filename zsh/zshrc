@@ -278,7 +278,8 @@ gpushf() {
 ########## Programming
 # Ruby
 alias irb='irb -r irb/completion'
-PATH=/usr/local/heroku/bin:~/.gem/ruby/2.1.0/bin:$PATH
+PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/2.1.0/bin:$PATH
+eval "$(rbenv init -)"
 
 # D programming
 PATH=/opt/dmd/bin:$PATH
