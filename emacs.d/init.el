@@ -1,3 +1,4 @@
+
 ;;;;;;;;;;;;;;;;;;;;;;;; emacs lispのpathを通す
 (let ((default-directory "~/.emacs.d/"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -585,7 +586,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;; org-html5presentation
-(require 'org-html5presentation)
+(require 'ox-html5presentation)
 (define-key org-mode-map (kbd "<f5>") 'org-export-as-html5presentation)
 (define-key org-mode-map (kbd "<f6>") 'org-export-as-html5presentation-and-open)
 ;;;;;;;;;;;;;;;;;;;;;;;;

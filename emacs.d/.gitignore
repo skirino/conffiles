@@ -7,3 +7,5 @@ auto-save-list/
 elpa
 url/
 private
+places
+backups/

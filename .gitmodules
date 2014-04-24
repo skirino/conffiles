@@ -4,9 +4,9 @@
 [submodule "zsh/auto-fu"]
 	path = zsh/auto-fu
 	url = https://github.com/skirino/auto-fu.zsh.git
-[submodule "emacs.d/submodules/org-html5presentation"]
-	path = emacs.d/submodules/org-html5presentation
-	url = https://gist.github.com/509761.git
 [submodule "emacs.d/submodules/sdic"]
 	path = emacs.d/submodules/sdic
 	url = https://github.com/emacsattic/sdic.git
+[submodule "emacs.d/submodules/org-html5presentation"]
+	path = emacs.d/submodules/org-html5presentation
+	url = https://github.com/kinjo/org-html5presentation.el.git
