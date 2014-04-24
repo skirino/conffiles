@@ -1,0 +1,18 @@
+Config { font = "xft:IPAGothic:size=14:bold:antialias=true"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = Top { height = 32 }
+       , lowerOnStart = True
+       , commands = [ Run StdinReader
+                    , Run Cpu        []                                10
+                    , Run Memory     ["-t", "Mem: <usedratio>%"]       10
+                    , Run Swap       []                                10
+                    , Run DiskU      [("/", "Disk: <used>/<size>")] [] 10
+                    , Run DiskIO     [("/", "IO: <read>|<write>")]  [] 10
+                    , Run DynNetwork []                                10
+                    , Run Date       "%Y/%m/%d(%a) %H:%M" "date"       10
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ <fc=skyblue>%cpu%</fc> | <fc=yellow>%memory%</fc> | <fc=blue>%swap%</fc> | <fc=orange>%disku%</fc> | <fc=red>%diskio%</fc> | <fc=green>%dynnetwork%</fc> | <fc=white>%date%</fc> "
+       }
