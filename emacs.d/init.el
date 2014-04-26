@@ -888,11 +888,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (global-set-key (kbd "C-z C-c") 'my-elscreen-create)
 
   ;; GUIでの色付け
+
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
-  ;; Transparency: should work but is not working within my environment
-  (set-frame-parameter (selected-frame) 'alpha '(85 50))
-  (add-to-list 'default-frame-alist '(alpha 85 50))
+  ;; Transparency: needs xcompmgr
+  (set-frame-parameter (selected-frame) 'alpha '(75 50))
+  (add-to-list 'default-frame-alist '(alpha 75 50))
 )
 
 (defun my-start-cui-emacs ()
@@ -1247,15 +1248,14 @@ Then run tests in a preferred window configuration."
 
 
 ;; Haskell mode
-(autoload 'ghc-init "ghc" nil t)
+(require 'haskell-mode)
+;(autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook
           (lambda ()
-            (ghc-init)
+            (turn-on-haskell-indentation)
+;            (ghc-init)
             (flymake-mode)
-            (turn-on-haskell-doc-mode)
-            (turn-on-haskell-indent)
-          )
-)
+            ))
 
 
 ;; Erlang and Elixir
