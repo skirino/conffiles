@@ -4,7 +4,10 @@
 *** キーのバックライトをオフにする
 *** F1, F2, ..., Fnキーの扱い: F5でブラウザリロード等(音量変更とかはFnキーを押しながら)にする
 *** キーボードのバックライトを消す(Fn + F5)
-
+*** ショートカット
+**** アプリケーション: VirtualBox guestでの操作とかち合うキーボード・ショートカットを別のものに変更する。メニュー上に表示される項目名で指定するが、この項目名は以下などに書かれている(MountainLion)。
+/System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Resources/Japanese.lproj/StandardMenus.nib/objects.xib
+***** 全体でのログアウトとVirtualBoxの終了を変更しておいた。
 ** -> 省エネルギー: 電源接続時はスリープまで1時間にする
 
 ** -> セキュリティとプライバシー
@@ -98,8 +101,9 @@
 (JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
 
 ** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
-「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-M-@"と変換する。
-以下のファイルを作っておくと、KeyRemap4Macの設定項目が追加されるので、これをチェック
+*** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-S-Space"に変換。
+*** MacにおけるOption, CommandはそのままだとGuest側ではAlt, Windowsキーになる。逆になってほしいので入れ替える。
+*** 以下のファイルを作っておくと上記2点の項目がKeyRemap4Macに追加されるので、これをチェック
 ----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
 <?xml version="1.0"?>
 <root>
@@ -107,11 +111,20 @@
     <appname>VIRTUALBOX</appname>
     <equal>org.virtualbox.app.VirtualBoxVM</equal>
   </appdef>
+
   <item>
-    <name>Kana to Option+Escape on VirtualBoxVM</name>
-    <identifier>private.virtualbox.keyswap</identifier>
+    <name>Eisuu to Ctrl+Shift+Space in VirtualBoxVM (to differentiate with Hankaku/Zenkaku key)</name>
+    <identifier>private.virtualbox.changeeisuu</identifier>
     <only>VIRTUALBOX</only>
-    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::JIS_ATMARK, ModifierFlag::CONTROL_L | ModifierFlag::COMMAND_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::SPACE, ModifierFlag::CONTROL_L | ModifierFlag::SHIFT_L</autogen>
+  </item>
+
+  <item>
+    <name>Swap command and option key in VirtualBoxVM</name>
+    <identifier>private.virtualbox.swapcommandoption</identifier>
+    <only>VIRTUALBOX</only>
+    <autogen>--KeyToKey-- KeyCode::COMMAND_L, KeyCode::OPTION_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::OPTION_L, KeyCode::COMMAND_L</autogen>
   </item>
 </root>
 -----
