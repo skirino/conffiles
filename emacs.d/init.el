@@ -888,12 +888,11 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (global-set-key (kbd "C-z C-c") 'my-elscreen-create)
 
   ;; GUIでの色付け
-
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
   ;; Transparency: needs xcompmgr
-  (set-frame-parameter (selected-frame) 'alpha '(75 50))
-  (add-to-list 'default-frame-alist '(alpha 75 50))
+  (set-frame-parameter (selected-frame) 'alpha '(85 50))
+  (add-to-list 'default-frame-alist '(alpha 85 50))
 )
 
 (defun my-start-cui-emacs ()
