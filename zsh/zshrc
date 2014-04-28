@@ -186,10 +186,6 @@ if [ -f /usr/share/autojump/autojump.zsh ]; then
 fi
 
 
-# automatically run ls
-function chpwd() { ls }
-
-
 case "${OSTYPE}" in
 freebsd*|darwin*)
     alias ls="ls -G -w"
@@ -200,6 +196,10 @@ linux*)
     alias grep="grep -n --color=auto"
     ;;
 esac
+
+
+# automatically run ls
+function chpwd() { ls }
 
 
 # global aliases
