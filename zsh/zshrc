@@ -148,7 +148,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 ## incremental completion by auto-fu
 source ${HOME}/code/conffiles/zsh/auto-fu/auto-fu.zsh
-zle-line-init () {auto-fu-init;}; zle -N zle-line-init
+zle-line-init() { auto-fu-init; }; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zle -N zle-keymap-select auto-fu-zle-keymap-select
 
@@ -157,12 +157,9 @@ zstyle ':auto-fu:highlight' completion fg=green,bold,underline
 zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
 zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
 
-afu-cancel() {
+afu-accept-line-with-clearing() {
     afu-clearing-maybe
     ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
-}
-afu-accept-line-with-clearing() {
-    afu-cancel
     zle afu+accept-line
 }
 zle -N afu-accept-line-with-clearing
