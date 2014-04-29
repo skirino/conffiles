@@ -13,6 +13,7 @@
 ** Restartless Restart
 ** Tab Auto Reload
 ** Font Finder
+** Markdown Here
 
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
