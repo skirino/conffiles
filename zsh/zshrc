@@ -145,30 +145,9 @@ eval `dircolors`
 export ZLS_COLORS=$LS_COLORS
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
-
-## incremental completion by auto-fu
-source ${HOME}/code/conffiles/zsh/auto-fu/auto-fu.zsh
-zle-line-init() { auto-fu-init; }; zle -N zle-line-init
-zstyle ':completion:*' completer _oldlist _complete
-zle -N zle-keymap-select auto-fu-zle-keymap-select
-
-zstyle ':auto-fu:var' postdisplay ''
-zstyle ':auto-fu:highlight' completion fg=green,bold,underline
-zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
-zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
-
-afu-accept-line-with-clearing() {
-    afu-clearing-maybe
-    ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
-    zle afu+accept-line
-}
-zle -N afu-accept-line-with-clearing
-bindkey -M afu "^M" afu-accept-line-with-clearing
-bindkey -M afu "^J" afu-accept-line-with-clearing
-
-
 # そのまま補完、小文字->大文字にして補完、大文字->小文字にして補完を順に試す
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
+
 
 
 # Make prompt like the following (skirino-... is underlined)
@@ -319,3 +298,40 @@ linux*)
   fi
   ;;
 esac
+
+
+########## incremental completion by auto-fu
+source ${HOME}/code/conffiles/zsh/auto-fu/auto-fu.zsh
+zle-line-init() { auto-fu-init; }; zle -N zle-line-init
+zstyle ':completion:*' completer _oldlist _complete
+zle -N zle-keymap-select auto-fu-zle-keymap-select
+
+zstyle ':auto-fu:var' postdisplay ''
+zstyle ':auto-fu:highlight' completion fg=green,bold,underline
+zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
+zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
+
+afu-accept-line-with-clearing() {
+  afu-clearing-maybe
+  ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
+  zle afu+accept-line
+}
+zle -N afu-accept-line-with-clearing
+bindkey -M afu "^M" afu-accept-line-with-clearing
+bindkey -M afu "^J" afu-accept-line-with-clearing
+
+
+########## percol (taken from README.md of percol)
+function exists { which $1 &> /dev/null }
+if exists percol; then
+  function percol_select_history() {
+    local tac
+    exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
+    BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
+    CURSOR=$#BUFFER         # move cursor
+    zle -R -c               # refresh
+  }
+
+  zle -N percol_select_history
+  bindkey -M afu '^R' percol_select_history
+fi
