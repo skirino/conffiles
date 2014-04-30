@@ -55,12 +55,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
-(set-language-environment 'Japanese)
-(prefer-coding-system 'utf-8)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; key-chord
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.04)
@@ -1522,6 +1516,17 @@ Then run tests in a preferred window configuration."
 
 (global-set-key (kbd "C-x p") 'my-sdic-describe-word-with-popup)
 ;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
+(set-language-environment "Japanese")
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
