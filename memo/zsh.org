@@ -1,0 +1,5 @@
+* zsh設定
+** zsh, zsh-completionのパッケージインストール
+** conffilesリポジトリのclone, submodule update
+** 設定ファイルへのシンボリックリンクの配置
+** percolのインストール

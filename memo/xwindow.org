@@ -1,0 +1,25 @@
+* Misc
+** スクリーンセーバー
+*** xscreensaver-demoで単純にblank screenに設定しておく
+** キーリピートの設定
+*** $ xset r rate 250 40
+** 半角/全角キーのリピート問題(以前遭遇したバグ、現在のVirtualBoxでは治っているかも)
+*** $ xset -r 49
+** 壁紙の設定
+*** fehをパッケージからインストール
+*** $ feh --bg-fill ~/Pictures/wallpaper.png
+
+* Xmonad
+** 以下をパッケージからインストール
+*** xmonad
+*** xmonad-contrib
+*** xmobar
+*** dmenu2-underline
+*** xcompmgr (Emacsの半透明化のためだけ)
+** デフォルトのX sessionをxmonadに変更
+** ログイン時に読み込まれるユーザスクリプト(display managerがmdmの場合~/.xprofile)に以下を追加しておく
+*** (xmobarはxmonad.hsから起動する想定)
+<pre>
+xcompmgr &
+xscreensaver -nosplash &
+</pre>

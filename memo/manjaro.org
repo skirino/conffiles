@@ -1,0 +1,32 @@
+* Manjaro基本設定
+** システムのアップデート
+*** $ sudo pacman -Syu
+** レポジトリと同期
+*** $ sudo pacman -Syy
+** yaourtのインストール
+*** $ pacman -S base-devel
+*** $ sudo pacman -Sy yaourt
+** zsh, zsh-completions
+** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる)
+** emacs, emacs-org-mode, emacs-apel, w3m
+** その他のパッケージ
+*** git, nkf, xsel, vte3, corkscrew, pwgen, meld, lilyterm
+*** erlang, OpenJDK 1.7
+** 以下のファイル群を配置
+*** ~/.gitconfig
+*** ~/.zshrc
+*** ~/.profile
+*** ~/.ssh
+*** ~/.emacs.d
+*** ~/.vimrc
+*** ~/.setarc
+*** ~/.xprofile (xwindow.org参照)
+** Ruby (rbenv)
+*** $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+*** $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+*** $ rbenv install --list
+*** $ rbenv install X.Y.Z
+*** $ rbenv global X.Y.Z
+
+[TODO]
+- VirtualBoxの共有フォルダが自動マウントされない。Ubuntuだと問題なかったが、適切にインストールするには?
