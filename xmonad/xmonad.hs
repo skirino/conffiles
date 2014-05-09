@@ -8,18 +8,9 @@
 --
 
 import Data.Monoid
-import System.Exit
-import System.IO
 import XMonad
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run(spawnPipe)
-import XMonad.Util.WorkspaceCompare
 import XMonad.Actions.CycleWS
-import XMonad.Layout.Named
-import XMonad.Layout.MultiToggle
-import XMonad.Layout.MultiToggle.Instances
-import XMonad.Config.Desktop (desktopLayoutModifiers)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
