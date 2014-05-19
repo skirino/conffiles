@@ -12,6 +12,7 @@
 ** その他のパッケージ
 *** git, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool
 *** erlang, OpenJDK 1.7
+*** postgres
 ** 以下のファイル群を配置
 *** ~/.gitconfig
 *** ~/.zshrc
@@ -29,3 +30,8 @@
 *** $ rbenv global X.Y.Z
 ** VBoxServiceをsystemdから起動する(時刻のsync, shared folderのmountのため)
 *** $ sudo systemctl enable vboxservice.service
+** PostgreSQL初期化
+*** $ sudo -i -u postgres
+*** $ initdb --locale ja_JP.UTF-8 -E UTF8 -D '/var/lib/postgres/data'
+*** $ sudo systemctl start postgresql
+*** $ sudo systemctl enable postgresql
