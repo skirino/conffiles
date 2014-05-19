@@ -27,6 +27,5 @@
 *** $ rbenv install --list
 *** $ rbenv install X.Y.Z
 *** $ rbenv global X.Y.Z
-
-[TODO]
-- VirtualBoxの共有フォルダが自動マウントされない。Ubuntuだと問題なかったが、適切にインストールするには?
+** VBoxServiceをsystemdから起動する(時刻のsync, shared folderのmountのため)
+*** $ sudo systemctl enable vboxservice.service
