@@ -10,7 +10,7 @@
 ** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる)
 ** emacs, emacs-org-mode, emacs-apel, w3m
 ** その他のパッケージ
-*** git, nkf, xsel, vte3, corkscrew, pwgen, meld, lilyterm
+*** git, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool
 *** erlang, OpenJDK 1.7
 ** 以下のファイル群を配置
 *** ~/.gitconfig
