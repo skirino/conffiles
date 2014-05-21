@@ -11,22 +11,36 @@ import Data.Monoid
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Actions.CycleWS
+import XMonad.Actions.WindowGo
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
+
+------------------------------------------------------------------------
+-- Custom utilities
+spawnOnWorkspace :: WorkspaceId -> String -> X () -- XMonad.Actions.SpawnOn seems to be broken!?
+spawnOnWorkspace workspace program = do
+  spawn program
+  windows $ W.greedyView workspace
+
+runOrRaiseSeta, runOrRaiseEmacs, runOrRaiseFirefox :: X ()
+runOrRaiseSeta    = raiseMaybe (spawnOnWorkspace "1" "seta"   ) (className =? "Seta"   )
+runOrRaiseEmacs   = raiseMaybe (spawnOnWorkspace "2" "emacs"  ) (className =? "Emacs"  )
+runOrRaiseFirefox = raiseMaybe (spawnOnWorkspace "3" "firefox") (className =? "Firefox")
+------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm              , xK_Return), spawn "dmenu_run -fn 'Monospace-18'") -- launch dmenu
-    , ((modm .|. shiftMask, xK_t     ), spawn $ XMonad.terminal conf)
-    , ((modm .|. shiftMask, xK_e     ), spawn "emacs")
-    , ((modm .|. shiftMask, xK_f     ), spawn "firefox")
-    , ((modm .|. shiftMask, xK_s     ), spawn "seta")
-    , ((modm .|. shiftMask, xK_c     ), kill)                                 -- close focused window
+    , ((modm              , xK_t     ), spawn $ XMonad.terminal conf)
+    , ((modm              , xK_s     ), runOrRaiseSeta   )
+    , ((modm              , xK_e     ), runOrRaiseEmacs  )
+    , ((modm              , xK_f     ), runOrRaiseFirefox)
     , ((modm              , xK_j     ), windows W.focusDown)                  -- Move focus to the next window
     , ((modm              , xK_k     ), windows W.focusUp  )                  -- Move focus to the previous window
     , ((modm              , xK_period), moveTo Next NonEmptyWS)
     , ((modm              , xK_comma ), moveTo Prev NonEmptyWS)
+    , ((modm .|. shiftMask, xK_c     ), kill)                                 -- close focused window
     ]
 
     -- mod-[1..9], Switch to workspace N
@@ -103,7 +117,10 @@ myLogHook = return ()
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
 -- By default, do nothing.
-myStartupHook = return ()
+myStartupHook = do
+  runOrRaiseFirefox
+  runOrRaiseEmacs
+  runOrRaiseSeta -- Select Seta window at last
 
 ------------------------------------------------------------------------
 main = xmonad =<< xmobar defaults
