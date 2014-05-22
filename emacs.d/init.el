@@ -782,8 +782,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'mozc)
 (set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
-(global-set-key (kbd "<zenkaku-hankaku>") '(lambda () (interactive) (mozc-mode t  )))
-(global-set-key (kbd "S-C-SPC"          ) '(lambda () (interactive) (mozc-mode nil)))
+;; Disable mozc-mode for sure: it seems that "(mozc-mode nil)" doesn't disable the minor mode; instead it toggles.
+(global-set-key (kbd "S-C-SPC"          ) '(lambda () (interactive) (when (mozc-mode nil) (mozc-mode nil))))
+(global-set-key (kbd "<zenkaku-hankaku>") '(lambda () (interactive) (mozc-mode t)))
 ;;;;;;;;;;;;;;;;;;;;;;;; mozc
 
 
