@@ -6,13 +6,14 @@
 ** yaourtのインストール
 *** $ pacman -S base-devel
 *** $ sudo pacman -Sy yaourt
-** zsh, zsh-completions
+** zsh, zsh-completions, w3m
 ** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる)
-** emacs, emacs-org-mode, emacs-apel, w3m
 ** その他のパッケージ
 *** git, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool
 *** erlang, OpenJDK 1.7
 *** postgres
+**** /var/lib/postgres/data/postgresql.conf で種々のロケール設定をen_USにしておく
+** emacsをソースからコンパイル、バイナリにパスを通す
 ** 以下のファイル群を配置
 *** ~/.gitconfig
 *** ~/.zshrc
