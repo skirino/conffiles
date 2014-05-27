@@ -867,7 +867,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
   ;; elscreen
-  (load "elscreen" "ElScreen" t)
+  (elscreen-start)
   (global-set-key [C-S-right] 'elscreen-next)
   (global-set-key (kbd "C->") 'elscreen-next)
   (global-set-key [C-S-left]  'elscreen-previous)
