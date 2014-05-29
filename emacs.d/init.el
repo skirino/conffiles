@@ -389,8 +389,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq line-move-visual nil)
 
 ;; Hit a hint
-(require 'jaunte)
-(global-set-key (kbd "C-:") 'jaunte)
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-:") 'ace-jump-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
