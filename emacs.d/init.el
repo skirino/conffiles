@@ -280,6 +280,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (migemo-init)
 )
 
+;; anzuで検索のマッチ数をモードラインに表示
+(require 'anzu)
+(global-anzu-mode t)
+
 ;; M-x grepの検索結果を編集してファイルに反映
 (require 'wgrep)
 (define-key grep-mode-map (kbd "e") 'wgrep-change-to-wgrep-mode)
