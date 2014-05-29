@@ -1050,8 +1050,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'ruby-mode)
 (setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
 
-;; inf-rubyのキーバインドを無効化
-(remove-hook 'ruby-mode-hook 'inf-ruby-keys)
+;; inf-ruby関連のキーバインドを無効化
+(remove-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
+(remove-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
 
 ;; アクセス修飾子のインデントを下げる (taken from ruby-mode.el)
 (push "public"    ruby-block-mid-keywords)
