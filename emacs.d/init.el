@@ -529,29 +529,21 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; 開いたときには一旦全展開
 (setq org-startup-folded nil)
 
-;; org-modeでメモを取る, Emacs23以降
-;(org-remember-insinuate)                                                  ; org-rememberの初期化
-;(define-key org-remember-mode-map (kbd "C-x C-s") 'org-remember-finalize)
-;(define-key org-remember-mode-map (kbd "C-x C-c") 'org-remember-kill)
-;
-;(setq org-directory "~/docs/")                                            ; メモを格納するorgファイルの設定
-;(setq org-default-notes-file (expand-file-name "memo.org" org-directory)) ; メモファイル
-;(setq org-remember-templates
-;      '(("Log"  ?l "** %T %?" "log.org" "LOG")
-;        ("Memo" ?m "** %T %?" nil       "Inbox")
-;        ))
-;(defun my-org-remember-log ()
-;  (interactive)
-;  (ibus-disable-if-present)
-;  (org-remember '(0) "l")
-;)
-;(defun my-org-remember-memo ()
-;  (interactive)
-;  (ibus-disable-if-present)
-;  (org-remember '(0) "m")
-;)
-;(global-set-key (kbd "M-l") 'my-org-remember-log)
-;(global-set-key (kbd "M-m") 'my-org-remember-memo)
+;; org-captureでメモを取る
+(setq org-directory "~/docs/")
+(setq org-default-notes-file (concat org-directory "memo.org"))
+(require 'org-capture)
+(setq org-capture-templates
+      '(("m" "Inbox" entry (file+headline nil "Inbox")
+         "** %?\n %U\n %a\n")
+        ))
+(defun my-org-capture-memo ()
+  (interactive)
+  (org-capture '(0) "m")
+)
+(global-set-key (kbd "M-m") 'my-org-capture-memo)
+(define-key org-capture-mode-map (kbd "C-x C-s") 'org-capture-finalize)
+(define-key org-capture-mode-map (kbd "C-x C-c") 'org-capture-kill)
 
 (defun my-org-visit-file (filepath)
   (let ((osf-orig org-startup-folded))
@@ -561,12 +553,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (defun my-org-visit-memo-file ()
   (interactive)
   (my-org-visit-file "~/docs/memo.org"))
-(defun my-org-visit-log-file ()
-  (interactive)
-  (my-org-visit-file "~/docs/log.org"))
 (global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
-(global-set-key (kbd "C-c l") 'my-org-visit-log-file)
-
 
 ;; 要らないkey-bindingを無効化
 (define-key org-mode-map [C-S-left]  nil)
@@ -578,8 +565,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key org-mode-map [S-right] nil)
 (define-key org-mode-map (kbd "C-c C-x C-c") nil)
 
-
-;; org-html5presentation
+;; ox-html5presentation
 (require 'ox-html5presentation)
 (define-key org-mode-map (kbd "<f5>") 'org-export-as-html5presentation)
 (define-key org-mode-map (kbd "<f6>") 'org-export-as-html5presentation-and-open)
