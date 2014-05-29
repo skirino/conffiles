@@ -249,19 +249,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
 
-;; 括弧などの自動補完
-(global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-(setq skeleton-pair 1)
-
-(require 'paredit)
-(add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             'enable-paredit-mode)
-(define-key paredit-mode-map (kbd "C-h") 'paredit-backward-delete)
+;; 括弧の自動補完
+(require 'smartparens-config)
+(smartparens-global-mode t)
+(show-smartparens-global-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
