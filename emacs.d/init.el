@@ -591,6 +591,19 @@ The list is written to FILENAME, or `save-packages-file' by default."
 )
 (define-key egg-log-commit-base-map (kbd "SPC") 'egg-log-buffer-hide-show-dwim)
 (define-key egg-hide-show-map       (kbd "SPC") 'egg-section-cmd-toggle-hide-show)
+
+
+;; git-gutter & git-gutter-fringe
+(require 'git-gutter-fringe)
+(global-git-gutter-mode t)
+(global-set-key (kbd "C-c C-n") 'git-gutter:next-hunk)
+(global-set-key (kbd "C-c C-p") 'git-gutter:previous-hunk)
+(defun my-git-gutter-stage-hunk ()
+  (interactive)
+  (git-gutter:awhen (git-gutter:search-here-diffinfo git-gutter:diffinfos)
+    (git-gutter:do-stage-hunk it)
+    (git-gutter)))
+(global-set-key (kbd "C-c C-s") 'my-git-gutter-stage-hunk)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
