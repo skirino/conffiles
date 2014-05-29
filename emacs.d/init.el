@@ -481,8 +481,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; CUA
 (cua-mode t)
-(setq cua-enable-cua-keys nil)                     ;; C-cやC-vの乗っ取りを阻止
-(define-key cua-global-keymap (kbd "C-S-SPC") nil) ;; C-S-SPCを空ける
+(setq cua-enable-cua-keys nil)                         ;; C-cやC-vの乗っ取りを阻止
+(define-key cua-global-keymap (kbd "C-S-SPC") 'ignore) ;; C-S-SPCを空ける(日本語モード => 戻す)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -764,13 +764,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; mozc
-(require 'mozc)
-(set-language-environment "Japanese")
-(setq default-input-method "japanese-mozc")
-;; Disable mozc-mode for sure: it seems that "(mozc-mode nil)" doesn't disable the minor mode; instead it toggles.
-(global-set-key (kbd "S-C-SPC"          ) '(lambda () (interactive) (when (mozc-mode nil) (mozc-mode nil))))
-(global-set-key (kbd "<zenkaku-hankaku>") '(lambda () (interactive) (mozc-mode t)))
+;;;;;;;;;;;;;;;;;;;;;;;; 日本語入力
+;; 日本語 <=> 英数の切り替え(ibus等々にやらせる)
+(global-set-key (kbd "S-C-SPC"          ) 'ignore)
+(global-set-key (kbd "<zenkaku-hankaku>") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;; mozc
 
 
