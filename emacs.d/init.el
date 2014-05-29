@@ -350,8 +350,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
-(require 'undo-tree)
-(global-undo-tree-mode)
+(require 'undohist)
+(undohist-initialize)
 
 ;; C-\の日本語入力の設定を無効にして、とりあえずundoにしておく
 (global-set-key (kbd "C-\\") 'undo-tree-undo)
