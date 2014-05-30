@@ -1051,6 +1051,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
 
 ;; inf-ruby関連のキーバインドを無効化
+(remove-hook 'ruby-mode-hook 'inf-ruby-keys)
 (remove-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
 (remove-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
 
@@ -1068,6 +1069,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;; rinari
 (require 'rinari)
+(add-hook 'ruby-mode-hook 'rinari-minor-mode)
 (define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
 (setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml") ;; rinari-rgrepのターゲットファイルを絞る
 (setq ruby-compilation-executable "testdrb") ;; to run tests using spork, overwrite the name of executable
