@@ -395,6 +395,14 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; scrolling
+(setq scroll-margin 5)
+(setq scroll-conservatively 100000)
+(setq scroll-preserve-screen-position 1)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; kill ring、リージョン選択
 ;; clipboard連携
 (when window-system
