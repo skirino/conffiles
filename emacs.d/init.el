@@ -700,11 +700,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "M-E") 'anything-c-etags-select)
 
 
-;; anything-git-grep
-(require 'anything-git-grep)
-(global-set-key (kbd "C-c g") 'anything-git-grep)
-
-
 ;; neglect pressing the same key sequence twice
 (define-key anything-map (kbd "C-;") 'ignore)
 (define-key anything-map (kbd "C-+") 'ignore)
@@ -729,6 +724,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;; helm commands
 (global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-c g") 'helm-git-grep)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
