@@ -623,11 +623,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;; anything
 (require 'anything-config)
 (require 'anything-match-plugin)
-;(require 'anything-migemo)
-;(setq anything-use-migemo t)
 (setq anything-input-idle-delay 0.1)
-
-(global-set-key (kbd "C-+") 'anything-resume)
 
 (defun my-anything-command ()
   (interactive)
@@ -694,18 +690,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
   )
 )
 (update-anything-filelist)
-
-
-;; exuberant ctags
-(global-set-key (kbd "M-E") 'anything-c-etags-select)
-
-
-;; neglect pressing the same key sequence twice
-(define-key anything-map (kbd "C-;") 'ignore)
-(define-key anything-map (kbd "C-+") 'ignore)
-(define-key anything-map (kbd "M-x") 'ignore)
-(define-key anything-map (kbd "M-s") 'ignore)
-(define-key anything-map (kbd "M-E") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -724,6 +708,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;; helm commands
 (global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-+") 'helm-resume)
 (global-set-key (kbd "C-c g") 'helm-git-grep)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
