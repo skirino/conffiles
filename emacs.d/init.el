@@ -625,15 +625,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'anything-match-plugin)
 (setq anything-input-idle-delay 0.1)
 
-(defun my-anything-command ()
-  (interactive)
-  (anything-other-buffer
-   '(anything-c-source-emacs-commands
-     anything-c-source-buffers+
-     anything-c-source-recentf)
-   "*my-anything*"))
-(global-set-key (kbd "M-x") 'my-anything-command)
-
 (defun my-anything-for-file ()
   (interactive)
   (anything-other-buffer
@@ -672,24 +663,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;; setup filelist (platform dependent)
-(setq my-filelist-ramfs (find-if 'file-exists-p '("/run/shm/" "/dev/shm/" "~/.emacs.d/")))
-(setq my-filelist-basename "home.filelist")
-(setq anything-c-filelist-file-name (concat my-filelist-ramfs my-filelist-basename))
-(setq my-persistent-filelist-directory "~/.emacs.d/")
-(setq my-persistent-filelist (concat my-persistent-filelist-directory my-filelist-basename))
-(defun update-anything-persistent-filelist ()
+(setq anything-c-filelist-file-name "~/.emacs.d/home.filelist")
+(setq my-persistent-filelist "~/.emacs.d/home.filelist")
+(defun update-home-filelist ()
   (interactive)
-  (shell-command
-   (concat "~/.emacs.d/make-filelist.py > " my-persistent-filelist " &")
-  )
+  (shell-command (concat "~/.emacs.d/make-filelist.py > " my-persistent-filelist " &"))
 )
-(defun update-anything-filelist ()
-  (interactive)
-  (shell-command
-   (concat "cp " my-persistent-filelist " " my-filelist-ramfs)
-  )
-)
-(update-anything-filelist)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -699,6 +678,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (helm-mode 1)
 ;; Don't use helm command for C-x C-f
 (add-to-list 'helm-completing-read-handlers-alist '(find-file-at-point . nil))
+(setq helm-truncate-lines t)
+(setq helm-buffer-max-length 50)
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 ;; Emulate `kill-line' in helm minibuffer
@@ -710,6 +691,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-+") 'helm-resume)
 (global-set-key (kbd "C-c g") 'helm-git-grep)
+;(global-set-key (kbd "C-;") 'helm-mini)
+(setq helm-mini-default-sources '(helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir helm-source-buffer-not-found))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
