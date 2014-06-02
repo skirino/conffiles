@@ -706,12 +706,11 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;; neglect pressing the same key sequence twice
-(define-key anything-map (kbd "C-;") 'my-donothing)
-(define-key anything-map (kbd "C-+") 'my-donothing)
-(define-key anything-map (kbd "M-x") 'my-donothing)
-(define-key anything-map (kbd "M-s") 'my-donothing)
-(define-key anything-map (kbd "M-E") 'my-donothing)
-(defun my-donothing () (interactive) t)
+(define-key anything-map (kbd "C-;") 'ignore)
+(define-key anything-map (kbd "C-+") 'ignore)
+(define-key anything-map (kbd "M-x") 'ignore)
+(define-key anything-map (kbd "M-s") 'ignore)
+(define-key anything-map (kbd "M-E") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
