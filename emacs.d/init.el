@@ -715,6 +715,24 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; helm
+(require 'helm-mode)
+(helm-mode 1)
+;; Don't use helm command for C-x C-f
+(add-to-list 'helm-completing-read-handlers-alist '(find-file-at-point . nil))
+
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+;; Emulate `kill-line' in helm minibuffer
+(setq helm-delete-minibuffer-contents-from-point t)
+(defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
+  (kill-new (buffer-substring (point) (field-end))))
+
+;; helm commands
+(global-set-key (kbd "M-x") 'helm-M-x)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; w3m
 (require 'w3m)
 (load-library "w3m-filter")
