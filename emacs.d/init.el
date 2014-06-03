@@ -357,7 +357,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'undohist)
 (undohist-initialize)
 
-;; C-\の日本語入力の設定を無効にして、とりあえずundoにしておく
+(require 'undo-tree)
+(global-undo-tree-mode t)
+
+;; C-\の入力切り替えは邪魔なのでundoにしておく
 (global-set-key (kbd "C-\\") 'undo-tree-undo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
