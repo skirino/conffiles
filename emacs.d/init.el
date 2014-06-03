@@ -634,6 +634,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (setq helm-delete-minibuffer-contents-from-point t)
+(define-key helm-map (kbd "C-c C-k") 'helm-buffer-run-kill-persistent)
 
 ;; helm commands
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
