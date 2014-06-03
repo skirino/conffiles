@@ -289,9 +289,8 @@ freebsd*|darwin*)
   }
   ;;
 linux*)
-  emc(){
-    /usr/bin/emacsclient -n -a /usr/bin/emacs $* > /dev/null 2>&1 &
-  }
+  alias emc='emacsclient -n'
+
   # disable screen lock by C-s
   if [ -t 0 ]; then
     stty -ixon
