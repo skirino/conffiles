@@ -623,79 +623,38 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; anything
-(require 'anything-config)
-(require 'anything-match-plugin)
-(setq anything-input-idle-delay 0.1)
-
-(defun my-anything-for-file ()
-  (interactive)
-  (anything-other-buffer
-   '(anything-c-source-buffers+
-     anything-c-source-recentf
-     anything-c-source-files-in-current-dir+
-     anything-c-source-filelist)
-   "*my-anything*"))
-(global-set-key (kbd "C-;") 'my-anything-for-file)
-
-
-;; Persistent action to switch or kill buffer
-(add-to-list 'anything-c-source-buffers+
-             '(persistent-action . (lambda (name)
-                                     (flet ((kill (item)
-                                                  (with-current-buffer item
-                                                    (if (and (buffer-modified-p)
-                                                             (buffer-file-name (current-buffer)))
-                                                        (progn
-                                                          (save-buffer)
-                                                          (kill-buffer item))
-                                                      (kill-buffer item))))
-                                            (goto (item)
-                                                  (switch-to-buffer item)))
-                                       (if current-prefix-arg
-                                           (progn
-                                             (kill name)
-                                             (anything-delete-current-selection))
-                                         (goto name))))))
-(define-key anything-map (kbd "C-j") 'anything-execute-persistent-action)
-(define-key anything-map (kbd "C-k") 'anything-kill-buffer-persistently)
-(defun anything-kill-buffer-persistently ()
-  (interactive)
-  (setq current-prefix-arg 1)
-  (anything-execute-persistent-action 'persistent-action))
-
-
-;; setup filelist (platform dependent)
-(setq anything-c-filelist-file-name "~/.emacs.d/home.filelist")
-(setq my-persistent-filelist "~/.emacs.d/home.filelist")
-(defun update-home-filelist ()
-  (interactive)
-  (shell-command (concat "~/.emacs.d/make-filelist.py > " my-persistent-filelist " &"))
-)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; helm
 (require 'helm-mode)
+(require 'helm-git-grep)
 (helm-mode 1)
-;; Don't use helm command for C-x C-f
-(add-to-list 'helm-completing-read-handlers-alist '(find-file-at-point . nil))
+(setq helm-input-idle-delay 0.1)
 (setq helm-truncate-lines t)
 (setq helm-buffer-max-length 50)
+(add-to-list 'helm-completing-read-handlers-alist '(find-file-at-point . nil)) ;; Don't use helm command for C-x C-f
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
-;; Emulate `kill-line' in helm minibuffer
 (setq helm-delete-minibuffer-contents-from-point t)
-(defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
-  (kill-new (buffer-substring (point) (field-end))))
 
 ;; helm commands
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-+") 'helm-resume)
+(global-set-key (kbd "M-x"  ) 'helm-M-x)
+(global-set-key (kbd "C-;"  ) 'helm-mini)
+(global-set-key (kbd "C-+"  ) 'helm-resume)
 (global-set-key (kbd "C-c g") 'helm-git-grep)
-;(global-set-key (kbd "C-;") 'helm-mini)
-(setq helm-mini-default-sources '(helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir helm-source-buffer-not-found))
+
+(setq helm-locate-command "locate %s -A %s") ;; Enable AND search in helm-locate (instead regexp cannot be used)
+(setq helm-mini-default-sources '(helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir helm-source-locate))
+
+;; helm-swoop
+(require 'helm-swoop)
+(global-set-key (kbd "C-S-s") 'helm-swoop)
+(define-key isearch-mode-map (kbd "C-S-s") 'helm-swoop-from-isearch) ;; When doing isearch, hand the word over to helm-swoop
+
+;; don't show error message when keys that invoke helm commands multiple times
+(define-key helm-map (kbd "C-;"  ) 'ignore)
+(define-key helm-map (kbd "C-+"  ) 'ignore)
+(define-key helm-map (kbd "M-x"  ) 'ignore)
+(define-key helm-map (kbd "C-c g") 'ignore)
+(define-key helm-map (kbd "C-S-s") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
