@@ -1063,7 +1063,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
          (orig-buffer  (current-buffer)))
     (when (open-related-file-open)
       (unless is-test-file (other-window 1))
-      (split-window-vertically)
       (my-rinari-test-on-appropriate-position)
       (select-window (get-buffer-window orig-buffer)))))
 
