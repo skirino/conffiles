@@ -8,6 +8,9 @@
 --
 
 import Data.Monoid
+import Data.Time.LocalTime (getZonedTime)
+import Data.Time.Format (formatTime)
+import System.Locale (defaultTimeLocale)
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Actions.CycleWS
@@ -26,6 +29,13 @@ runOrRaiseSeta, runOrRaiseEmacs, runOrRaiseFirefox :: X ()
 runOrRaiseSeta    = raiseMaybe (spawnOnWorkspace "1" "seta"   ) (className =? "Seta"   )
 runOrRaiseEmacs   = raiseMaybe (spawnOnWorkspace "2" "emacs"  ) (className =? "Emacs"  )
 runOrRaiseFirefox = raiseMaybe (spawnOnWorkspace "3" "firefox") (className =? "Firefox")
+
+-- Use ImageMagick's import command to take screenshot
+takeScreenshot :: X ()
+takeScreenshot = do
+  t <- liftIO getZonedTime
+  let iso = formatTime defaultTimeLocale "%FT%T" t
+  spawn $ "import 'screenshot_" ++ iso ++ ".png'"
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -36,6 +46,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_s     ), runOrRaiseSeta   )
     , ((modm              , xK_e     ), runOrRaiseEmacs  )
     , ((modm              , xK_f     ), runOrRaiseFirefox)
+    , ((modm .|. shiftMask, xK_p     ), takeScreenshot)
     , ((modm              , xK_j     ), windows W.focusDown)                  -- Move focus to the next window
     , ((modm              , xK_k     ), windows W.focusUp  )                  -- Move focus to the previous window
     , ((modm              , xK_period), moveTo Next NonEmptyWS)
