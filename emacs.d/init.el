@@ -726,6 +726,11 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq hl-line-face 'my-hl-line-face)
 
 
+;; インデントの強調表示
+(require 'highlight-indentation)
+(add-hook 'find-file-hook 'highlight-indentation-mode)
+
+
 ;; 行の折り返し
 (key-chord-define-global "kl" 'toggle-truncate-lines)
 
