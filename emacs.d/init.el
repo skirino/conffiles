@@ -867,7 +867,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
         ;; フォント設定
         (let (my-font-height my-font my-font-ja my-font-size my-fontset)
-          (setq my-font-height 105)
+          (setq my-font-height 115)
           (setq my-font "DejaVu Sans Mono")
           (setq my-font-ja "IPAGothic")
           (setq face-font-rescale-alist '(("IPAGothic" . 1.20)))
