@@ -302,7 +302,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "C-x G") 'my-grep-i)
 
 (defun my-grep-impl (ignore-case-option)
-  (let* ((word (or (thing-at-point 'word) ""))
+  (let* ((word (or (thing-at-point 'symbol) ""))
          (search-pattern (read-string (format "Search for (%s): " word) nil nil word)))
     (if (and (buffer-file-name) (egg-is-dir-in-git (buffer-file-name)))
         (my-git-grep search-pattern ignore-case-option)
