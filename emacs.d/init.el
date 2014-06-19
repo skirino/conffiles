@@ -767,13 +767,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
      )))
 (ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
 (ad-activate 'font-lock-mode)
-
-
-;; rainbow-*
-(require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
-(require 'rainbow-identifiers)
-(add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 
 
