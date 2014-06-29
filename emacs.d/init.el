@@ -1001,7 +1001,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; ruby
 (require 'starter-kit-ruby)
 (require 'ruby-mode)
-(setq ruby-flymake-executable (expand-file-name (concat load-file-name "/../ruby_syntax_check.sh")))
+(add-hook 'ruby-mode-hook
+          '(lambda ()
+             (setq flycheck-checker 'ruby-rubocop)
+             (flycheck-mode 1)))
 
 ;; inf-ruby関連のキーバインドを無効化
 (remove-hook 'ruby-mode-hook 'inf-ruby-keys)
@@ -1216,6 +1219,7 @@ Then run tests in a preferred window configuration."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 (require 'flymake)
+(require 'flycheck)
 (setq flymake-check-start-time 5)
 (key-chord-define-global "fm" 'flymake-mode)
 
