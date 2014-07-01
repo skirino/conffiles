@@ -1,12 +1,3 @@
---
--- xmonad example config file.
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
---
-
 import Data.Monoid
 import Data.Time.LocalTime (getZonedTime)
 import Data.Time.Format (formatTime)
@@ -50,7 +41,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_j     ), windows W.focusDown)                  -- Move focus to the next window
     , ((modm              , xK_k     ), windows W.focusUp  )                  -- Move focus to the previous window
     , ((modm              , xK_period), moveTo Next NonEmptyWS)
+    , ((modm              , xK_Right ), moveTo Next NonEmptyWS)
     , ((modm              , xK_comma ), moveTo Prev NonEmptyWS)
+    , ((modm              , xK_Left  ), moveTo Prev NonEmptyWS)
     , ((modm .|. shiftMask, xK_c     ), kill)                                 -- close focused window
     ]
 

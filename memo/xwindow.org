@@ -10,15 +10,22 @@
 *** $ feh --bg-fill ~/Pictures/wallpaper.png
 
 * Xmonad
-** 以下をパッケージからインストール
+** cabalからインストール
 *** xmonad
 *** xmonad-contrib
-*** xmobar
+** 以下をパッケージからインストール
+*** xmobar (cabalパッケージだとなぜかxmobarの表示が崩れるため避ける)
 *** dmenu2-underline
 *** xcompmgr (Emacsの半透明化のためだけ)
-** デフォルトのX sessionをxmonadに変更
-** ログイン時に読み込まれるユーザスクリプト(display managerがmdmの場合~/.xprofile)に以下を追加しておく
-*** (xmobarはxmonad.hsから起動する想定)
+** ログインスクリーンからxmonadのつなぎこみ
+*** ログインセッションをデフォルトにする(/etc/mdm/custom.confで DefaultSession=default.desktop )
+*** /usr/share/mdm/BuiltInSessions/default.desktopで Exec=custom (defultから変更)
+*** ~/.xinitrcに以下を追加
+<pre>
+exec ~/.cabal/bin/xmonad
+</pre>
+** ログイン時に事前に読み込まれるユーザスクリプト(~/.xprofile)に以下を追加しておく
+*** (xmobarはxmonad設定の中から起動する想定)
 <pre>
 xcompmgr &
 xscreensaver -nosplash &
