@@ -972,8 +972,27 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;; D programming mode
-(autoload 'd-mode "d-mode" "Major mode for editing D code." t)
-(add-to-list 'auto-mode-alist '("\\.d[i]?\\'" . d-mode))
+(require 'd-mode)
+;; For an unknown reason d-mode's features (e.g. indentation) are not working and
+;; it works after re-evaluating the following code, taken from d-mode.el (again I don't know why).
+(define-derived-mode d-mode d-parent-mode "D"
+  "Major mode for editing code written in the D Programming Language.
+See http://www.digitalmars.com/d for more information about the D language.
+The hook `c-mode-common-hook' is run with no args at mode
+initialization, then `d-mode-hook'.
+
+Key bindings:
+\\{d-mode-map}"
+  (c-initialize-cc-mode t)
+  (setq local-abbrev-table d-mode-abbrev-table
+        abbrev-mode t)
+  (use-local-map d-mode-map)
+  (c-init-language-vars d-mode)
+  (c-common-init 'd-mode)
+  (easy-menu-add d-menu)
+  (c-run-mode-hooks 'c-mode-common-hook 'd-mode-hook)
+  (c-update-modeline)
+  (cc-imenu-init d-imenu-generic-expression))
 
 
 ;; go-mode
