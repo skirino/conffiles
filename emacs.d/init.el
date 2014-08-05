@@ -996,7 +996,7 @@ Key bindings:
 
 
 ;; go-mode
-(require 'go-mode-load)
+(require 'go-mode)
 
 
 ;; vala-mode
