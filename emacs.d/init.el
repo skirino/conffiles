@@ -714,6 +714,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (when (>= emacs-major-version 23)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
+  (horizontal-scroll-bar-mode 0)
   (menu-bar-mode 0)
 )
 

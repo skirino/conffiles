@@ -2,7 +2,7 @@
 ** スクリーンセーバー
 *** xscreensaver-demoで単純にblank screenに設定しておく
 ** キーリピートの設定
-*** $ xset r rate 250 40
+*** $ xset r rate 300 40
 ** 半角/全角キーのリピート問題(以前遭遇したバグ、現在のVirtualBoxでは治っているかも)
 *** $ xset -r 49
 ** 壁紙の設定
