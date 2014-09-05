@@ -9,7 +9,7 @@
 ** zsh, zsh-completions, w3m
 ** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる)
 ** その他のパッケージ
-*** git, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool
+*** git, tig, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool
 *** erlang, OpenJDK 1.7
 *** postgres
 **** /var/lib/postgres/data/postgresql.conf で種々のロケール設定をen_USにしておく
