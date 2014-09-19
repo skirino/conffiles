@@ -299,13 +299,13 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (defun my-grep-impl (ignore-case-option)
   (let* ((word (or (thing-at-point 'symbol) ""))
          (search-pattern (read-string (format "Search for (%s): " word) nil nil word)))
-    (if (and (buffer-file-name) (egg-is-dir-in-git (buffer-file-name)))
+    (if (and (buffer-file-name) (string-prefix-p (magit-get-top-dir) (buffer-file-name)))
         (my-git-grep search-pattern ignore-case-option)
       (my-rgrep search-pattern ignore-case-option))
     (my-grep-place-buffers)))
 
 (defun my-git-grep (search-pattern ignore-case-option)
-  (let* ((repo-dir (file-name-directory (egg-git-dir)))
+  (let* ((repo-dir (magit-get-top-dir))
          (rel-path (substring (file-name-directory (buffer-file-name)) (length repo-dir)))
          (dir-arg  (replace-regexp-in-string "[^/]+" ".." rel-path)))
     (grep (format "git --no-pager grep %s -nHe '%s' %s" ignore-case-option search-pattern dir-arg))))
@@ -574,7 +574,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; Git (egg.el)
+;;;;;;;;;;;;;;;;;;;;;;;; Git
 ;; git-gutter+ & git-gutter-fringe+
 (require 'git-gutter-fringe+)
 (global-git-gutter+-mode t)
@@ -992,7 +992,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 (defun my-rinari-start-spork ()
   (interactive)
-  (setq my-rinari-spork-branch (egg-HEAD))
+  (setq my-rinari-spork-branch (magit-get-current-branch))
   (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
     (shell-command command)))
 (define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-start-spork)
@@ -1029,7 +1029,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
   "Start spork process if it is not running.
 Then run tests in a preferred window configuration."
   (interactive)
-  (let* ((same-branch          (equal my-rinari-spork-branch (egg-HEAD)))
+  (let* ((same-branch          (equal my-rinari-spork-branch (magit-get-current-branch)))
          (need-to-launch-spork (or (not same-branch) (not (my-rinari-is-spork-running?)))))
     (cond (need-to-launch-spork
            (my-rinari-start-spork))
