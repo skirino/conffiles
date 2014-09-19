@@ -31,6 +31,8 @@
 (add-to-list 'package-archives '("melpa"     . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
+(require 'async-bytecomp)
+
 (require 'save-packages)
 (add-hook 'kill-emacs-hook 'my-save-packages)
 
