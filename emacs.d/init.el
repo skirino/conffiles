@@ -259,13 +259,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; yasnippet
-(require 'yasnippet)
-(yas/global-mode 1)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 検索
 ;; migemo
 ;; slightly modified version "~/.emacs.d/migemo.el" (toggle migemo by "M-m" in isearch-mode)
@@ -582,34 +575,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Git (egg.el)
-(require 'egg)
-
-;; C-x v fでファイル単位のログを出す
-(define-key egg-file-cmd-map (kbd "f") 'egg-file-log)
-
-;; C-x v dでファイルのdiff
-(define-key egg-file-cmd-map (kbd "d") 'egg-file-diff)
-
-;; ログバッファ内、dで現在のworking copyとコミットとのdiff表示
-(define-key egg-log-commit-map (kbd "d") 'egg-log-buffer-diff-revs)
-
-;; ログバッファ内、spaceでdiff表示をtoggleする
-(defun egg-log-buffer-hide-show-dwim ()
-  (interactive)
-  (let* ((pos  (point))
-         (next (next-single-property-change pos :diff))
-         (sha1 (and next (get-text-property next :commit)))
-         (nav (get-text-property pos :navigation)))
-    (if (equal (get-text-property pos :commit) sha1)
-        (egg-section-cmd-toggle-hide-show nav)
-      (egg-log-buffer-do-insert-commit pos)
-    )
-  )
-)
-(define-key egg-log-commit-base-map (kbd "SPC") 'egg-log-buffer-hide-show-dwim)
-(define-key egg-hide-show-map       (kbd "SPC") 'egg-section-cmd-toggle-hide-show)
-
-
 ;; git-gutter & git-gutter-fringe
 (require 'git-gutter-fringe)
 (global-git-gutter-mode t)
@@ -787,13 +752,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (global-set-key (kbd "C-c C-x C-c") 'save-buffers-kill-emacs)
   ;; "M-x exit"でemacsを終了
   (defalias 'exit 'save-buffers-kill-emacs)
-
-  ;; auto-install
-  (require 'auto-install)
-  ;; ネットワークアクセスを伴って時間がかかるのでコメントアウト
-  ;(auto-install-update-emacswiki-package-name t)
-  (auto-install-compatibility-setup)
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
   ;; elscreen
   (elscreen-start)
@@ -1167,11 +1125,6 @@ Then run tests in a preferred window configuration."
 
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
-
-
-;; Zen encoding mode
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
 
 ;; Haskell mode
