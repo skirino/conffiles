@@ -524,6 +524,13 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; align
+(global-set-key (kbd "C-c a"  ) 'align       )
+(global-set-key (kbd "C-c C-a") 'align-regexp)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; org-mode
 (require 'org)
 
