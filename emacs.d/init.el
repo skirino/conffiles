@@ -575,20 +575,15 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Git (egg.el)
-;; git-gutter & git-gutter-fringe
-(require 'git-gutter-fringe)
-(global-git-gutter-mode t)
-(global-set-key (kbd "C-c n"  ) 'git-gutter:next-hunk)
-(global-set-key (kbd "C-c C-n") 'git-gutter:next-hunk)
-(global-set-key (kbd "C-c p"  ) 'git-gutter:previous-hunk)
-(global-set-key (kbd "C-c C-p") 'git-gutter:previous-hunk)
-(defun my-git-gutter-stage-hunk ()
-  (interactive)
-  (git-gutter:awhen (git-gutter:search-here-diffinfo git-gutter:diffinfos)
-    (git-gutter:do-stage-hunk it)
-    (git-gutter)))
-(global-set-key (kbd "C-c s"  ) 'my-git-gutter-stage-hunk)
-(global-set-key (kbd "C-c C-s") 'my-git-gutter-stage-hunk)
+;; git-gutter+ & git-gutter-fringe+
+(require 'git-gutter-fringe+)
+(global-git-gutter+-mode t)
+(global-set-key (kbd "C-c n"  ) 'git-gutter+-next-hunk)
+(global-set-key (kbd "C-c C-n") 'git-gutter+-next-hunk)
+(global-set-key (kbd "C-c p"  ) 'git-gutter+-previous-hunk)
+(global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
+(global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
+(global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
