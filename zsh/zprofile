@@ -10,7 +10,8 @@ feh --bg-fill ~/docs/Pictures/wallpaper.png
 
 
 ########## environment variables
-# PATH
+export LANG=ja_JP.UTF-8
+
 export PATH=~/bin:~/code/conffiles/bin:$PATH
 
 # Android

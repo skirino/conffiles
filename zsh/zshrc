@@ -1,29 +1,14 @@
-## Environment variable configuration
-#
-# LANG
-#
-export LANG=ja_JP.UTF-8
-case ${UID} in
-0)
-    LANG=C
-    ;;
-esac
-
-
 ## Keybind configuration
-#
-# emacs like keybind (e.x. Ctrl-a gets to line head and Ctrl-e gets
-#   to end) and something additions
-#
 bindkey -e
 bindkey "^u" backward-kill-line
 bindkey "^[[1~" beginning-of-line # Home gets to line head
-bindkey "^[[4~" end-of-line # End gets to line end
-bindkey "^[[3~" delete-char # Del
-bindkey "\e[1;5C" forward-word  # ctrl-right
-bindkey "\e[1;5D" backward-word # ctrl-left
+bindkey "^[[4~" end-of-line       # End gets to line end
+bindkey "^[[3~" delete-char       # Del
+bindkey "\e[1;5C" forward-word    # ctrl-right
+bindkey "\e[1;5D" backward-word   # ctrl-left
 #bindkey '^\' undo
 #bindkey '^[\' redo
+bindkey "\e[Z" reverse-menu-complete # reverse menu completion binded to Shift-Tab
 
 # historical backward/forward search with linehead string binded to ^P/^N
 #
@@ -36,11 +21,6 @@ bindkey "\\ep" history-beginning-search-backward-end
 bindkey "\\en" history-beginning-search-forward-end
 bindkey "^R" history-incremental-pattern-search-backward
 bindkey "^S" history-incremental-pattern-search-forward
-
-# reverse menu completion binded to Shift-Tab
-#
-bindkey "\e[Z" reverse-menu-complete
-
 
 ## terminal configuration
 #
@@ -147,7 +127,6 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # そのまま補完、小文字->大文字にして補完、大文字->小文字にして補完を順に試す
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
-
 
 
 # Make prompt like the following (skirino-... is underlined)
