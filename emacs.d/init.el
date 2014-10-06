@@ -582,6 +582,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Git
+(require 'magit)
+
 ;; git-gutter+ & git-gutter-fringe+
 (require 'git-gutter-fringe+)
 (global-git-gutter+-mode t)
