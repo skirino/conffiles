@@ -26,7 +26,7 @@ takeScreenshot :: X ()
 takeScreenshot = do
   t <- liftIO getZonedTime
   let iso = formatTime defaultTimeLocale "%FT%T" t
-  spawn $ "import 'screenshot_" ++ iso ++ ".png'"
+  spawn $ "import 'temp/screenshot_" ++ iso ++ ".png'"
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
