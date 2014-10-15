@@ -245,6 +245,9 @@ PATH=/opt/dmd/bin:$PATH
 # Haskell
 PATH=~/.cabal/bin:$PATH
 
+# Java
+PATH=/usr/lib/jvm/default/bin:$PATH
+
 # Clojure
 cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 

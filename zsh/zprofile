@@ -1,6 +1,6 @@
 ########## X windows settings
 # Key repeat settings
-xset r rate 250 40
+xset r rate 250 30
 
 # Suppress auto repeat of keys in VirtualBox guest
 xset -r 49
