@@ -186,6 +186,12 @@ alias cduuu='cd ../../..'
 alias cduuuu='cd ../../../..'
 alias cduuuuu='cd ../../../../..'
 alias emnw='emacsclient -nw'
+e() {
+  emacsclient -c $* &
+}
+emc() {
+  emacsclient -n $* && xdotool key "super+e"
+}
 alias xopen='xdg-open'
 
 
@@ -268,16 +274,7 @@ PATH=~/.nodebrew/current/bin:$PATH
 
 ########## OS-specific settings
 case "${OSTYPE}" in
-freebsd*|darwin*)
-  emc() {
-    /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -e '(elscreen-create)' 2>/dev/null && /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n $* 2>/dev/null || open -a /Applications/Emacs.app $* &
-  }
-  ;;
 linux*)
-  emc() {
-    emacsclient -n $* && xdotool key "super+e"
-  }
-
   # disable screen lock by C-s
   if [ -t 0 ]; then
     stty -ixon
