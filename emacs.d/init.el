@@ -1153,6 +1153,10 @@ Then run tests in a preferred window configuration."
             ))
 
 
+;; Idris
+(require 'idris-mode)
+
+
 ;; Erlang and Elixir
 (require 'erlang-start)
 (require 'elixir-mode)
