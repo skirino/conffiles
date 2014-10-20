@@ -593,6 +593,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
 (global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
 (global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
+
+;; Workaround for git-gutter+'s bug on opening a file via symlink
+(defadvice git-gutter+-process-diff (before git-gutter+-process-diff-advice activate)
+  (ad-set-arg 0 (file-truename (ad-get-arg 0))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -1100,6 +1104,13 @@ Then run tests in a preferred window configuration."
 (require 'jade-mode)
 ;; use jade-mode for *.dt
 (add-to-list 'auto-mode-alist '("\\.dt$" . jade-mode))
+
+
+;; Java
+(let* ((javac-path (shell-command-to-string "which javac"))
+       (java-home (replace-regexp-in-string "/bin/javac" "" javac-path)))
+  (setenv "JAVA_HOME" java-home)
+  (setenv "JDK_HOME" java-home))
 
 
 ;; Clojure

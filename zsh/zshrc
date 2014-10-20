@@ -252,7 +252,9 @@ PATH=/opt/dmd/bin:$PATH
 PATH=~/.cabal/bin:$PATH
 
 # Java
-PATH=/usr/lib/jvm/default/bin:$PATH
+JAVA_HOME=/usr/lib/jvm/default
+JDK_HOME=/usr/lib/jvm/default
+PATH=${JAVA_HOME}/bin:$PATH
 
 # Clojure
 cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
