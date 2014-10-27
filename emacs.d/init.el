@@ -8,20 +8,9 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 環境変数
-(let* ((paths-with-newline (shell-command-to-string "source ~/.zshrc; echo $PATH"))
-       (paths (replace-regexp-in-string "[\r?\n]+" "" paths-with-newline)))
-  (setenv "PATH" paths)
-  (setq exec-path (append (split-string paths ":") exec-path)))
-
-;; proxy
-(let ((proxy-line (shell-command-to-string "/bin/grep 'http_proxy' /etc/environment")))
-  (if (string-match "\"\\(.*\\)\"" proxy-line)
-      (setenv "http_proxy" (match-string 1 proxy-line))
-    (setenv "http_proxy" nil)))
-(let ((proxy-line (shell-command-to-string "/bin/grep 'https_proxy' /etc/environment")))
-  (if (string-match "\"\\(.*\\)\"" proxy-line)
-      (setenv "https_proxy" (match-string 1 proxy-line))
-    (setenv "https_proxy" nil)))
+(require 'exec-path-from-shell)
+(let ((envs '("PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
+  (exec-path-from-shell-copy-envs envs))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
