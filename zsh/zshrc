@@ -134,7 +134,7 @@ zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
 
 # Make prompt like the following (skirino-... is underlined)
 # skirino-VirtualBox$                    [~/code]
-PROMPT="%U%B`uname -n`%(!.#.$)%b%u "
+PROMPT="%U%B`uname -n`%(?.. [%?] )%(!.#.$)%b%u "
 RPROMPT="[%50<...<%~]"
 
 
