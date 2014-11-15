@@ -251,6 +251,9 @@ PATH=/opt/dmd/bin:$PATH
 # Haskell
 PATH=~/.cabal/bin:$PATH
 
+# Idris
+PATH=~/code/Idris/install/.cabal-sandbox/bin:$PATH
+
 # Java
 JAVA_HOME=/usr/lib/jvm/default
 JDK_HOME=/usr/lib/jvm/default

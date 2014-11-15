@@ -121,10 +121,7 @@ myLogHook = return ()
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
 -- By default, do nothing.
-myStartupHook = do
-  runOrRaiseFirefox
-  runOrRaiseEmacs
-  runOrRaiseSeta -- Select Seta window at last
+myStartupHook = return ()
 
 ------------------------------------------------------------------------
 main = xmonad =<< xmobar defaults
