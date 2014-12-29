@@ -6,7 +6,7 @@
 ** yaourtのインストール
 *** $ sudo pacman -S yaourt
 ** zsh, zsh-completions, w3m
-** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる)
+** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる), viを削除
 ** その他のパッケージ
 *** git, tig, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool, aspell, aspell-en, erlang
 *** OpenJDK 8
@@ -42,3 +42,6 @@
 *** $ initdb --locale ja_JP.UTF-8 -E UTF8 -D '/var/lib/postgres/data'
 *** $ sudo systemctl start postgresql
 *** $ sudo systemctl enable postgresql
+* クリーンアップ
+** (無事にグラフィカル環境が起動することを確認)
+** xfce由来のパッケージを削除
