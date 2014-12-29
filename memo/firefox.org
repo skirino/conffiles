@@ -1,20 +1,24 @@
 [firefox settings]
+* Syncにサインイン
+
 * アドオンメニューから以下をインストール
+** tab mix plus
+** 英辞郎 on the Web
+** AutoPagerize
+** Greasemonkey
+** Default FullZoom Level
+** Restartless Restart
+** Tab Auto Reload
+** Markdown Here
+** FindBar Tweak
+* optionalのアドオン
 ** firebug
 ** Web Developer
 ** HTTP Resource Test
 ** JSONView
-** tab mix plus
-** 英辞郎 on the Web
-** tile tabs
-** Greasemonkey
 ** FireFTP
-** Default FullZoom Level
-** Restartless Restart
-** Tab Auto Reload
+** tile tabs
 ** Font Finder
-** Markdown Here
-** FindBar Tweak
 
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
@@ -22,16 +26,11 @@
 * 英辞郎 on the Web
 ** クイックサーチを有効にする
 ** キーボードショートカットをC-S-dに設定
-* Greasemonkeyをインストール
-** AutoPagarize greasemonkeyスクリプト版をインストール
 * keysnail
-** 検索してファイルダウンロード、ドラッグアンドドロップでインストール
+** 検索してファイルダウンロード、Firefoxの「ファイルを開く」で開いてインストール
 ** プラグインTanything, HoK, BuiltinCommandAsExt, bmany, LDRCnail, History from Keysnailをインストール
-** (アドオンバーを見るとdisableされてる場合があるので、enableする)
 * コンテンツ => 言語設定で日本語を最優先にする
 * 詳細 => 一般 => smooth scrollingをdisable
-* 一般 => ダウンロード => すべてのダウンロードが完了したら閉じるをチェック
-* ツールバーの要素を適当に並べる
 * スタート時にはホームページを表示する、スタート時に開くURLを設定
-* about:configで、mousewheel.with_control.action(>= 17) / mousewheel.withcontrolkey.action(<= 16) を"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
-* ブックマークを旧環境からインポート
+* ツールバーの要素を適当に並べる
+* about:configで、mousewheel.with_control.actionを"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)

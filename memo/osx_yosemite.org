@@ -1,84 +1,49 @@
 * システム環境設定
 ** -> キーボード
 *** -> 修飾キー: CapsLockキーをControl扱いにする。
-*** キーのバックライトをオフにする
-*** F1, F2, ..., Fnキーの扱い: F5でブラウザリロード等(音量変更とかはFnキーを押しながら)にする
-*** キーボードのバックライトを消す(Fn + F5)
+*** Fnキーを標準のファンクションキーにする
+*** キーのバックライト自動調整調整をオフにし、Fn+F5で完全にバックライトを消す
 *** ショートカット
 **** アプリケーション: VirtualBox guestでの操作とかち合うキーボード・ショートカットを別のものに変更する。メニュー上に表示される項目名で指定するが、この項目名は以下などに書かれている(MountainLion)。
 /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Resources/Japanese.lproj/StandardMenus.nib/objects.xib
-***** 全体でのログアウトとVirtualBoxの終了を変更しておいた。
-** -> 省エネルギー: 電源接続時はスリープまで1時間にする
-
+***** "username のログアウト..."と"Quit VirtualBox VM"を変更
+** -> 省エネルギー: スリープ時間を調整
 ** -> セキュリティとプライバシー
 *** スリープ解除にパスワードを要求: 15分後
-
 ** -> Spotlight(使わない)
-*** 検索対象をすべて消す
-*** キーボードショートカットを消す
-
+*** すべての検索対象・キーボードショートカットをオフにする
 ** -> トラックパッド
-*** -> スクロールとズーム
-**** スクロールの方向を変える
-
+*** -> スクロールとズーム: スクロールの方向を変える
 ** -> アクセシビリティ
 *** -> ディスプレイ: カーソルのサイズを少し大きくする
-
-
-* Dock
-** 自動的に隠す機能をONに
-** ターミナルをDockに追加
-** 不要アプリをDockから削除
-
-
-* MissionControl
-** VirtualBox用のワークスペースを作成、VirtualBox Guestがそこで動くようにする
-** Dashboardを操作スペースとして表示をOFFに
-** 操作スペースを自動的に並び替えるをOFFに
-
-
-* Network
-** 元のマシン設定を元に適当に設定
-** .zshrcにネットワーク切り替えのコマンドを定義する(networksetupコマンドのmanを見る)
-
-
-* コマンドライン
-** chshでzshにする
-** gitのインストーラからインストール、パスを通す(/usr/local/git/binを$PATHに加える)
+** -> Dock
+*** 表示する項目を調整
+*** 自動的に隠す機能をONに
+** -> MissionControl
+*** Dashboardを操作スペースとして表示をOFFに
+*** 操作スペースを自動的に並び替えるをOFFに
+* コマンドライン設定
+** chshで/bin/zshに変更
+** コマンドラインからgitと打って、コマンドラインツールをインストール
 ** conffiles
-*** git clone, git submodule init/update
+*** $ git clone https://github.com/skirino/conffiles
+*** $ git submodule init/update
 *** ホームディレクトリ以下の設定ファイル
 **** symlinkを作る(memo/setup.shを走らせる)
 **** ~/.zshrcを微調整
-** Terminal.appを適当に設定(気が向いたらiTerm2をインストールしてもよい)
-
-
-* Skype
-** インストール、skype名/passを入れておく、Dockに追加
-
-
-* LibreOffice
-** インストール、Dockに追加
-
-
-* Synergy
-** (Macの)システム環境設定 -> アクセシビリティ -> "補助装置にアクセスできるようにする"をONに
-** サーバとして設定
-*** 全体設定 -> "Hide when server/client starts"をOFFに
-*** clientとして追加するディスプレイ側はmodifier keyのマッピングを設定する
-
-
+** Terminal.appの設定
+*** デフォルトのプロファイルを"Pro"にする
+*** "Pro"の設定
+**** シェル終了時の動作を"ウインドウを閉じる"に変更
+**** ウインドウサイズ・フォント設定を変更
 * Display
 ** full resolution (dot by dot)にするため、Retina Display Menu(RDM)をインストール
 ** Guest OS側で文字サイズを調整する。1.4倍ほどが適切か
-
-
+* ツールバーのバッテリー部分で割合を表示
 * Java RE
 ** ダウンロード、インストール
-
-
 * VirtualBox(別のMacBookProからイメージを移行)
-** install, add to Dock
+** install(Extension packも)
 ** global setting -> "Host key"の設定で右Command keyに設定
 ** 元のVirtualBox .vdiを使って仮想マシン作成
 *** 仮想ドライブ無しの仮想マシンを作成
@@ -93,13 +58,10 @@
 *** 一般 -> 高度: クリップボードの共有を双方向に設定
 *** 共有フォルダ: /Users/skirino/vbshareをホストに作り、これを指定。自動マウントON、読み書き可
 *** Guest Additionを再インストール
-
-
-* KeyRemap4MacBook
-** インストール(要再起動)
-** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック
-(JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
-
+* Karabiner(KeyRemap4MacBook)
+** インストール
+** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック(JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
+** キーリピート設定を変更
 ** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
 *** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-S-Space"に変換。
 *** MacにおけるOption, CommandはそのままだとGuest側ではAlt, Windowsキーになる。逆になってほしいので入れ替える。
@@ -113,10 +75,10 @@
   </appdef>
 
   <item>
-    <name>Eisuu to Ctrl+Shift+Space in VirtualBoxVM (to differentiate with Hankaku/Zenkaku key)</name>
+    <name>Eisuu as Shift+Eisuu in VirtualBoxVM (to differentiate Eisuu from Kana, since both are treated as Hankaku/Zenkaku in guest)</name>
     <identifier>private.virtualbox.changeeisuu</identifier>
     <only>VIRTUALBOX</only>
-    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::SPACE, ModifierFlag::CONTROL_L | ModifierFlag::SHIFT_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::JIS_EISUU, ModifierFlag::SHIFT_L</autogen>
   </item>
 
   <item>
@@ -129,6 +91,9 @@
 </root>
 -----
 
-
 * Google日本語入力をインストール
 ** ことえりがC-S-nに反応してしまう(VirtualBoxの中でも!)ため致し方なし
+* AppStore
+** Xcodeをインストール
+* homebrew
+** install, update

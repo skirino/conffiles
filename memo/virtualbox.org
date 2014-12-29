@@ -1,21 +1,5 @@
-* Ubuntu 12.04 環境構築
-** 仮想マシンの設定
-*** CPU: 4個
-*** 仮想HD: 80GB
-*** メモリ4.0GB
-
-* VirtualBoxGuestAdditionsをインストール
-** 共有フォルダの設定を行う
-*** $ sudo gpasswd -a skirino vboxsf
-*** $ ln -s /media/sf_vbshare ~/vbshare としてsymlinkを作っておく
-** ネットワークはNATでよいが、ブリッジにしておいた方がIPアドレスを使って接続しやすく、便利かも
-** ネットワーク -> ポートフォワーディング -> 名前: ssh, プロトコル: TCP, ホストポート: 3022, ゲストポート: 22で(他は埋めなくてよい)SSHで入れるようにする
-
-* 日本語入力切り替え
-** Zenkaku_HankakuでON, C-S-@でOFFとしてみる (通常は、Henkan_ModeとKatakana_HiraganaでON, MuhenkanでOFF)
-
 * Guest Additionの時刻調整機能の設定
 ** デフォルトだと20分以内のずれはじわじわ合わせようとする。ズバッと変更するように20分 => 15秒に変更
-** カーネルが入れ替わってGuestAdditionを入れなおすたびに以下を実行 (Ubuntu-64の部分はVMの名前)
-*** ホスト側 : $ VBoxManage guestproperty set "Ubuntu-64" "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold" 15000
-*** ゲスト側 : $ sudo /etc/init.d/vboxadd-service restart
+** カーネルが入れ替わってGuestAdditionを入れなおすたびに以下を実行
+*** ホスト側 : $ VBoxManage guestproperty set "ManjaroBox" "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold" 15000
+*** ゲスト側 : $ sudo systemctl restart vboxservice.service

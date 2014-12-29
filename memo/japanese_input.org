@@ -1,16 +1,5 @@
-* パッケージインストール
-** IPAフォント(otf-ipafont)
-** mozc-utをインストール
-*** PKGBUILDで以下をedit
-**** _ibusの行をコメントアウト
-**** _uimの行をアンコメント(uim-mozc-utもインストールされるようになる)
-** インストール時に出てくるように、以後uimを更新したらmozcを登録しなおす
-<pre>
-==> You must run the following command to use mozc
-==> whenever you upgrade or (re-)install uim.
-
-`sudo uim-module-manager --register mozc'
-</pre>
+* IPAフォント(otf-ipafont)
+* uim-mozcをインストール(ibus-mozcが道連れでインストールされるが、最終的には不要になるのでアンインストール)
 * .xprofileに以下を追加
 <pre>
 export GTK_IM_MODULE='uim'
@@ -18,10 +7,10 @@ export QT_IM_MODULE='uim'
 uim-xim &
 export XMODIFIERS='@im=uim'
 </pre>
-* uim-pref-gtkで以下の設定を変更
+* uim-pref-gtk3で以下の設定を変更
 ** 全体設定 => 入力方式の一時切り替え、正副一時切り替えをOFFにする
 ** ツールバー => 表示を「なし」にする
 ** XIM => アンチエイリアスをONにして、フォントを"IPAGothic"にする(Emacsでのpreedit textのフォントが変わる)
 ** 全体キー設定1 => [全体]オン/オフから"<Shift>space"を取り除く
 ** Mozc => vi協調モードをONにする
-** Mozc key bindings => [Mozc]on/offを"zenkaku-hankaku"/"<Shift><Control>space"にする
+** Mozc key bindings => [Mozc]on/offを"zenkaku-hankaku"/"<Shift>zenkaku-hankaku"にする

@@ -1,3 +1,12 @@
+[compiling emacs]
+* $ git clone https://github.com/emacs-mirror/emacs.git ~/code/Emacs/emacs
+* $ cd ~/code/Emacs/emacs
+* $ ./autogen.sh
+* $ ./configure --without-imagemagick --without-gif --without-tiff --without-hesiod --without-kerberos --without-kerberos5 --without-pop --without-mail-unlink --without-selinux --without-xpm --without-ns --without-w32 --without-mmdf --without-rsvg
+* $ make
+* $ ln -s ~/code/Emacs/emacs/src/emacs ~/bin
+* $ ln -s ~/code/Emacs/emacs/lib-src/emacsclient ~/bin/
+
 [emacs settings]
 * 中で $ git submodule init => $ git submodule update, vendor/rinariの中のsubmoduleでも同様
 * aspell, sdic, edict, sdic-gene95の各パッケージをインストール, $ echo "lang en_US" > ~/.aspell.conf

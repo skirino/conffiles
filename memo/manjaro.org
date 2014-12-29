@@ -4,24 +4,28 @@
 ** レポジトリと同期
 *** $ sudo pacman -Syy
 ** yaourtのインストール
-*** $ pacman -S base-devel
-*** $ sudo pacman -Sy yaourt
+*** $ sudo pacman -S yaourt
 ** zsh, zsh-completions, w3m
 ** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる)
 ** その他のパッケージ
-*** git, tig, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool
-*** erlang, OpenJDK 1.7
-*** postgres
-**** /var/lib/postgres/data/postgresql.conf で種々のロケール設定をen_USにしておく
+*** git, tig, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool, aspell, aspell-en, erlang
+*** OpenJDK 8
+**** $ yaourt -R jre7-openjdk (関連パッケージも消す)
+**** $ yaourt jdk8-openjdk
+** conffiles
+*** $ mkdir ~/code
+*** $ git clone https://github.com/skirino/conffiles ~/code/conffiles
+*** $ ~/code/conffiles/setup.sh
+*** $ chsh (zshに切り替え)
 ** emacsをソースからコンパイル、バイナリにパスを通す
-** 以下のファイル群を配置
+** 以下のファイル群を配置(setup.sh)
 *** ~/.gitconfig
 *** ~/.zshrc
 *** ~/.profile
-*** ~/.ssh
 *** ~/.emacs.d
 *** ~/.vimrc
 *** ~/.setarc
+*** ~/.ssh
 *** ~/.xprofile (xwindow.org参照)
 ** Ruby (rbenv)
 *** $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -32,6 +36,8 @@
 ** VBoxServiceをsystemdから起動する(時刻のsync, shared folderのmountのため)
 *** $ sudo systemctl enable vboxservice.service
 ** PostgreSQL初期化
+*** $ yaourt postgres
+*** /var/lib/postgres/data/postgresql.conf で種々のロケール設定をen_USにしておく
 *** $ sudo -i -u postgres
 *** $ initdb --locale ja_JP.UTF-8 -E UTF8 -D '/var/lib/postgres/data'
 *** $ sudo systemctl start postgresql

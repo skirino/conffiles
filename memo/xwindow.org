@@ -22,7 +22,7 @@
 *** /usr/share/mdm/BuiltInSessions/default.desktopで Exec=custom (defultから変更)
 *** ~/.xinitrcに以下を追加
 <pre>
-exec ~/.cabal/bin/xmonad
+exec xmonad
 </pre>
 ** ログイン時に事前に読み込まれるユーザスクリプト(~/.xprofile)に以下を追加しておく
 *** (xmobarはxmonad設定の中から起動する想定)
