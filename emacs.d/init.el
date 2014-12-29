@@ -771,7 +771,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
   ;; Transparency: needs xcompmgr
   (set-frame-parameter (selected-frame) 'alpha '(75 50))
-  (add-to-list 'default-frame-alist '(alpha 85 50))
+  (add-to-list 'default-frame-alist '(alpha 75 50))
 )
 
 (defun my-start-cui-emacs ()
