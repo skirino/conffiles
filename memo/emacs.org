@@ -9,15 +9,6 @@
 
 [emacs settings]
 * 中で $ git submodule init => $ git submodule update, vendor/rinariの中のsubmoduleでも同様
-* aspell, sdic, edict, sdic-gene95の各パッケージをインストール, $ echo "lang en_US" > ~/.aspell.conf
-* apel, gettext-elをインストール
-* migemoの設定 (see http://d.hatena.ne.jp/samurai20000/20100907/1283791433)
-** cmigemo最新版をダウンロード、unzip
-** $ ./configure && make gcc (INT_MAXが見つからないというエラーになったので、適当な場所に #include <limits.h> を追加する)
-** $ cd dict
-** $ make utf-8
-** $ sudo make gcc-install
-* emacs-w3m
-** w3mをインストール
-** w3m-el-snapshotをインストール(とりあえず。問題があればソースからにする)
 * saved_packagesが同じになるように、package.elでパッケージを入れる
+* cmigemo, aspell, aspell-en, stardict, edict, stardict-ej-gene95の各パッケージをインストール
+* $ echo "lang en_US" > ~/.aspell.conf

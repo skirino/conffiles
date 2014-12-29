@@ -5,7 +5,7 @@
     user = skirino
     token = aaaaaaaaaaaaaa
 [core]
-    editor = vi
+    editor = vim
     gitproxy = git-proxy.sh for heroku.com
     whitespace = trailing-space
 [color]

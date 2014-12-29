@@ -770,7 +770,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
   ;; Transparency: needs xcompmgr
-  (set-frame-parameter (selected-frame) 'alpha '(85 50))
+  (set-frame-parameter (selected-frame) 'alpha '(75 50))
   (add-to-list 'default-frame-alist '(alpha 85 50))
 )
 
@@ -1107,7 +1107,6 @@ Then run tests in a preferred window configuration."
 (defun turn-on-paredit () (paredit-mode 1))
 (add-hook 'clojure-mode-hook 'turn-on-paredit)
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
-(require 'nrepl)
 
 
 ;; Scala
@@ -1353,65 +1352,6 @@ Then run tests in a preferred window configuration."
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; flyspell
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
-(require 'sdic)
-(setq sdic-eiwa-dictionary-list '((sdicf-client "/usr/local/share/dict/gene.sdic")))   ; 英和
-(setq sdic-waei-dictionary-list '((sdicf-client "/usr/local/share/dict/jedict.sdic"))) ; 和英
-
-;; tooltipで表示
-(defun temp-cancel-read-only (function &optional jaspace-off)
-  "eval temporarily cancel buffer-read-only
-&optional t is turn of jaspace-mode"
-  (let ((read-only-p nil)
-        (jaspace-mode-p nil))
-    (when (and jaspace-off jaspace-mode)
-      (jaspace-mode)
-      (setq jaspace-mode-p t))
-    (when buffer-read-only
-      (toggle-read-only)
-      (setq read-only-p t))
-    (eval function)
-    (when read-only-p
-      (toggle-read-only))
-    (when jaspace-mode-p
-      (jaspace-mode)
-    )
-  )
-)
-
-(defun my-sdic-describe-word-with-popup (word &optional search-function)
-  "Display the meaning of word."
-  (interactive
-   (let ((f (if current-prefix-arg (sdic-select-search-function)))
-         (w (sdic-read-from-minibuffer)))
-     (list w f)))
-  (let ((old-buf (current-buffer))
-        (dict-data))
-    (set-buffer (get-buffer-create sdic-buffer-name))
-    (or (string= mode-name sdic-mode-name) (sdic-mode))
-    (erase-buffer)
-    (let ((case-fold-search t)
-          (sdic-buffer-start-point (point-min)))
-      (if (prog1 (funcall (or search-function
-                              (if (string-match "\\cj" word)
-                                  'sdic-search-waei-dictionary
-                                'sdic-search-eiwa-dictionary))
-                          word)
-            (set-buffer-modified-p nil)
-            (setq dict-data (buffer-string))
-            (set-buffer old-buf))
-          (temp-cancel-read-only
-           '(popup-tip dict-data :scroll-bar t :truncate nil))
-        (message "Can't find word, \"%s\"." word)
-      )
-    )
-  )
-)
-
-(global-set-key (kbd "C-x p") 'my-sdic-describe-word-with-popup)
-;;;;;;;;;;;;;;;;;;;;;;;; 英和・和英辞書
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
