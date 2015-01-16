@@ -45,3 +45,5 @@
 * クリーンアップ
 ** (無事にグラフィカル環境が起動することを確認)
 ** xfce由来のパッケージを削除
+* gnome/gtkのkeybinding設定
+** $ gsettings set org.gnome.desktop.interface gtk-key-theme Emacs
