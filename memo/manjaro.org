@@ -6,7 +6,7 @@
 ** yaourtのインストール
 *** $ sudo pacman -S yaourt
 ** zsh, zsh-completions, w3m
-** vim (デフォルトで入っているviをアンインストール。Rubyがついてくる), viを削除
+** vim-minimal, viを削除
 ** その他のパッケージ
 *** git, tig, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool, aspell, aspell-en, erlang
 *** OpenJDK 8
@@ -33,6 +33,7 @@
 *** $ rbenv install --list
 *** $ rbenv install X.Y.Z
 *** $ rbenv global X.Y.Z
+*** $ sudo ln -s ~/.rbenv/shims/ruby /usr/bin/ruby (shebangが"/usr/bin/ruby"固定のgem由来のスクリプトを動かすため)
 ** VBoxServiceをsystemdから起動する(時刻のsync, shared folderのmountのため)
 *** $ sudo systemctl enable vboxservice.service
 ** PostgreSQL初期化
