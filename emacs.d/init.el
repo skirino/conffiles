@@ -477,6 +477,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
+(turn-off-auto-fill)
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;; view-mode
 (require 'view)
 (key-chord-define-global "vm" 'view-mode)
@@ -1371,16 +1377,9 @@ Then run tests in a preferred window configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(fill-column 400)
- '(foreign-regexp/regexp-type (quote ruby))
- '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
- '(reb-re-syntax (quote foreign-regexp))
- '(safe-local-variable-values (quote ((encoding . utf-8))))
- '(session-use-package t nil (session))
- '(show-paren-mode t)
- '(text-mode-hook (quote ((lambda nil (flyspell-mode t) (flyspell-buffer)) turn-on-flyspell text-mode-hook-identify))))
+ '(package-selected-packages
+   (quote
+    (wgrep w3m viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby smartparens session save-packages rust-mode rinari request recentf-ext popwin popup-kill-ring nrepl multiple-cursors migemo markdown-mode key-chord js2-mode jade-mode idris-mode highlight-indentation helm-swoop helm-git-grep haskell-mode gtags goto-chg go-mode git-gutter-fringe+ ghc gccsense foreign-regexp flymake-go flymake-elixir flymake-cursor flymake-coffee flycheck-d-unittest f exec-path-from-shell erlang ensime elscreen elixir-mode dired-single d-mode coffee-mode auto-save-buffers-enhanced anzu anything ace-jump-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
