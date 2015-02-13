@@ -479,6 +479,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
 (turn-off-auto-fill)
+(remove-hook 'text-mode-hook 'turn-on-auto-fill)
+(remove-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
