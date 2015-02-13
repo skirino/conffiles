@@ -985,6 +985,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
       (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|"
               ruby-block-end-re "\\|}\\|\\]\\)"))
 
+;; 複数行のif, begin, caseなどのインデントを式の開始位置に依らないようにする
+(setq ruby-align-to-stmt-keywords t)
+
 ;; カッコの内側の要素のインデントを、カッコ位置ではなく通常インデントにする
 (setq ruby-deep-indent-paren-style nil)
 
