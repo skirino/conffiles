@@ -115,6 +115,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (open-related-file-append-group "%1/app/workers/%2.scala"     "%1/test/workers/%2Spec.scala"    )
 (open-related-file-append-group "%1/app/extern/%2.scala"      "%1/test/extern/%2Spec.scala"     )
 (open-related-file-append-group "%1/app/dtos/%2.scala"        "%1/test/dtos/%2Spec.scala"       )
+;; Elixir mix project
+(open-related-file-append-group "%1/lib/%2.ex" "%1/test/%2_test.exs")
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
