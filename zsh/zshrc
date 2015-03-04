@@ -275,7 +275,8 @@ export PATH=$PATH:$GOROOT/bin
 
 # Rust
 export RUSTROOT=$HOME/code/Rust/rust
-export PATH=$PATH:$RUSTROOT/bin
+export PATH=$PATH:$RUSTROOT/rustc/bin:$RUSTROOT/cargo/bin
+export LD_LIBRARY_PATH=$RUSTROOT/rustc/lib:$LD_LIBRARY_PATH
 
 # Erlang & Elixir
 erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
