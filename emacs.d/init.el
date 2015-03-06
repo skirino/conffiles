@@ -9,7 +9,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 環境変数
 (require 'exec-path-from-shell)
-(let ((envs '("PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
+(let ((envs '("PATH" "LD_LIBRARY_PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
   (exec-path-from-shell-copy-envs envs))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1195,6 +1195,8 @@ Then run tests in a preferred window configuration."
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 (require 'flymake)
 (require 'flycheck)
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
 (setq flymake-check-start-time 5)
 (key-chord-define-global "fm" 'flymake-mode)
 
@@ -1386,7 +1388,7 @@ Then run tests in a preferred window configuration."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (wgrep w3m viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby smartparens session save-packages rust-mode rinari request recentf-ext popwin popup-kill-ring nrepl multiple-cursors migemo markdown-mode key-chord js2-mode jade-mode idris-mode highlight-indentation helm-swoop helm-git-grep haskell-mode gtags goto-chg go-mode git-gutter-fringe+ ghc gccsense foreign-regexp flymake-go flymake-elixir flymake-cursor flymake-coffee flycheck-d-unittest f exec-path-from-shell erlang ensime elscreen elixir-mode dired-single d-mode coffee-mode auto-save-buffers-enhanced anzu anything ace-jump-mode))))
+    (wgrep w3m viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby smartparens session save-packages rust-mode rinari request recentf-ext popwin popup-kill-ring nrepl multiple-cursors migemo markdown-mode key-chord js2-mode jade-mode idris-mode highlight-indentation helm-swoop helm-git-grep haskell-mode gtags goto-chg go-mode git-gutter-fringe+ ghc gccsense foreign-regexp flymake-go flymake-elixir flymake-cursor flymake-coffee flycheck-rust flycheck-d-unittest f exec-path-from-shell erlang ensime elscreen elixir-mode dired-single d-mode coffee-mode auto-save-buffers-enhanced anzu ace-jump-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
