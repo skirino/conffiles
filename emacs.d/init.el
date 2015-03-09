@@ -601,6 +601,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; helm
+;; Workaround to `void-function' while loading helm-mode: https://lists.gnu.org/archive/html/bug-gnu-emacs/2015-01/msg00351.html
+(defun class-slot-initarg (class-name slot)
+  (eieio--class-slot-initarg (eieio--class-v class-name) slot))
+
 (require 'helm-mode)
 (require 'helm-git-grep)
 (helm-mode 1)
@@ -1136,7 +1140,6 @@ Then run tests in a preferred window configuration."
 (defun make-play-doc-url (type &optional member)
   (ensime-make-java-doc-url-helper
    "file:///home/rajish/bin/play2/documentation/api/scala/" type member))
-(add-to-list 'ensime-doc-lookup-map '("^play\\.api\\." . make-play-doc-url))
 
 
 ;; YaTeX
@@ -1195,8 +1198,8 @@ Then run tests in a preferred window configuration."
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
 (require 'flymake)
 (require 'flycheck)
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
 (setq flymake-check-start-time 5)
 (key-chord-define-global "fm" 'flymake-mode)
 
