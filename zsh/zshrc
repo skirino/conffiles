@@ -124,7 +124,11 @@ autoload -U compinit
 compinit
 
 ## 補完候補の色づけ
-eval `dircolors`
+if [ -f /usr/share/dircolors/dircolors.ansi-universal ]; then
+    eval $(dircolors /usr/share/dircolors/dircolors.ansi-universal)
+else
+    eval `dircolors`
+fi
 export ZLS_COLORS=$LS_COLORS
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
