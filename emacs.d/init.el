@@ -661,7 +661,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (defun w3m-filter-alc-alt (url)
   "英辞郎のヘッダ部分を取り除く"
   (w3m-filter-delete-regions url "<!-- interest_match_relevant_zone_start -->" "<!-- ▼ 検索補助 ▼ -->"))
-(add-to-list 'w3m-filter-rules '("\\`http://eow\.alc\.co\.jp/[^/]+/UTF-8" w3m-filter-alc-alt))
+(add-to-list 'w3m-filter-rules '("\\`http://eow\.alc\.co\.jp/[^/]+" w3m-filter-alc-alt))
 
 (defun w3m-search-eijiro (query)
   "w3mで英辞郎 on the Web検索"
