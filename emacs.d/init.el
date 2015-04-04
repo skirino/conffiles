@@ -173,8 +173,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; バッファ切り替え (C-, C-.)
 (defvar my-ignore-blst             ; 移動の際に無視するバッファのリスト
   '("*Help*" "*Compile-Log*" "*Mew completions*" "*Completions*"
-    "*Shell Command Output*" "*Apropos*" "*Buffer List*"
-    "*anything*" "*anything minibuffer-history*" "*anything complete*" "*my-anything*"))
+    "*Shell Command Output*" "*Apropos*" "*Buffer List*"))
 (defvar my-visible-blst       nil) ; 移動開始時の buffer list を保存
 (defvar my-bslen              15 ) ; buffer list 中の buffer name の最大長
 (defvar my-blist-display-time 2  ) ; buffer list の表示時間
@@ -611,7 +610,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq helm-input-idle-delay 0.1)
 (setq helm-truncate-lines t)
 (setq helm-buffer-max-length 50)
-(add-to-list 'helm-completing-read-handlers-alist '(find-file-at-point . nil)) ;; Don't use helm command for C-x C-f
+(add-to-list 'helm-completing-read-handlers-alist '(find-file-at-point . nil)) ;; Don't use helm in specific commands
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (setq helm-delete-minibuffer-contents-from-point t)
@@ -632,9 +631,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key isearch-mode-map (kbd "C-S-s") 'helm-swoop-from-isearch) ;; When doing isearch, hand the word over to helm-swoop
 
 ;; don't show error message when keys that invoke helm commands multiple times
+(define-key helm-map (kbd "M-x"  ) 'ignore)
 (define-key helm-map (kbd "C-;"  ) 'ignore)
 (define-key helm-map (kbd "C-+"  ) 'ignore)
-(define-key helm-map (kbd "M-x"  ) 'ignore)
 (define-key helm-map (kbd "C-c g") 'ignore)
 (define-key helm-map (kbd "C-S-s") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1185,12 +1184,11 @@ Then run tests in a preferred window configuration."
 
 
 ;; GNU global
-(require 'gtags)
-(define-key gtags-mode-map (kbd "M-t") 'gtags-find-tag)  ;関数の定義元へ
-(define-key gtags-mode-map (kbd "M-r") 'gtags-find-rtag) ;関数の参照先へ
-(define-key gtags-mode-map (kbd "M-t") 'gtags-pop-stack) ;前のバッファに戻る
-(add-hook 'c-mode-common-hook 'gtags-mode)
-(add-hook 'c++-mode-hook      'gtags-mode)
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (ggtags-mode 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 
 
@@ -1391,7 +1389,8 @@ Then run tests in a preferred window configuration."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (wgrep w3m viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby smartparens session save-packages rust-mode rinari request recentf-ext popwin popup-kill-ring nrepl multiple-cursors migemo markdown-mode key-chord js2-mode jade-mode idris-mode highlight-indentation helm-swoop helm-git-grep haskell-mode gtags goto-chg go-mode git-gutter-fringe+ ghc gccsense foreign-regexp flymake-go flymake-elixir flymake-cursor flymake-coffee flycheck-rust flycheck-d-unittest f exec-path-from-shell erlang ensime elscreen elixir-mode dired-single d-mode coffee-mode auto-save-buffers-enhanced anzu ace-jump-mode))))
+    (ggtags wgrep w3m viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby smartparens session save-packages rust-mode rinari request recentf-ext popwin popup-kill-ring nrepl multiple-cursors migemo markdown-mode key-chord js2-mode jade-mode idris-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ghc gccsense foreign-regexp flymake-go flymake-elixir flymake-cursor flymake-coffee flycheck-rust flycheck-d-unittest f exec-path-from-shell erlang ensime elscreen elixir-mode dired-single d-mode coffee-mode auto-save-buffers-enhanced anzu ace-jump-mode)))
+ '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
