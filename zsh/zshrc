@@ -196,7 +196,18 @@ e() {
 emc() {
   emacsclient -n $* && xdotool key "super+e"
 }
-alias xopen='xdg-open'
+
+case "${OSTYPE}" in
+cygwin*)
+    alias xopen='cygstart'
+    ;;
+freebsd*|darwin*)
+    alias xopen='open'
+    ;;
+linux*)
+    alias xopen='xdg-open'
+    ;;
+esac
 
 
 # git utilities
