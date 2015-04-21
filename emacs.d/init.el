@@ -581,6 +581,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Git
 (require 'magit)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; git-gutter+ & git-gutter-fringe+
 (require 'git-gutter-fringe+)
