@@ -257,31 +257,31 @@ gpushf() {
 ########## Programming
 # Ruby
 alias irb='irb -r irb/completion'
-PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/2.1.0/bin:$PATH
+export PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/2.1.0/bin:$PATH
 eval "$(rbenv init -)"
 
 # D programming
-PATH=/opt/dmd/bin:$PATH
+export PATH=/opt/dmd/bin:$PATH
 
 # Haskell
-PATH=~/.cabal/bin:$PATH
+export PATH=~/.cabal/bin:$PATH
 
 # Idris
-PATH=~/code/Idris/install/.cabal-sandbox/bin:$PATH
+export PATH=~/code/Idris/install/.cabal-sandbox/bin:$PATH
 
 # Java
 JAVA_HOME=/usr/lib/jvm/default
 JDK_HOME=/usr/lib/jvm/default
-PATH=${JAVA_HOME}/bin:$PATH
+export PATH=${JAVA_HOME}/bin:$PATH
 
 # Clojure
 cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
 # Scala
-PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:~/code/Scala/activator:$PATH
+export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:~/code/Scala/activator:$PATH
 
 # Android
-PATH=${ANDROID_SDK_HOME}/platform-tools:$PATH
+export PATH=${ANDROID_SDK_HOME}/platform-tools:$PATH
 alias avd_manager='${ANDROID_SDK_HOME}/tools/android avd'
 
 # Go
@@ -295,10 +295,10 @@ export LD_LIBRARY_PATH=$RUSTROOT/rustc/lib:$LD_LIBRARY_PATH
 
 # Erlang & Elixir
 erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
-PATH=~/code/Erlang/elixir/bin:$PATH
+export PATH=~/code/Erlang/elixir/bin:$PATH
 
 # JS
-PATH=~/.nodebrew/current/bin:$PATH
+export PATH=~/.nodebrew/current/bin:$PATH
 
 
 ########## OS-specific settings
