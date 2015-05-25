@@ -182,13 +182,6 @@ alias sl='ls'
 alias du="du -h"
 alias df="df -h"
 alias vi='vim'
-alias temp='cd ~/temp'
-alias conf='cd ~/code/conffiles'
-alias cdu='cd ..'
-alias cduu='cd ../..'
-alias cduuu='cd ../../..'
-alias cduuuu='cd ../../../..'
-alias cduuuuu='cd ../../../../..'
 alias emnw='emacsclient -nw'
 e() {
   emacsclient -c $* &
@@ -196,6 +189,21 @@ e() {
 emc() {
   emacsclient -n $* && xdotool key "super+e"
 }
+
+alias temp='cd ~/temp'
+alias conf='cd ~/code/conffiles'
+
+alias cdu='cd ..'
+alias cduu='cd ../..'
+alias cduuu='cd ../../..'
+alias cduuuu='cd ../../../..'
+alias cduuuuu='cd ../../../../..'
+function cdup() {
+  cd ..
+  zle reset-prompt
+}
+zle -N cdup
+bindkey '^\^' cdup
 
 case "${OSTYPE}" in
 cygwin*)
@@ -346,7 +354,14 @@ if exists percol; then
     CURSOR=$#BUFFER         # move cursor
     zle -R -c               # refresh
   }
-
   zle -N percol_select_history
   bindkey -M afu '^R' percol_select_history
+
+  function percol_select_dir_under_current() {
+    local buffer="$(find . -maxdepth 1 -type d | tail -n+2 | sed -e 's/^\.\///' | percol)"
+    [ -z $buffer ] || { echo; cd $buffer }
+    zle reset-prompt
+  }
+  zle -N percol_select_dir_under_current
+  bindkey -M afu '^T' percol_select_dir_under_current
 fi
