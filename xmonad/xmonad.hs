@@ -1,7 +1,6 @@
 import Data.Monoid
 import Data.Time.LocalTime (getZonedTime)
-import Data.Time.Format (formatTime)
-import System.Locale (defaultTimeLocale)
+import Data.Time.Format (formatTime, defaultTimeLocale)
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Actions.CycleWS
