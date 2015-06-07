@@ -3,6 +3,7 @@ import Data.Time.LocalTime (getZonedTime)
 import Data.Time.Format (formatTime, defaultTimeLocale)
 import XMonad
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.CycleWS
 import XMonad.Actions.WindowGo
 import qualified XMonad.StackSet as W
@@ -32,6 +33,7 @@ takeScreenshot = do
 -- Key bindings. Add, modify or remove key bindings here.
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm              , xK_Return), spawn "dmenu_run -fn 'Monospace-18'") -- launch dmenu
+    , ((modm              , xK_space ), spawn "searchbox 'wikipedia=https://ja.wikipedia.org/wiki/' 'amazon=https://www.amazon.co.jp/s/ref=nb_sb_noss?field-keywords=' 'eijiro=http://eow.alc.co.jp/search?q='")
     , ((modm              , xK_t     ), spawn $ XMonad.terminal conf)
     , ((modm              , xK_s     ), runOrRaiseSeta   )
     , ((modm              , xK_e     ), runOrRaiseEmacs  )
@@ -95,7 +97,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 myManageHook = composeAll
                [ className =? "MPlayer"        --> doFloat
-               , className =? "Gimp"           --> doFloat
+               , className =? "Searchbox"      --> doFloat
                , resource  =? "desktop_window" --> doIgnore
                , resource  =? "kdesktop"       --> doIgnore ]
 
@@ -125,7 +127,7 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 main = xmonad =<< xmobar defaults
 
-defaults = defaultConfig
+defaults = ewmh defaultConfig
   {
   -- simple stuff
     modMask            = mod4Mask -- Use super (Windows key)
