@@ -297,6 +297,7 @@ alias avd_manager='${ANDROID_SDK_HOME}/tools/android avd'
 
 # Go
 export GOROOT=$HOME/code/Go/go
+export GOPATH=$HOME/code/Go
 export PATH=$PATH:$GOROOT/bin
 
 # Rust
