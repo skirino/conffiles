@@ -11,6 +11,7 @@
 ** Tab Auto Reload
 ** Markdown Here
 ** FindBar Tweak
+** stylish
 * optionalのアドオン
 ** firebug
 ** Web Developer
@@ -19,6 +20,7 @@
 ** FireFTP
 ** tile tabs
 ** Font Finder
+** wikiwand
 
 * tab mix plus
 ** リンク => シングルウィンドウモードをON
@@ -29,6 +31,8 @@
 * keysnail
 ** 検索してファイルダウンロード、Firefoxの「ファイルを開く」で開いてインストール
 ** プラグインTanything, HoK, BuiltinCommandAsExt, bmany, LDRCnail, History from Keysnailをインストール
+* userstyle
+** [github-wide](https://github.com/mdo/github-wide)を導入
 * コンテンツ => 言語設定で日本語を最優先にする
 * 詳細 => 一般 => smooth scrollingをdisable
 * スタート時にはホームページを表示する、スタート時に開くURLを設定
