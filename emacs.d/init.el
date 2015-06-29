@@ -245,6 +245,9 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'smartparens-config)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
+
+;; company-mode
+(global-company-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -1166,6 +1169,12 @@ Then run tests in a preferred window configuration."
 (require 'elixir-mode)
 (require 'flymake-elixir)
 (add-hook 'elixir-mode-hook 'flymake-elixir-load)
+(require 'alchemist)
+;; erlang-modeに移動したあとでも戻れるようにする
+(defun custom-erlang-mode-hook ()
+  (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
+(add-hook 'erlang-mode-hook 'custom-erlang-mode-hook)
+
 
 
 ;; markdown mode
