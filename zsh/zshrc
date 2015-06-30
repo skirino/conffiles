@@ -191,7 +191,7 @@ emc() {
 }
 
 alias temp='cd ~/temp'
-alias conf='cd ~/code/conffiles'
+alias conf="cd $(dirname $(dirname $(readlink -f "$0")))"
 
 alias cdu='cd ..'
 alias cduu='cd ../..'
@@ -326,7 +326,7 @@ esac
 
 
 ########## incremental completion by auto-fu
-source ${HOME}/code/conffiles/zsh/auto-fu/auto-fu.zsh
+source $(dirname $(readlink -f "$0"))/auto-fu/auto-fu.zsh
 zle-line-init() { auto-fu-init; }; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zle -N zle-keymap-select auto-fu-zle-keymap-select
