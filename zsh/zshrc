@@ -307,6 +307,7 @@ export LD_LIBRARY_PATH=$RUSTROOT/rustc/lib:$LD_LIBRARY_PATH
 
 # Erlang & Elixir
 erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
+source ~/code/Erlang/erlang/activate
 export PATH=~/code/Erlang/elixir/bin:$PATH
 
 # JS
