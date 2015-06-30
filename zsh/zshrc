@@ -118,6 +118,15 @@ setopt list_packed
 #setopt noautoremoveslash
 
 
+# assuming that coreutils package is installed on OSX
+case "${OSTYPE}" in
+freebsd*|darwin*)
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+    ;;
+esac
+
+
 ## Completion configuration
 fpath=(${HOME}/.zsh/functions/Completion ${fpath})
 autoload -U compinit
@@ -148,21 +157,6 @@ if [ -f /usr/share/autojump/autojump.zsh ]; then
 fi
 
 
-case "${OSTYPE}" in
-freebsd*|darwin*)
-    alias ls="ls -G -w"
-    alias grep="grep -n --color=auto"
-    ;;
-linux*)
-    alias ls="ls -F --color=auto"
-    alias grep="grep -n --color=auto"
-    ;;
-esac
-
-
-# automatically run ls
-function chpwd() { ls }
-
 
 # global aliases
 alias -g L='| less'
@@ -175,9 +169,10 @@ elif which putclip >/dev/null 2>&1 ; then
     alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | putclip'
 fi
 
-
 # aliases
+alias ls="ls -F --color=auto"
 alias la='ls -al'
+alias grep="grep -n --color=auto"
 alias sl='ls'
 alias du="du -h"
 alias df="df -h"
@@ -217,6 +212,8 @@ linux*)
     ;;
 esac
 
+# automatically run ls (note that this should come after alias ls='...')
+function chpwd() { ls }
 
 # git utilities
 alias gst='git status'
