@@ -184,10 +184,10 @@ alias df="df -h"
 alias vi='vim'
 alias emnw='emacsclient -nw'
 e() {
-  emacsclient -c $* &
+    emacsclient -c $* &
 }
 emc() {
-  emacsclient -n $* && xdotool key "super+e"
+    emacsclient -n $* && xdotool key "super+e"
 }
 
 alias temp='cd ~/temp'
@@ -253,12 +253,12 @@ alias gmtool='git mergetool'
 compdef _git gmtool=git-mergetool
 alias gsubup='git submodule update'
 gpush() {
-  local branch=$(git rev-parse --abbrev-ref HEAD)
-  git push origin $branch:$branch
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+    git push origin $branch:$branch
 }
 gpushf() {
-  local branch=$(git rev-parse --abbrev-ref HEAD)
-  git push -f origin $branch:$branch
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+    git push -f origin $branch:$branch
 }
 
 
@@ -317,11 +317,11 @@ export PATH=~/.nodebrew/current/bin:$PATH
 ########## OS-specific settings
 case "${OSTYPE}" in
 linux*)
-  # disable screen lock by C-s
-  if [ -t 0 ]; then
-    stty -ixon
-  fi
-  ;;
+    # disable screen lock by C-s
+    if [ -t 0 ]; then
+        stty -ixon
+    fi
+    ;;
 esac
 
 
@@ -337,9 +337,9 @@ zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
 zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
 
 afu-accept-line-with-clearing() {
-  afu-clearing-maybe
-  ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
-  zle afu+accept-line
+    afu-clearing-maybe
+    ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
+    zle afu+accept-line
 }
 zle -N afu-accept-line-with-clearing
 bindkey -M afu "^M" afu-accept-line-with-clearing
@@ -349,21 +349,21 @@ bindkey -M afu "^J" afu-accept-line-with-clearing
 ########## percol (taken from README.md of percol)
 function exists { which $1 &> /dev/null }
 if exists percol; then
-  function percol_select_history() {
-    local tac
-    exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
-    BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
-    CURSOR=$#BUFFER         # move cursor
-    zle -R -c               # refresh
-  }
-  zle -N percol_select_history
-  bindkey -M afu '^R' percol_select_history
+    function percol_select_history() {
+        local tac
+        exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
+        BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
+        CURSOR=$#BUFFER         # move cursor
+        zle -R -c               # refresh
+    }
+    zle -N percol_select_history
+    bindkey -M afu '^R' percol_select_history
 
-  function percol_select_dir_under_current() {
-    local buffer="$(find . -maxdepth 1 -type d | tail -n+2 | sed -e 's/^\.\///' | percol)"
-    [ -z $buffer ] || { echo; cd $buffer }
-    zle reset-prompt
-  }
-  zle -N percol_select_dir_under_current
-  bindkey -M afu '^T' percol_select_dir_under_current
+    function percol_select_dir_under_current() {
+        local buffer="$(find . -maxdepth 1 -type d | tail -n+2 | sed -e 's/^\.\///' | percol)"
+        [ -z $buffer ] || { echo; cd $buffer }
+        zle reset-prompt
+    }
+    zle -N percol_select_dir_under_current
+    bindkey -M afu '^T' percol_select_dir_under_current
 fi
