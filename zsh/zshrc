@@ -304,8 +304,11 @@ export LD_LIBRARY_PATH=$RUSTROOT/rustc/lib:$LD_LIBRARY_PATH
 
 # Erlang & Elixir
 erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
-[ -f ~/code/Erlang/erlang/activate ] && source ~/code/Erlang/erlang/activate
-export PATH=~/code/Erlang/elixir/bin:$PATH
+if [ -f ~/code/Erlang/erlang/activate ]; then
+    source ~/code/Erlang/erlang/activate
+    export PATH=~/code/Erlang/elixir/bin:$PATH
+    export ERL_HOME=$_KERL_ACTIVE_DIR
+fi
 
 # JS
 export PATH=~/.nodebrew/current/bin:$PATH
