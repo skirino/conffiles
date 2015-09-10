@@ -156,11 +156,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; キーストロークをエコーエリアに早く表示する
 (setq echo-keystrokes 0.2)
 
-;; バッファ切り替えを強化
-(iswitchb-mode t)
-(setq iswitchb-regexp nil)           ;; 部分文字列の代わりに正規表現を使う場合は t に設定する
-(setq iswitchb-prompt-newbuffer nil) ;; 新しいバッファを作成するときにいちいち聞かないように
-
 ;; ファイル名がかぶったときのバッファ名を適切に設定
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
@@ -312,13 +307,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (other-window 1)
   (switch-to-buffer "*grep*")
   (other-window 1))
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;; foreign-regexp
-(require 'foreign-regexp)
-(global-set-key (kbd "C-x C-r") 'foreign-regexp/query-replace)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -954,6 +942,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'go-mode)
 
 
+;; ponylang-mode
+(require 'ponylang-mode)
+
+
 ;; vala-mode
 (autoload 'vala-mode "vala-mode" "Major mode for editing Vala code." t)
 (add-to-list 'auto-mode-alist          '("\\.vala$" . vala-mode))
@@ -1399,7 +1391,7 @@ Then run tests in a preferred window configuration."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ggtags wgrep w3m viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby smartparens session save-packages rust-mode rinari request recentf-ext popwin popup-kill-ring nrepl multiple-cursors migemo markdown-mode key-chord js2-mode jade-mode idris-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ghc gccsense foreign-regexp flymake-go flymake-elixir flymake-cursor flymake-coffee flycheck-rust flycheck-d-unittest f exec-path-from-shell erlang ensime elscreen elixir-mode dired-single d-mode coffee-mode auto-save-buffers-enhanced anzu ace-jump-mode)))
+    (ponylang-mode wgrep viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby session save-packages request recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-elixir flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
