@@ -259,6 +259,10 @@ gpushf() {
 }
 
 
+########## environment variables
+export PATH=~/bin:$PATH
+
+
 ########## Programming
 # Ruby
 alias irb='irb -r irb/completion'
@@ -285,7 +289,6 @@ cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 # Scala
 export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:~/code/Scala/activator:$PATH
 
-# Android
 # Android
 export ANDROID_SDK_HOME=$HOME/code/Android/sdk
 export ANDROID_HOME=$ANDROID_SDK_HOME
