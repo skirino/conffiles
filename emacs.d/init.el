@@ -53,22 +53,14 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; pomodoro
-(require 'tomatinho)
-(global-set-key (kbd "<f12>") 'tomatinho)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
-;; ffap
 (ffap-bindings)
 
 ;; disable backup
 (setq backup-inhibited t)
-;; disable Emacs default auto-save
-(setq auto-save-default nil)
 
-;; auto-save
+;; replace Emacs default auto-save
+(setq auto-save-default nil)
 (require 'auto-save-buffers-enhanced)
 (setq auto-save-buffers-enhanced-interval 1.0) ; アイドル1秒で保存
 (auto-save-buffers-enhanced t)
@@ -77,7 +69,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
 
-;; auto revert
+;; ファイル更新を検知
 (global-auto-revert-mode)
 
 ;; 履歴を保存
@@ -352,13 +344,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key global-map (kbd "<f8>") 'goto-last-change)
 (define-key global-map (kbd "S-<f8>") 'goto-last-change-reverse)
 
-;; 自動インデント、RetやC-jも自動インデントになる
+;; 自動インデント
 (global-set-key (kbd "C-m") 'smart-newline)
 
 ;; "C-h"をbackspaceに (これで<C-backspace>が反応しなくなるので、bindしなおす)
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (global-set-key (kbd "<C-backspace>") 'backward-kill-word)
-
 
 ;; "C-a"で「行頭」と「インデントを飛ばした行頭」を行き来する
 (defun u-move-beginning-of-line ()
@@ -392,7 +383,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (setq x-select-enable-clipboard t)
 )
 
-
 ;; カーソル位置から行頭まで削除する
 (defun backward-kill-line (arg)
   "Kill chars backward until encountering the end of a line."
@@ -403,14 +393,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "C-u") 'backward-kill-line)
 (global-set-key (kbd "C-t") 'universal-argument)
 
-
 ;; popup-kill-ring
 (require 'popup)
 (require 'pos-tip)
 (require 'popup-kill-ring)
 (global-set-key (kbd "M-y") 'popup-kill-ring)
 (setq popup-kill-ring-interactive-insert t)
-
 
 ;; 重複したエントリはkill-ringに入れず、順番を入れ替えるだけにする
 (defadvice kill-new (before ys:no-kill-new-duplicates activate)
@@ -437,26 +425,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "C-S-j") 'windmove-down)
 (global-set-key (kbd "C-S-k") 'windmove-up)
 (global-set-key (kbd "C-S-l") 'windmove-right)
-
-;; follow-mode
-(require 'follow)
-(defun my-toggle-follow-mode ()
-  (interactive)
-  (cond ((eq follow-mode t) ; On => follow-modeをオフにして2分割に戻る
-         (follow-mode nil)
-         (delete-other-windows)
-         (split-window-horizontally)
-         (balance-windows)
-         )
-        (t ; Off => 3分割してfollow-mode
-         (delete-other-windows)
-         (split-window-horizontally)
-         (split-window-horizontally)
-         (balance-windows)
-         (follow-mode)
-         ))
-)
-(key-chord-define-global "fw" 'my-toggle-follow-mode)
 
 ;; popwin
 (require 'popwin)
@@ -565,11 +533,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key org-mode-map [S-left]  nil)
 (define-key org-mode-map [S-right] nil)
 (define-key org-mode-map (kbd "C-c C-x C-c") nil)
-
-;; ox-html5presentation
-(require 'ox-html5presentation)
-(define-key org-mode-map (kbd "<f5>") 'org-export-as-html5presentation)
-(define-key org-mode-map (kbd "<f6>") 'org-export-as-html5presentation-and-open)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -689,11 +652,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;;;;;;;;;;;;;;;;;;;;;;;; w3m
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; HTTP request
-(require 'request)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 日本語入力
 ;; 日本語 <=> 英数の切り替え(ibus等々にやらせる)
 (global-set-key (kbd "S-C-SPC"          ) 'ignore)
@@ -721,24 +679,19 @@ The list is written to FILENAME, or `save-packages-file' by default."
   "hl-line's my face")
 (setq hl-line-face 'my-hl-line-face)
 
-
 ;; インデントの強調表示
 (require 'highlight-indentation)
 (add-hook 'find-file-hook 'highlight-indentation-mode)
 
-
 ;; 行の折り返し
 (key-chord-define-global "kl" 'toggle-truncate-lines)
-
 
 ;; 対応する括弧を表示させる
 (show-paren-mode t)
 
-
 ;; 行番号・桁番号を表示
 (line-number-mode t)
 (column-number-mode t)
-
 
 ;; タブ、全角スペース、行末のスペースを見えるように (コメントを外すと改行が見えるように)
 ;;; インデント時にタブを使わないでスペースを使う
@@ -767,7 +720,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 (defun my-start-gui-emacs ()
-  ;; start server for emacsclient
   (require 'server)
   (unless (server-running-p) (server-start))
   ;; "C-x C-c"でemacsclientによる編集を終了
@@ -1179,7 +1131,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (add-hook 'erlang-mode-hook 'custom-erlang-mode-hook)
 
 
-
 ;; markdown mode
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
@@ -1212,7 +1163,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (add-hook 'after-init-hook 'global-flycheck-mode)
 (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
 (setq flymake-check-start-time 5)
-(key-chord-define-global "fm" 'flymake-mode)
 
 ;; GUIのダイアログを抑制
 (setq flymake-gui-warnings-enabled nil)
@@ -1259,14 +1209,12 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (add-to-list 'flymake-err-line-patterns
              '("^\\([^ :]+\\)(\\([0-9]+\\)): \\(.*\\)$" 1 2 nil 3))
 
-
 (defun flymake-gjslint-init ()
   "Initialize flymake for gjslint"
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
                      'flymake-create-temp-inplace)))
     (list "gjslint" (list temp-file "--nosummary"))))
 (push '("\\.js$" flymake-gjslint-init) flymake-allowed-file-name-masks)
-
 
 ;; 警告エラー行にカーソルがあれば、内容をMinibuf に出力
 (defun my-flymake-show-help ()
@@ -1402,7 +1350,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ace-isearch smart-newline ponylang-mode wgrep viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby session save-packages request recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-elixir flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
+    (ace-isearch smart-newline ponylang-mode wgrep viewer vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-elixir flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
