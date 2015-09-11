@@ -255,7 +255,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (require 'migemo)
   (setq migemo-command "cmigemo")
   (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
   (setq migemo-user-dictionary nil)
   (setq migemo-regex-dictionary nil)
   (setq migemo-coding-system 'utf-8-unix)
@@ -266,6 +266,10 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; anzuで検索のマッチ数をモードラインに表示
 (require 'anzu)
 (global-anzu-mode t)
+
+;; ace-isearch: helm-swoopに映るところでエラーになる。原因不明
+;(require 'ace-isearch)
+;(global-ace-isearch-mode 1)
 
 ;; M-x grepの検索結果を編集してファイルに反映
 (require 'wgrep)
@@ -349,7 +353,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key global-map (kbd "S-<f8>") 'goto-last-change-reverse)
 
 ;; 自動インデント、RetやC-jも自動インデントになる
-(global-set-key (kbd "C-m") 'reindent-then-newline-and-indent)
+(global-set-key (kbd "C-m") 'smart-newline)
 
 ;; "C-h"をbackspaceに (これで<C-backspace>が反応しなくなるので、bindしなおす)
 (global-set-key (kbd "C-h") 'delete-backward-char)
@@ -607,6 +611,25 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (setq helm-delete-minibuffer-contents-from-point t)
 (define-key helm-map (kbd "C-c C-k") 'helm-buffer-run-kill-persistent)
+
+;; helm-migemo
+(require 'helm-migemo)
+;; この修正が必要
+(with-eval-after-load "helm-migemo"
+  (defun helm-compile-source--candidates-in-buffer (source)
+    (helm-aif (assoc 'candidates-in-buffer source)
+        (append source
+                `((candidates
+                   . ,(or (cdr it)
+                          (lambda ()
+                            ;; Do not use `source' because other plugins
+                            ;; (such as helm-migemo) may change it
+                            (helm-candidates-in-buffer (helm-get-current-source)))))
+                  (volatile) (match identity)))
+      source))
+  ;; [2015-09-06 Sun]helm-match-plugin -> helm-multi-match変更の煽りを受けて
+  (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
+  (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
 
 ;; helm commands
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
@@ -991,96 +1014,86 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (setq ruby-deep-indent-paren-style nil)
 
 ;; rinari
-(require 'rinari)
-(add-hook 'ruby-mode-hook 'rinari-minor-mode)
-(define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
-(setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml") ;; rinari-rgrepのターゲットファイルを絞る
-(setq ruby-compilation-executable "testdrb") ;; to run tests using spork, overwrite the name of executable
+;(require 'rinari)
+;(add-hook 'ruby-mode-hook 'rinari-minor-mode)
+;(define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
+;(setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml") ;; rinari-rgrepのターゲットファイルを絞る
+;(setq ruby-compilation-executable "testdrb") ;; to run tests using spork, overwrite the name of executable
 
 ;; custom functions
-(defvar my-rinari-spork-branch nil)
-(defvar my-rinari-autotest-after-save nil)
-(defvar my-rinari-autotest-marker nil)
-
-(defun my-rinari-start-spork ()
-  (interactive)
-  (setq my-rinari-spork-branch (magit-get-current-branch))
-  (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
-    (shell-command command)))
-(define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-start-spork)
-
-(defun my-rinari-kill-spork ()
-  (interactive)
-  (let ((command "kill `ps x | /bin/grep 'ruby.*spork' | /bin/grep -v grep | sed -e 's/ .*$//'`"))
-    (shell-command command)))
-(define-key rinari-minor-mode-map (kbd "C-c ; S") 'my-rinari-kill-spork)
-
-(defun my-rinari-is-spork-running? ()
-  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
-    (< 0 (length grep-result))))
-
-(defun my-rinari-test-on-appropriate-position ()
-  (save-excursion
-    (cond (my-rinari-autotest-marker
-           (with-current-buffer (marker-buffer my-rinari-autotest-marker)
-             (goto-char my-rinari-autotest-marker)
-             (rinari-test)))
-          (t ;; without marker
-           (rinari-test))
-          )))
-
-(defun my-rinari-test-with-preferred-window-configuration ()
-  (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
-         (orig-buffer  (current-buffer)))
-    (when (open-related-file-open)
-      (unless is-test-file (other-window 1))
-      (my-rinari-test-on-appropriate-position)
-      (select-window (get-buffer-window orig-buffer)))))
-
-(defun my-rinari-test-using-spork ()
-  "Start spork process if it is not running.
-Then run tests in a preferred window configuration."
-  (interactive)
-  (let* ((same-branch          (equal my-rinari-spork-branch (magit-get-current-branch)))
-         (need-to-launch-spork (or (not same-branch) (not (my-rinari-is-spork-running?)))))
-    (cond (need-to-launch-spork
-           (my-rinari-start-spork))
-          (t
-           (my-rinari-test-with-preferred-window-configuration))
-          )))
-(define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test-using-spork)
-
-(defun my-rinari-autotest-toggle-run-after-save ()
-  (interactive)
-  (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
-  (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save)
-  (when (and my-rinari-autotest-after-save (not (my-rinari-is-spork-running?)))
-    (my-rinari-start-spork)))
-(define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-autotest-toggle-run-after-save)
-
-(defun my-rinari-test-with-check ()
-  (interactive)
-  (when my-rinari-autotest-after-save
-    (my-rinari-test-using-spork)))
-(add-hook 'rinari-minor-mode-hook
-          (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
-
-(defun my-rinari-autotest-set-marker ()
-  (interactive)
-  (setq my-rinari-autotest-marker (point-marker))
-  (message "rinari autotest marker is set"))
-(defun my-rinari-autotest-clear-marker ()
-  (interactive)
-  (setq my-rinari-autotest-marker nil)
-  (message "rinari autotest marker is removed"))
-(define-key rinari-minor-mode-map (kbd "C-c ; m") 'my-rinari-autotest-set-marker)
-(define-key rinari-minor-mode-map (kbd "C-c ; M") 'my-rinari-autotest-clear-marker)
-
-(defun my-rinari-rgrep ()
-  (interactive)
-  (rinari-rgrep)
-  (my-grep-place-buffers))
-(define-key rinari-minor-mode-map (kbd "C-c ; g") 'my-rinari-rgrep)
+;(defvar my-rinari-spork-branch nil)
+;(defvar my-rinari-autotest-after-save nil)
+;(defvar my-rinari-autotest-marker nil)
+;(defun my-rinari-start-spork ()
+;  (interactive)
+;  (setq my-rinari-spork-branch (magit-get-current-branch))
+;  (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
+;    (shell-command command)))
+;(define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-start-spork)
+;(defun my-rinari-kill-spork ()
+;  (interactive)
+;  (let ((command "kill `ps x | /bin/grep 'ruby.*spork' | /bin/grep -v grep | sed -e 's/ .*$//'`"))
+;    (shell-command command)))
+;(define-key rinari-minor-mode-map (kbd "C-c ; S") 'my-rinari-kill-spork)
+;(defun my-rinari-is-spork-running? ()
+;  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
+;    (< 0 (length grep-result))))
+;(defun my-rinari-test-on-appropriate-position ()
+;  (save-excursion
+;    (cond (my-rinari-autotest-marker
+;           (with-current-buffer (marker-buffer my-rinari-autotest-marker)
+;             (goto-char my-rinari-autotest-marker)
+;             (rinari-test)))
+;          (t ;; without marker
+;           (rinari-test))
+;          )))
+;(defun my-rinari-test-with-preferred-window-configuration ()
+;  (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
+;         (orig-buffer  (current-buffer)))
+;    (when (open-related-file-open)
+;      (unless is-test-file (other-window 1))
+;      (my-rinari-test-on-appropriate-position)
+;      (select-window (get-buffer-window orig-buffer)))))
+;(defun my-rinari-test-using-spork ()
+;  "Start spork process if it is not running.
+;Then run tests in a preferred window configuration."
+;  (interactive)
+;  (let* ((same-branch          (equal my-rinari-spork-branch (magit-get-current-branch)))
+;         (need-to-launch-spork (or (not same-branch) (not (my-rinari-is-spork-running?)))))
+;    (cond (need-to-launch-spork
+;           (my-rinari-start-spork))
+;          (t
+;           (my-rinari-test-with-preferred-window-configuration))
+;          )))
+;(define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test-using-spork)
+;(defun my-rinari-autotest-toggle-run-after-save ()
+;  (interactive)
+;  (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
+;  (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save)
+;  (when (and my-rinari-autotest-after-save (not (my-rinari-is-spork-running?)))
+;    (my-rinari-start-spork)))
+;(define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-autotest-toggle-run-after-save)
+;(defun my-rinari-test-with-check ()
+;  (interactive)
+;  (when my-rinari-autotest-after-save
+;    (my-rinari-test-using-spork)))
+;(add-hook 'rinari-minor-mode-hook
+;          (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
+;(defun my-rinari-autotest-set-marker ()
+;  (interactive)
+;  (setq my-rinari-autotest-marker (point-marker))
+;  (message "rinari autotest marker is set"))
+;(defun my-rinari-autotest-clear-marker ()
+;  (interactive)
+;  (setq my-rinari-autotest-marker nil)
+;  (message "rinari autotest marker is removed"))
+;(define-key rinari-minor-mode-map (kbd "C-c ; m") 'my-rinari-autotest-set-marker)
+;(define-key rinari-minor-mode-map (kbd "C-c ; M") 'my-rinari-autotest-clear-marker)
+;(defun my-rinari-rgrep ()
+;  (interactive)
+;  (rinari-rgrep)
+;  (my-grep-place-buffers))
+;(define-key rinari-minor-mode-map (kbd "C-c ; g") 'my-rinari-rgrep)
 
 
 ;; JavaScript
@@ -1389,7 +1402,7 @@ Then run tests in a preferred window configuration."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ponylang-mode wgrep viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby session save-packages request recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-elixir flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
+    (ace-isearch smart-newline ponylang-mode wgrep viewer vala-mode undohist undo-tree tomatinho starter-kit-ruby session save-packages request recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-elixir flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
