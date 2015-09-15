@@ -266,7 +266,7 @@ export PATH=~/bin:$PATH
 ########## Programming
 # Ruby
 alias irb='irb -r irb/completion'
-export PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/2.1.0/bin:$PATH
+export PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/current/bin:$PATH
 [ -d ~/.rbenv ] && eval "$(rbenv init -)"
 
 # D programming
