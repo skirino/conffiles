@@ -37,4 +37,6 @@
 * 詳細 => 一般 => smooth scrollingをdisable
 * スタート時にはホームページを表示する、スタート時に開くURLを設定
 * ツールバーの要素を適当に並べる
-* about:configで、mousewheel.with_control.actionを"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
+* about:config
+** mousewheel.with_control.actionを"0"にする(デフォルトは3。Ctrl + 上スクロール等で拡大したりしないようにする)
+** browser.fixup.alternate.enabled: falseにする
