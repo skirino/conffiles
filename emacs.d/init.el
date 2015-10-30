@@ -1122,8 +1122,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 ;; Erlang and Elixir
 (require 'erlang-start)
 (require 'elixir-mode)
-(require 'flymake-elixir)
-(add-hook 'elixir-mode-hook 'flymake-elixir-load)
 (require 'alchemist)
 ;; erlang-modeに移動したあとでも戻れるようにする
 (defun custom-erlang-mode-hook ()
@@ -1350,7 +1348,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ace-isearch smart-newline ponylang-mode wgrep viewer vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-elixir flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
+    (ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep viewer vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
