@@ -315,9 +315,6 @@ if [ -f ~/code/Erlang/erlang/activate ]; then
     export ERL_HOME=$_KERL_ACTIVE_DIR
 fi
 
-# JS
-export PATH=~/.nodebrew/current/bin:$PATH
-
 
 ########## OS-specific settings
 case "${OSTYPE}" in
