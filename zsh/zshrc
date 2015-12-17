@@ -314,6 +314,7 @@ if [ -f ~/code/Erlang/erlang/activate ]; then
     export PATH=~/code/Erlang/elixir/bin:$PATH
     export ERL_HOME=$_KERL_ACTIVE_DIR
 fi
+alias iexm='iex -S mix'
 
 
 ########## OS-specific settings
