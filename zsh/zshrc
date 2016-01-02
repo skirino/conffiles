@@ -302,11 +302,6 @@ export GOROOT=$HOME/code/Go/go
 export GOPATH=$HOME/code/Go
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
-# Rust
-export RUSTROOT=$HOME/code/Rust/rust
-export PATH=$PATH:$RUSTROOT/rustc/bin:$RUSTROOT/cargo/bin
-export LD_LIBRARY_PATH=$RUSTROOT/rustc/lib:$LD_LIBRARY_PATH
-
 # Erlang & Elixir
 erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
 if [ -f ~/code/Erlang/erlang/activate ]; then
