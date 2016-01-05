@@ -14,3 +14,5 @@ export XMODIFIERS='@im=uim'
 ** 全体キー設定1 => [全体]オン/オフを"zenkaku-hankaku"/"<Shift>zenkaku-hankaku"にする
 ** Mozc key bindings => [Mozc]on/offを"zenkaku-hankaku"/"<Shift>zenkaku-hankaku"にする
 ** Mozc => vi協調モードをONにする
+* uimパッケージの更新時には以下を実行
+** $ sudo uim-module-manager --register mozc
