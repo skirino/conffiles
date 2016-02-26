@@ -179,7 +179,7 @@ alias df="df -h"
 alias vi='vim'
 alias emnw='emacsclient -nw'
 e() {
-    emacsclient -c $* &
+    emacsclient -c -F '((background-color . "black") (foreground-color . "white") (alpha 75 50))' $* &
 }
 emc() {
     emacsclient -n $* && xdotool key "super+e"
