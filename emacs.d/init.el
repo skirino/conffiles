@@ -663,12 +663,11 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
-(when (>= emacs-major-version 23)
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-  (horizontal-scroll-bar-mode 0)
-  (menu-bar-mode 0)
-)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(horizontal-scroll-bar-mode 0)
+(menu-bar-mode 0)
+
 
 ;; 現在行をハイライト
 (global-hl-line-mode t)
@@ -746,12 +745,19 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (global-set-key (kbd "C-z c"  ) 'my-elscreen-create)
   (global-set-key (kbd "C-z C-c") 'my-elscreen-create)
 
+  ;;;; Temporarily modify default-frame-alist and restore it after emacs startup to make emacsclient CUI better
+  (setq original-default-frame-alist default-frame-alist)
+
   ;; GUIでの色付け
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
-  ;; Transparency: needs xcompmgr
+  ; Transparency: needs xcompmgr
   (set-frame-parameter (selected-frame) 'alpha '(75 50))
   (add-to-list 'default-frame-alist '(alpha 75 50))
+
+  (run-with-idle-timer 3.0 nil '(lambda () (interactive)
+                                  (setq default-frame-alist original-default-frame-alist)
+                                  ))
 )
 
 (defun my-start-cui-emacs ()
@@ -759,13 +765,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (xterm-mouse-mode t)
   (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 5)))
   (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up   5)))
-
-  ;; CUIではdefault-frame-alistを使わないほうが良さげ
-  (set-background-color "black")
 )
 
-
-;;;;;;; Linux
 (when (eq system-type 'gnu/linux)
   (if (eq window-system 'x)
       (progn ;; GUI
@@ -773,18 +774,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
         (add-to-list 'default-frame-alist '(cursor-color . "white"))
         (set-face-background 'region "Blue")
-
-        ;; fullscreen
-        (defun toggle-fullscreen (&optional f)
-          (interactive)
-          (let ((current-value (frame-parameter nil 'fullscreen)))
-            (set-frame-parameter nil 'fullscreen
-                                 (if (equal 'fullboth current-value)
-                                     (if (boundp 'old-fullscreen) old-fullscreen nil)
-                                   (progn (setq old-fullscreen current-value) 'fullboth)))
-          )
-        )
-        (global-set-key [f11] 'toggle-fullscreen)
 
         ;; maximize window (X Window System-specific implementation)
         (defun toggle-maximize (&optional f)
@@ -799,7 +788,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
         (defun my-maximize-and-split ()
           (interactive)
           (toggle-maximize)
-          (toggle-fullscreen)
           (split-window-horizontally)
         )
         (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
@@ -824,71 +812,8 @@ The list is written to FILENAME, or `save-packages-file' by default."
       )
     (progn ;; CUI
       (my-start-cui-emacs)
-      (add-to-list 'default-frame-alist '(foreground-color . "brightwhite"))
-      (add-to-list 'default-frame-alist '(cursor-color     . "brightwhite"))
     )
   )
-)
-
-
-
-;;;;;;; Mac
-(when (eq system-type 'darwin)
-  (if (eq window-system 'ns) ;; Cocoa Emacs (GUI)
-      (progn
-        (my-start-gui-emacs)
-
-        (defun my-maximize-frame ()
-          (interactive)
-          (set-frame-position (selected-frame) 0 0)
-          (set-frame-size (selected-frame) 1000 1000)
-          (split-window-horizontally)
-        )
-        (run-with-idle-timer 0.5 nil 'my-maximize-frame)
-
-        (custom-set-faces
-         '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "apple" :family "Monaco"))))
-        )
-
-        (set-fontset-font
-          (frame-parameter nil 'font)
-          'japanese-jisx0208
-          '("Hiragino Kaku Gothic Pro" . "iso10646-1")
-        )
-      )
-    (progn ;; no window, "emacs -nw"
-      (my-start-cui-emacs)
-    )
-  )
-)
-
-
-;;;;;;; Windows
-(defun set-font-on-windows ()
-  (set-face-attribute 'default nil :family "ＭＳ ゴシック")
-  (set-fontset-font "fontset-default"
-                    'japanese-jisx0208
-                    '("ＭＳ ゴシック" . "jisx0208-sjis"))
-)
-
-(when (eq system-type 'windows-nt) ;; GNU Emacs on Windows (GUI)
-  (set-font-on-windows)
-  (add-to-list 'default-frame-alist '(background-color . "black"))
-
-  ;; Windows用の最大化
-  (defun my-maximize ()
-    (interactive)
-    (w32-send-sys-command #xf030))
-  (run-with-idle-timer 0.2 nil 'my-maximize)
-
-  ;; GUI用の初期化(server-startなど)
-  (when (eq window-system 'w32) (my-start-gui-emacs))
-)
-
-;; On Cygwin command-line (CUI)
-(when (eq system-type 'cygwin)
-  (set-font-on-windows)
-  (my-start-cui-emacs)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 
