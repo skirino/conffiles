@@ -451,28 +451,6 @@ The list is written to FILENAME, or `save-packages-file' by default."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; view-mode
-(require 'view)
-(key-chord-define-global "vm" 'view-mode)
-
-(define-key view-mode-map (kbd "/") 'isearch-forward)
-(define-key view-mode-map (kbd "G") 'end-of-buffer)
-(define-key view-mode-map (kbd "h") 'backward-char)
-(define-key view-mode-map (kbd "j") 'next-line)
-(define-key view-mode-map (kbd "k") 'previous-line)
-(define-key view-mode-map (kbd "l") 'forward-char)
-
-(require 'viewer)
-(viewer-stay-in-setup) ;; 書き込み不能なファイルではviewer-modeから抜けない
-
-;; モードラインに色をつける
-(setq viewer-modeline-color-unwritable "tomato")
-(setq viewer-modeline-color-view       "orange")
-(viewer-change-modeline-color-setup)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; picture-mode
 (defun toggle-picture-mode ()
   "Returns the major mode associated with a buffer."
@@ -1275,7 +1253,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep viewer vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
+    (ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
