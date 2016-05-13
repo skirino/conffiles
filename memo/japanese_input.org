@@ -11,8 +11,8 @@ export XMODIFIERS='@im=uim'
 ** 全体設定 => 入力方式の一時切り替え、正副一時切り替えをOFFにする
 ** ツールバー => 表示を「なし」にする
 ** XIM => アンチエイリアスをONにして、フォントを"IPAGothic"にする(Emacsでのpreedit textのフォントが変わる)
-** 全体キー設定1 => [全体]オン/オフを"zenkaku-hankaku"/"<Shift>zenkaku-hankaku"にする
-** Mozc key bindings => [Mozc]on/offを"zenkaku-hankaku"/"<Shift>zenkaku-hankaku"にする
+** 全体キー設定1 => [全体]オン/オフを"<Shift>zenkaku-hankaku"/"zenkaku-hankaku"にする
+** Mozc key bindings => [Mozc]on/offを"<Shift>zenkaku-hankaku"/"zenkaku-hankaku"にする
 ** Mozc => vi協調モードをONにする
 * uimパッケージの更新時には以下を実行
 ** $ sudo uim-module-manager --register mozc

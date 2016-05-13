@@ -65,7 +65,7 @@
 ** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック(JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
 ** キーリピート設定を変更
 ** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
-*** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「英数」=> "C-S-Space"に変換。
+*** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「かな」=> "Shift-かな"に変換。
 *** MacにおけるOption, CommandはそのままだとGuest側ではAlt, Windowsキーになる。逆になってほしいので入れ替える。
 *** 以下のファイルを作っておくと上記2点の項目がKeyRemap4Macに追加されるので、これをチェック
 ----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
@@ -77,10 +77,10 @@
   </appdef>
 
   <item>
-    <name>Eisuu as Shift+Eisuu in VirtualBoxVM (to differentiate Eisuu from Kana, since both are treated as Hankaku/Zenkaku in guest)</name>
+    <name>Kana as Shift+Kana in VirtualBoxVM (to differentiate Eisuu from Kana, since both are treated as Hankaku/Zenkaku in guest)</name>
     <identifier>private.virtualbox.changeeisuu</identifier>
     <only>VIRTUALBOX</only>
-    <autogen>--KeyToKey-- KeyCode::JIS_EISUU, KeyCode::JIS_EISUU, ModifierFlag::SHIFT_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::JIS_KANA, KeyCode::JIS_KANA, ModifierFlag::SHIFT_L</autogen>
   </item>
 
   <item>
