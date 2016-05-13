@@ -238,6 +238,7 @@ compdef _git ggrep=git-grep
 alias gcherry='git cherry -v'
 compdef _git gcherry=git-cherry
 ghash() { git rev-parse ${1-HEAD}; }
+compdef _git ghash=git-rev-parse
 
 alias gci='git commit'
 compdef _git gci=git-commit
