@@ -275,7 +275,6 @@ source $HOME/.asdf/completions/asdf.bash
 # Ruby
 alias irb='irb -r irb/completion'
 export PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/current/bin:$PATH
-[ -d ~/.rbenv ] && eval "$(rbenv init -)"
 
 # D programming
 export PATH=/opt/dmd/current/bin64:$PATH
@@ -308,13 +307,7 @@ export GOROOT=$HOME/code/Go/go
 export GOPATH=$HOME/code/Go
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
-# Erlang & Elixir
-erlrun() { erlc $1 && erl -noshell -s ${1%.*} main -s init stop }
-if [ -f ~/code/Erlang/erlang/activate ]; then
-    source ~/code/Erlang/erlang/activate
-    export PATH=~/code/Erlang/elixir/bin:$PATH
-    export ERL_HOME=$_KERL_ACTIVE_DIR
-fi
+# Elixir
 alias iexm='iex -S mix'
 
 
