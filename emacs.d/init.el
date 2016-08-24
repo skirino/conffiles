@@ -111,6 +111,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (open-related-file-append-group "%1/lib/%2.ex"  "%1/test/%2_test.exs"     )
 (open-related-file-append-group "%1/lib/%2.ex"  "%1/test/lib/%2_test.exs" )
 (open-related-file-append-group "%1/core/%2.ex" "%1/test/core/%2_test.exs")
+(open-related-file-append-group "%1/eal/%2.ex"  "%1/test/eal/%2_test.exs" )
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
