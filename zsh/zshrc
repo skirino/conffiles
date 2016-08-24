@@ -268,6 +268,10 @@ export PATH=~/bin:$PATH
 
 
 ########## Programming
+# asdf
+source $HOME/.asdf/asdf.sh
+source $HOME/.asdf/completions/asdf.bash
+
 # Ruby
 alias irb='irb -r irb/completion'
 export PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/current/bin:$PATH
