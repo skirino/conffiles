@@ -545,7 +545,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
   (eieio--class-slot-initarg (eieio--class-v class-name) slot))
 
 (require 'helm-mode)
-(require 'helm-git-grep)
+;(require 'helm-git-grep)
 (helm-mode 1)
 (setq helm-input-idle-delay 0.1)
 (setq helm-truncate-lines t)
@@ -579,7 +579,7 @@ The list is written to FILENAME, or `save-packages-file' by default."
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
 (global-set-key (kbd "C-;"  ) 'helm-mini)
 (global-set-key (kbd "C-+"  ) 'helm-resume)
-(global-set-key (kbd "C-c g") 'helm-git-grep)
+;(global-set-key (kbd "C-c g") 'helm-git-grep)
 
 (setq helm-locate-command "locate %s -A %s") ;; Enable AND search in helm-locate (instead regexp cannot be used)
 (setq helm-mini-default-sources '(helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir helm-source-locate))

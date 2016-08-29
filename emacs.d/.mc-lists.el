@@ -9,4 +9,5 @@
 
 (setq mc/cmds-to-run-once
       '(
+        helm-M-x
         ))

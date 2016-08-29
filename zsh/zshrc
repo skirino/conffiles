@@ -213,7 +213,7 @@ linux*)
     ;;
 esac
 
-alias genpw='echo -n $(pwgen 10 -1) | xsel --input --clipboard'
+alias genpw='echo -n $(pwgen 20 -1) | xsel --input --clipboard'
 
 # automatically run ls (note that this should come after alias ls='...')
 function chpwd() { ls }
