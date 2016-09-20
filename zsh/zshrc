@@ -274,7 +274,7 @@ source $HOME/.asdf/completions/asdf.bash
 
 # Ruby
 alias irb='irb -r irb/completion'
-export PATH=/usr/local/heroku/bin:~/.rbenv/bin:~/.gem/ruby/current/bin:$PATH
+export PATH=/usr/local/heroku/bin:$PATH
 
 # D programming
 export PATH=/opt/dmd/current/bin64:$PATH
