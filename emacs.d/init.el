@@ -21,6 +21,8 @@
 (package-initialize)
 
 (require 'async-bytecomp)
+
+(require 'save-packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -505,27 +507,6 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; Git
-(require 'magit)
-(setq magit-last-seen-setup-instructions "1.4.0")
-
-;; git-gutter+ & git-gutter-fringe+
-(require 'git-gutter-fringe+)
-(global-git-gutter+-mode t)
-(global-set-key (kbd "C-c n"  ) 'git-gutter+-next-hunk)
-(global-set-key (kbd "C-c C-n") 'git-gutter+-next-hunk)
-(global-set-key (kbd "C-c p"  ) 'git-gutter+-previous-hunk)
-(global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
-(global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
-(global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
-
-;; Workaround for git-gutter+'s bug on opening a file via symlink
-(defadvice git-gutter+-process-diff (before git-gutter+-process-diff-advice activate)
-  (ad-set-arg 0 (file-truename (ad-get-arg 0))))
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; helm
 ;; Workaround to `void-function' while loading helm-mode: https://lists.gnu.org/archive/html/bug-gnu-emacs/2015-01/msg00351.html
 (defun class-slot-initarg (class-name slot)
@@ -542,25 +523,6 @@
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (setq helm-delete-minibuffer-contents-from-point t)
 (define-key helm-map (kbd "C-c C-k") 'helm-buffer-run-kill-persistent)
-
-;; helm-migemo
-(require 'helm-migemo)
-;; この修正が必要
-(with-eval-after-load "helm-migemo"
-  (defun helm-compile-source--candidates-in-buffer (source)
-    (helm-aif (assoc 'candidates-in-buffer source)
-        (append source
-                `((candidates
-                   . ,(or (cdr it)
-                          (lambda ()
-                            ;; Do not use `source' because other plugins
-                            ;; (such as helm-migemo) may change it
-                            (helm-candidates-in-buffer (helm-get-current-source)))))
-                  (volatile) (match identity)))
-      source))
-  ;; [2015-09-06 Sun]helm-match-plugin -> helm-multi-match変更の煽りを受けて
-  (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
-  (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
 
 ;; helm commands
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
@@ -688,6 +650,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 (defun my-start-gui-emacs ()
   (require 'server)
+  (require 'with-editor)
   (unless (server-running-p) (server-start))
   ;; "C-x C-c"でemacsclientによる編集を終了
   (global-set-key (kbd "C-x C-c") 'server-edit)
@@ -782,6 +745,27 @@
   )
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; Git
+(require 'magit)
+(setq magit-last-seen-setup-instructions "1.4.0")
+
+;; git-gutter+ & git-gutter-fringe+
+(require 'git-gutter-fringe+)
+(global-git-gutter+-mode t)
+(global-set-key (kbd "C-c n"  ) 'git-gutter+-next-hunk)
+(global-set-key (kbd "C-c C-n") 'git-gutter+-next-hunk)
+(global-set-key (kbd "C-c p"  ) 'git-gutter+-previous-hunk)
+(global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
+(global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
+(global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
+
+;; Workaround for git-gutter+'s bug on opening a file via symlink
+(defadvice git-gutter+-process-diff (before git-gutter+-process-diff-advice activate)
+  (ad-set-arg 0 (file-truename (ad-get-arg 0))))
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -1241,7 +1225,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (helm-idris ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
+    (helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
