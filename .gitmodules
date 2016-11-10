@@ -7,3 +7,6 @@
 [submodule "emacs.d/submodules/sdic"]
 	path = emacs.d/submodules/sdic
 	url = https://github.com/emacsattic/sdic.git
+[submodule "emacs.d/submodules/PG"]
+	path = emacs.d/submodules/PG
+	url = https://github.com/ProofGeneral/PG

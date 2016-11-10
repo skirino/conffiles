@@ -996,6 +996,10 @@
 (require 'idris-mode)
 
 
+;; Coq
+(require 'proof-site)
+
+
 ;; Erlang and Elixir
 (require 'erlang-start)
 (require 'elixir-mode)
