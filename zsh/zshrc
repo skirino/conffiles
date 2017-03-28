@@ -294,6 +294,9 @@ alias avd_manager='${ANDROID_SDK_HOME}/tools/android avd'
 export GOPATH=$HOME/code/Go
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin:$GOPATH/go_appengine:$GOPATH/google-cloud-sdk/bin
 
+# Rust
+export PATH=$PATH:$HOME/.cargo/bin
+
 # Pony
 alias ponyc='$HOME/code/pony/ponyc/build/release/ponyc'
 
