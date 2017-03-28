@@ -149,7 +149,6 @@ if [ -f /usr/share/autojump/autojump.zsh ]; then
 fi
 
 
-
 # global aliases
 alias -g L='| less'
 alias -g G='| grep'
@@ -197,11 +196,6 @@ cygwin*)
 esac
 
 alias genpw='echo -n $(pwgen 20 -1) | xsel --input --clipboard'
-
-# automatically run ls (note that this should come after alias ls='...')
-autoload -Uz add-zsh-hook
-ls_as_a_function() { ls }
-add-zsh-hook chpwd ls_as_a_function
 
 # git utilities
 alias gst='git status'
@@ -357,3 +351,16 @@ if exists percol; then
     zle -N percol_select_dir_under_current
     bindkey -M afu '^T' percol_select_dir_under_current
 fi
+
+
+########## direnv_rust
+_direnv_rust_hook() {
+  eval "$(direnv_rust)"
+}
+add-zsh-hook chpwd _direnv_rust_hook
+_direnv_rust_hook # invoke the hook once on startup of zsh
+
+
+########## automatically run ls (note that this should come after alias ls='...')
+ls_as_a_function() { ls }
+add-zsh-hook chpwd ls_as_a_function
