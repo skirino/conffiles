@@ -1,13 +1,14 @@
 import Data.Monoid
 import Data.Time.LocalTime (getZonedTime)
 import Data.Time.Format (formatTime, defaultTimeLocale)
+import qualified Data.Map as M
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.CycleWS
 import XMonad.Actions.WindowGo
+import XMonad.Actions.Navigation2D
 import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
 
 ------------------------------------------------------------------------
 -- Custom utilities
@@ -38,9 +39,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_s     ), runOrRaiseSeta   )
     , ((modm              , xK_e     ), runOrRaiseEmacs  )
     , ((modm              , xK_f     ), runOrRaiseFirefox)
+    , ((modm              , xK_y     ), windowGo L False) -- actually I press Option+h; remapped to modm+y by Karabiner
+    , ((modm              , xK_l     ), windowGo R False)
+    , ((modm              , xK_j     ), windowGo D False)
+    , ((modm              , xK_k     ), windowGo U False)
     , ((modm .|. shiftMask, xK_p     ), takeScreenshot)
-    , ((modm              , xK_j     ), windows W.focusDown)                  -- Move focus to the next window
-    , ((modm              , xK_k     ), windows W.focusUp  )                  -- Move focus to the previous window
     , ((modm              , xK_period), moveTo Next NonEmptyWS)
     , ((modm              , xK_Right ), moveTo Next NonEmptyWS)
     , ((modm              , xK_comma ), moveTo Prev NonEmptyWS)
@@ -60,9 +63,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
                                        >> windows W.shiftMaster))    -- mod-button1, Set the window to floating mode and move by dragging
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))    -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster))    -- mod-button3, Set the window to floating mode and resize by dragging
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
@@ -96,10 +96,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 myManageHook = composeAll
-               [ className =? "MPlayer"        --> doFloat
-               , className =? "Searchbox"      --> doFloat
-               , resource  =? "desktop_window" --> doIgnore
-               , resource  =? "kdesktop"       --> doIgnore ]
+               [ className =? "Searchbox" --> doFloat ]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -125,7 +122,7 @@ myLogHook = return ()
 myStartupHook = return ()
 
 ------------------------------------------------------------------------
-main = xmonad =<< xmobar defaults
+navigation2DConfig = def { layoutNavigation = [("Full", centerNavigation)] }
 
 defaults = ewmh defaultConfig
   {
@@ -150,3 +147,8 @@ defaults = ewmh defaultConfig
   , logHook            = myLogHook
   , startupHook        = myStartupHook
   }
+
+main = do
+  xconf <- xmobar defaults
+  let xconf' = withNavigation2DConfig navigation2DConfig xconf
+  xmonad xconf'

@@ -60,14 +60,15 @@
 *** 一般 -> 高度: クリップボードの共有を双方向に設定
 *** 共有フォルダ: /Users/skirino/vbshareをホストに作り、これを指定。自動マウントON、読み書き可
 *** Guest Additionを再インストール
-* Karabiner(KeyRemap4MacBook)
+* Karabiner
 ** インストール
 ** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック(JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
 ** キーリピート設定を変更
 ** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
-*** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKeyRemap4MacBookを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「かな」=> "Shift-かな"に変換。
+*** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKarabinerを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「かな」=> "Shift-かな"に変換。
 *** MacにおけるOption, CommandはそのままだとGuest側ではAlt, Windowsキーになる。逆になってほしいので入れ替える。
-*** 以下のファイルを作っておくと上記2点の項目がKeyRemap4Macに追加されるので、これをチェック
+*** Command+h(Option+hを押した時)はOSXによって使われてしまうので、別のキー扱いにしてguest OSに渡す。ここではCommand+y
+*** 以下のファイルを作っておくと上記2点の項目がKarabinerに追加されるので、これをチェック
 ----- ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
 <?xml version="1.0"?>
 <root>
@@ -77,6 +78,14 @@
   </appdef>
 
   <item>
+    <name>Swap command and option key in VirtualBoxVM</name>
+    <identifier>private.virtualbox.swapcommandoption</identifier>
+    <only>VIRTUALBOX</only>
+    <autogen>--KeyToKey-- KeyCode::COMMAND_L, KeyCode::OPTION_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::OPTION_L, KeyCode::COMMAND_L</autogen>
+  </item>
+
+  <item>
     <name>Kana as Shift+Kana in VirtualBoxVM (to differentiate Eisuu from Kana, since both are treated as Hankaku/Zenkaku in guest)</name>
     <identifier>private.virtualbox.changeeisuu</identifier>
     <only>VIRTUALBOX</only>
@@ -84,11 +93,10 @@
   </item>
 
   <item>
-    <name>Swap command and option key in VirtualBoxVM</name>
-    <identifier>private.virtualbox.swapcommandoption</identifier>
+    <name>Replace Command+h (which is invoked by Option+h due to the mapping above) with Command+y as OSX silently drops Command+h</name>
+    <identifier>private.virtualbox.command_h_to_command_y</identifier>
     <only>VIRTUALBOX</only>
-    <autogen>--KeyToKey-- KeyCode::COMMAND_L, KeyCode::OPTION_L</autogen>
-    <autogen>--KeyToKey-- KeyCode::OPTION_L, KeyCode::COMMAND_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::H, ModifierFlag::COMMAND_L, KeyCode::Y, ModifierFlag::COMMAND_L</autogen>
   </item>
 </root>
 -----
