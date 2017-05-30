@@ -371,8 +371,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; kill ring、リージョン選択
 ;; clipboard連携
-(when window-system
-  (setq x-select-enable-clipboard t)
+(when (eq system-type 'gnu/linux)
+  (setq interprogram-paste-function
+        (lambda ()
+          (shell-command-to-string "xsel --clipboard --output")))
+  (setq interprogram-cut-function
+        (lambda (text &optional rest)
+          (let* ((process-connection-type nil)
+                 (proc (start-process "xsel" "*Messages*" "xsel" "--clipboard" "--input")))
+            (process-send-string proc text)
+            (process-send-eof proc))))
 )
 
 ;; カーソル位置から行頭まで削除する
