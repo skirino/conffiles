@@ -27,13 +27,6 @@
 *** ~/.setarc
 *** ~/.ssh
 *** ~/.xprofile (xwindow.org参照)
-** Ruby (rbenv)
-*** $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-*** $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-*** $ rbenv install --list
-*** $ rbenv install X.Y.Z
-*** $ rbenv global X.Y.Z
-*** $ sudo ln -s ~/.rbenv/shims/ruby /usr/bin/ruby (shebangが"/usr/bin/ruby"固定のgem由来のスクリプトを動かすため)
 ** VBoxServiceをsystemdから起動する(時刻のsync, shared folderのmountのため)
 *** $ sudo systemctl enable vboxservice.service
 ** PostgreSQL初期化
@@ -48,3 +41,14 @@
 ** xfce由来のパッケージを削除
 * gnome/gtkのkeybinding設定
 ** $ gsettings set org.gnome.desktop.interface gtk-key-theme Emacs
+* local DNS server
+** localhostのsubdomainをすべて127.0.0.1へmapする
+** $ yaourt dnsmasq
+** /etc/resolvconf.conf に以下を追加
+*** `name_servers=127.0.0.1`
+*** dnsmasq_resolv=/etc/dnsmasq-resolv.conf
+** $ sudo resolvconf -u で変更内容を反映
+** /etc/dnsmasq.confを編集し以下のようになるようにする
+*** `resolv-file=/etc/dnsmasq-resolv.conf`
+*** `address=/localhost/127.0.0.1`
+*** `listen-address=127.0.0.1`

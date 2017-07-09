@@ -26,7 +26,7 @@ runOrRaiseFirefox = raiseMaybe (spawnOnWorkspace "3" "firefox") (className =? "F
 takeScreenshot :: X ()
 takeScreenshot = do
   t <- liftIO getZonedTime
-  let iso = formatTime defaultTimeLocale "%FT%T" t
+  let iso = formatTime defaultTimeLocale "%FT%H-%M-%S" t
   spawn $ "import 'temp/screenshot_" ++ iso ++ ".png'"
 ------------------------------------------------------------------------
 
@@ -124,7 +124,7 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 navigation2DConfig = def { layoutNavigation = [("Full", centerNavigation)] }
 
-defaults = ewmh defaultConfig
+defaults = ewmh def
   {
   -- simple stuff
     modMask            = mod4Mask -- Use super (Windows key)
