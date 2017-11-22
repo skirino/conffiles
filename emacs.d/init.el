@@ -3,6 +3,7 @@
 (let ((default-directory "~/.emacs.d/"))
   (normal-top-level-add-subdirs-to-load-path))
 (push "/usr/local/share/emacs/site-lisp" load-path)
+(push "~/.emacs.d/symlinks/ats2-mode" load-path)
 (require 'cl)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -501,6 +502,7 @@
   (interactive)
   (my-org-visit-file "~/docs/memo.org"))
 (global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
+(global-set-key (kbd "C-c l") '(lambda () (interactive) (find-file "~/vbshare/log")))
 
 ;; 要らないkey-bindingを無効化
 (define-key org-mode-map [C-S-left]  nil)
@@ -1018,10 +1020,21 @@
 (require 'proof-site)
 
 
+;; ATS2
+(load-library "ats2-mode")
+(load-library "flycheck-ats2")
+(with-eval-after-load 'flycheck
+  (flycheck-ats2-setup))
+
+
 ;; Erlang and Elixir
 (require 'erlang-start)
 (require 'elixir-mode)
 (require 'alchemist)
+(require 'flycheck-mix)
+(flycheck-mix-setup)
+(require 'ac-alchemist)
+(add-hook 'elixir-mode-hook 'ac-alchemist-setup)
 ;; erlang-modeに移動したあとでも戻れるようにする
 (defun custom-erlang-mode-hook ()
   (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
@@ -1248,7 +1261,7 @@
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (elm-mode racer fish-mode helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
+    (ac-alchemist flycheck-mix elm-mode racer fish-mode helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
