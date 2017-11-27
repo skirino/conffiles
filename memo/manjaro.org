@@ -8,7 +8,7 @@
 ** zsh, zsh-completions, w3m
 ** vim-minimal, viを削除
 ** その他のパッケージ
-*** git, tig, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xdotool, aspell, aspell-en, erlang
+*** git, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xbindkeys, xdotool, aspell, aspell-en
 *** OpenJDK 8
 **** $ yaourt -R jre7-openjdk (関連パッケージも消す)
 **** $ yaourt jdk8-openjdk
@@ -29,18 +29,6 @@
 *** ~/.xprofile (xwindow.org参照)
 ** VBoxServiceをsystemdから起動する(時刻のsync, shared folderのmountのため)
 *** $ sudo systemctl enable vboxservice.service
-** PostgreSQL初期化
-*** $ yaourt postgres
-*** /var/lib/postgres/data/postgresql.conf で種々のロケール設定をen_USにしておく
-*** $ sudo -i -u postgres
-*** $ initdb --locale ja_JP.UTF-8 -E UTF8 -D '/var/lib/postgres/data'
-*** $ sudo systemctl start postgresql
-*** $ sudo systemctl enable postgresql
-* クリーンアップ
-** (無事にグラフィカル環境が起動することを確認)
-** xfce由来のパッケージを削除
-* gnome/gtkのkeybinding設定
-** $ gsettings set org.gnome.desktop.interface gtk-key-theme Emacs
 * local DNS server
 ** localhostのsubdomainをすべて127.0.0.1へmapする
 ** $ yaourt dnsmasq
@@ -52,3 +40,29 @@
 *** `resolv-file=/etc/dnsmasq-resolv.conf`
 *** `address=/localhost/127.0.0.1`
 *** `listen-address=127.0.0.1`
+* gnome/gtkのkeybinding設定
+** $ gsettings set org.gnome.desktop.interface gtk-key-theme Emacs
+** 以下のような感じでgtk-3のデフォルトキーバインドを変更
+*** $ vi ~/.config/gtk-3.0/settings.ini
+#+BEGIN_SRC
+[Settings]
+gtk-key-theme-name = Emacs
+#+END_SRC
+*** $ sudo vim /usr/share/themes/Emacs/gtk-3.0/gtk-keys.css
+#+BEGIN_SRC
+  /* commented out/modified by skirino (start)
+  bind "<ctrl>w" { "delete-from-cursor" (word-ends, -1) };
+  bind "<ctrl>k" { "delete-from-cursor" (paragraph-ends, 1) };
+  bind "<ctrl>u" { "move-cursor" (paragraph-ends, -1, 0)
+                   "delete-from-cursor" (paragraph-ends, 1) };
+  */
+  bind "<ctrl>k" { "move-cursor" (paragraph-ends,  1, 1)
+                   "cut-clipboard" () };
+  bind "<ctrl>u" { "move-cursor" (paragraph-ends, -1, 1)
+                   "cut-clipboard" () };
+  bind "<alt>w" { "copy-clipboard" () };
+  /* commented out/modified by skirino (end) */
+#+END_SRC
+* クリーンアップ
+** (無事にグラフィカル環境が起動することを確認)
+** xfce由来のパッケージを削除

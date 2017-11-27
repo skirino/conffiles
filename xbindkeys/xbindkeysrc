@@ -1,0 +1,20 @@
+"lilyterm"
+  Shift+Mod4 + t
+
+"emacs"
+  Shift+Mod4 + e
+
+"firefox"
+  Shift+Mod4 + f
+
+"vivaldi-stable"
+  Shift+Mod4 + v
+
+"/home/skirino/code/D/projects/Seta/src/seta.backup"
+  Shift+Mod4 + s
+
+"searchbox 'wikipedia=https://ja.wikipedia.org/wiki/' 'amazon=https://www.amazon.co.jp/s/ref=nb_sb_noss?field-keywords=' 'eijiro=http://eow.alc.co.jp/search?q='"
+  Mod4 + space
+
+"import /home/skirino/temp/screenshot_$(date '+%FT%H-%M-%S').png"
+  Shift+Mod4 + p

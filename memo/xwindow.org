@@ -25,8 +25,8 @@
 exec xmonad
 </pre>
 ** ログイン時に事前に読み込まれるユーザスクリプト(~/.xprofile)に以下を追加しておく
-*** (xmobarはxmonad設定の中から起動する想定)
 <pre>
 xcompmgr &
 xscreensaver -nosplash &
+xbindkeys
 </pre>

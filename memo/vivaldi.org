@@ -1,0 +1,13 @@
+* yaourt vivaldi
+* キーバインド等を設定
+* markdown-hereをインストール
+* Shortkeysをインストール、以下によるスクロールを設定
+** C-n
+** C-p
+** C-v
+* 規定のブラウザにする
+** $ xdg-mime default vivaldi-stable.desktop x-scheme-handler/https
+** $ xdg-mime default vivaldi-stable.desktop x-scheme-handler/http
+** $ xdg-mime default vivaldi-stable.desktop text/html
+** $ xdg-mime default vivaldi-stable.desktop text/xml
+** $ xdg-mime default vivaldi-stable.desktop application/xml

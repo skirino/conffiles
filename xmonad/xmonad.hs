@@ -11,39 +11,13 @@ import XMonad.Actions.Navigation2D
 import qualified XMonad.StackSet as W
 
 ------------------------------------------------------------------------
--- Custom utilities
-spawnOnWorkspace :: WorkspaceId -> String -> X () -- XMonad.Actions.SpawnOn seems to be broken!?
-spawnOnWorkspace workspace program = do
-  spawn program
-  windows $ W.greedyView workspace
-
-runOrRaiseSeta, runOrRaiseEmacs, runOrRaiseFirefox :: X ()
-runOrRaiseSeta    = raiseMaybe (spawnOnWorkspace "1" "seta"   ) (className =? "Seta"   )
-runOrRaiseEmacs   = raiseMaybe (spawnOnWorkspace "2" "emacs"  ) (className =? "Emacs"  )
-runOrRaiseFirefox = raiseMaybe (spawnOnWorkspace "3" "firefox") (className =? "Firefox")
-
--- Use ImageMagick's import command to take screenshot
-takeScreenshot :: X ()
-takeScreenshot = do
-  t <- liftIO getZonedTime
-  let iso = formatTime defaultTimeLocale "%FT%H-%M-%S" t
-  spawn $ "import 'temp/screenshot_" ++ iso ++ ".png'"
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm              , xK_Return), spawn "dmenu_run -fn 'Monospace-18'") -- launch dmenu
-    , ((modm              , xK_space ), spawn "searchbox 'wikipedia=https://ja.wikipedia.org/wiki/' 'amazon=https://www.amazon.co.jp/s/ref=nb_sb_noss?field-keywords=' 'eijiro=http://eow.alc.co.jp/search?q='")
-    , ((modm              , xK_t     ), spawn $ XMonad.terminal conf)
-    , ((modm              , xK_s     ), runOrRaiseSeta   )
-    , ((modm              , xK_e     ), runOrRaiseEmacs  )
-    , ((modm              , xK_f     ), runOrRaiseFirefox)
     , ((modm              , xK_y     ), windowGo L False) -- actually I press Option+h; remapped to modm+y by Karabiner
     , ((modm              , xK_l     ), windowGo R False)
     , ((modm              , xK_j     ), windowGo D False)
     , ((modm              , xK_k     ), windowGo U False)
-    , ((modm .|. shiftMask, xK_p     ), takeScreenshot)
     , ((modm              , xK_period), moveTo Next NonEmptyWS)
     , ((modm              , xK_Right ), moveTo Next NonEmptyWS)
     , ((modm              , xK_comma ), moveTo Prev NonEmptyWS)
