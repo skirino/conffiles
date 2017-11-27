@@ -1,0 +1,27 @@
+@import url("/usr/share/themes/Emacs/gtk-3.0/gtk-keys.css");
+
+/*
+ * Bindings for GtkTextView and GtkEntry
+ */
+@binding-set gtk-emacs-text-entry
+{
+  unbind "<ctrl>k";
+  unbind "<ctrl>u";
+
+  bind "<ctrl>k" { "move-cursor" (paragraph-ends,  1, 1)
+                   "cut-clipboard" () };
+  bind "<ctrl>u" { "move-cursor" (paragraph-ends, -1, 1)
+                   "cut-clipboard" () };
+  bind "<ctrl>w" { "cut-clipboard" () };
+  bind "<alt>w" { "copy-clipboard" () };
+}
+
+/*
+ * Bindings for GtkTextView
+ */
+@binding-set gtk-emacs-text-view
+{
+  bind "<ctrl>m" { "insert-at-cursor" ("\n") };
+  bind "<ctrl>o" { "insert-at-cursor" ("\n")
+                   "move-cursor" (logical-positions, -1, 0) };
+}
