@@ -194,6 +194,7 @@ cygwin*)
     alias open='cygstart'
     ;;
 esac
+alias o='open'
 
 alias genpw='echo -n $(pwgen 20 -1) | xsel --input --clipboard'
 
