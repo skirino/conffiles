@@ -7,6 +7,7 @@
 {
   unbind "<ctrl>k";
   unbind "<ctrl>u";
+  unbind "<ctrl>v";
 
   bind "<ctrl>k" { "move-cursor" (paragraph-ends,  1, 1)
                    "cut-clipboard" () };

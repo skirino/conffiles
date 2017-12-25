@@ -107,3 +107,6 @@
 ** Xcodeをインストール
 * homebrew
 ** install, update
+* Vivaldi
+** タブの閉じるボタンの位置を調整
+*** https://blog.surume.tk/macos-vivaldi-close-button-favicon/
