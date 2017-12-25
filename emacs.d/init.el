@@ -275,8 +275,9 @@
 
 (defun my-grep-impl (ignore-case-option)
   (let* ((word (or (thing-at-point 'symbol) ""))
-         (search-pattern (read-string (format "Search for (%s): " word) nil nil word)))
-    (if (and (buffer-file-name) (string-prefix-p (magit-rev-parse "--show-toplevel") (buffer-file-name)))
+         (search-pattern (read-string (format "Search for (%s): " word) nil nil word))
+         (toplevel (magit-rev-parse "--show-toplevel")))
+    (if (and (buffer-file-name) (stringp toplevel) (string-prefix-p toplevel (buffer-file-name)))
         (my-git-grep search-pattern ignore-case-option)
       (my-rgrep search-pattern ignore-case-option))
     (my-grep-place-buffers)))
@@ -285,10 +286,10 @@
   (let* ((repo-dir (concat (magit-rev-parse "--show-toplevel") "/"))
          (rel-path (substring (file-name-directory (buffer-file-name)) (length repo-dir)))
          (dir-arg  (replace-regexp-in-string "[^/]+" ".." rel-path)))
-    (grep (format "git --no-pager grep %s -nHe '%s' %s" ignore-case-option search-pattern dir-arg))))
+    (grep (format "git --no-pager grep --no-color -nI %s -e '%s' %s" ignore-case-option search-pattern dir-arg))))
 
 (defun my-rgrep (search-pattern ignore-case-option)
-  (grep (format "grep %s -rnHe '%s' ." ignore-case-option search-pattern)))
+  (grep (format "grep %s -rnH -e '%s' ." ignore-case-option search-pattern)))
 
 (defun my-grep-place-buffers ()
   (delete-other-windows)
