@@ -280,7 +280,7 @@ export PATH=${JAVA_HOME}/bin:$PATH
 cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
 # Scala
-export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:~/code/Scala/activator/bin:$PATH
+export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:$PATH
 
 # Android
 export ANDROID_SDK_HOME=$HOME/code/Android/sdk
