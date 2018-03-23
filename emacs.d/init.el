@@ -38,7 +38,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; key-chord
 (require 'key-chord)
-(setq key-chord-two-keys-delay 0.04)
+(setq key-chord-two-keys-delay 0.02)
 (key-chord-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -853,109 +853,10 @@
 ;; カッコの内側の要素のインデントを、カッコ位置ではなく通常インデントにする
 (setq ruby-deep-indent-paren-style nil)
 
-;; rinari
-;(require 'rinari)
-;(add-hook 'ruby-mode-hook 'rinari-minor-mode)
-;(define-key rinari-minor-mode-map (kbd "C-c ; w") 'rinari-web-server-restart)
-;(setq rinari-rgrep-file-endings "*.rb *.erb *.rake *.haml") ;; rinari-rgrepのターゲットファイルを絞る
-;(setq ruby-compilation-executable "testdrb") ;; to run tests using spork, overwrite the name of executable
-
-;; custom functions
-;(defvar my-rinari-spork-branch nil)
-;(defvar my-rinari-autotest-after-save nil)
-;(defvar my-rinari-autotest-marker nil)
-;(defun my-rinari-start-spork ()
-;  (interactive)
-;  (setq my-rinari-spork-branch (magit-get-current-branch))
-;  (let ((command (concat "cd " (rinari-root) "; spork testunit &")))
-;    (shell-command command)))
-;(define-key rinari-minor-mode-map (kbd "C-c ; s") 'my-rinari-start-spork)
-;(defun my-rinari-kill-spork ()
-;  (interactive)
-;  (let ((command "kill `ps x | /bin/grep 'ruby.*spork' | /bin/grep -v grep | sed -e 's/ .*$//'`"))
-;    (shell-command command)))
-;(define-key rinari-minor-mode-map (kbd "C-c ; S") 'my-rinari-kill-spork)
-;(defun my-rinari-is-spork-running? ()
-;  (let ((grep-result (shell-command-to-string "ps -ef | grep 'ruby.*spork' | grep -v grep")))
-;    (< 0 (length grep-result))))
-;(defun my-rinari-test-on-appropriate-position ()
-;  (save-excursion
-;    (cond (my-rinari-autotest-marker
-;           (with-current-buffer (marker-buffer my-rinari-autotest-marker)
-;             (goto-char my-rinari-autotest-marker)
-;             (rinari-test)))
-;          (t ;; without marker
-;           (rinari-test))
-;          )))
-;(defun my-rinari-test-with-preferred-window-configuration ()
-;  (let* ((is-test-file (string-match "_\\(test\\|spec\\)\\.rb" (buffer-file-name)))
-;         (orig-buffer  (current-buffer)))
-;    (when (open-related-file-open)
-;      (unless is-test-file (other-window 1))
-;      (my-rinari-test-on-appropriate-position)
-;      (select-window (get-buffer-window orig-buffer)))))
-;(defun my-rinari-test-using-spork ()
-;  "Start spork process if it is not running.
-;Then run tests in a preferred window configuration."
-;  (interactive)
-;  (let* ((same-branch          (equal my-rinari-spork-branch (magit-get-current-branch)))
-;         (need-to-launch-spork (or (not same-branch) (not (my-rinari-is-spork-running?)))))
-;    (cond (need-to-launch-spork
-;           (my-rinari-start-spork))
-;          (t
-;           (my-rinari-test-with-preferred-window-configuration))
-;          )))
-;(define-key rinari-minor-mode-map (kbd "C-c C-t") 'my-rinari-test-using-spork)
-;(defun my-rinari-autotest-toggle-run-after-save ()
-;  (interactive)
-;  (setq my-rinari-autotest-after-save (not my-rinari-autotest-after-save))
-;  (message "my-rinari-autotest is enabled: %s" my-rinari-autotest-after-save)
-;  (when (and my-rinari-autotest-after-save (not (my-rinari-is-spork-running?)))
-;    (my-rinari-start-spork)))
-;(define-key rinari-minor-mode-map (kbd "C-c ; T") 'my-rinari-autotest-toggle-run-after-save)
-;(defun my-rinari-test-with-check ()
-;  (interactive)
-;  (when my-rinari-autotest-after-save
-;    (my-rinari-test-using-spork)))
-;(add-hook 'rinari-minor-mode-hook
-;          (lambda () (add-hook 'after-save-hook 'my-rinari-test-with-check nil t)))
-;(defun my-rinari-autotest-set-marker ()
-;  (interactive)
-;  (setq my-rinari-autotest-marker (point-marker))
-;  (message "rinari autotest marker is set"))
-;(defun my-rinari-autotest-clear-marker ()
-;  (interactive)
-;  (setq my-rinari-autotest-marker nil)
-;  (message "rinari autotest marker is removed"))
-;(define-key rinari-minor-mode-map (kbd "C-c ; m") 'my-rinari-autotest-set-marker)
-;(define-key rinari-minor-mode-map (kbd "C-c ; M") 'my-rinari-autotest-clear-marker)
-;(defun my-rinari-rgrep ()
-;  (interactive)
-;  (rinari-rgrep)
-;  (my-grep-place-buffers))
-;(define-key rinari-minor-mode-map (kbd "C-c ; g") 'my-rinari-rgrep)
-
 
 ;; JavaScript
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-
-;; CoffeeScript
-(require 'coffee-mode)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile"   . coffee-mode))
-;; enable compile-on-save minor mode
-(add-hook 'coffee-mode-hook 'coffee-cos-mode)
-
-(require 'flymake-coffee)
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
-
-
-;; Jade
-(require 'jade-mode)
-;; use jade-mode for *.dt
-(add-to-list 'auto-mode-alist '("\\.dt$" . jade-mode))
 
 
 ;; Java
@@ -1251,7 +1152,7 @@
  ;; If there is more than one, they won't work right.
  '(package-hidden-regexps '(""))
  '(package-selected-packages
-   '(ac-alchemist flycheck-mix elm-mode racer fish-mode helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode coffee-mode auto-save-buffers-enhanced ace-jump-mode))
+   '(alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode auto-save-buffers-enhanced ace-jump-mode))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
