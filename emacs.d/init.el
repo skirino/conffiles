@@ -1045,7 +1045,6 @@
 
 (require 'flyspell)
 (ispell-change-dictionary "american")
-;; 日本語ファイル中のスペルチェックを可能にする
 
 ;; 環境依存
 (setq-default ispell-program-name
@@ -1062,66 +1061,14 @@
   '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
 ;; text-mode及びその亜種でオンにし、すぐにバッファ全体をチェック
 (dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda ()
-                   (flyspell-mode t)
-                   (flyspell-buffer))))
+  (add-hook hook (lambda () (flyspell-mode t))))
 ;; texの記法は無視
 (setq ispell-parser 'tex)
 ;; プログラムのコメントのスペルチェック
 (dolist (hook '(c-mode-common-hook))
-  (add-hook hook (lambda ()
-                   (flyspell-prog-mode)
-                   (flyspell-buffer))));; スタートと同時にチェックはうまくいってない
-
-;; flyspellの修正候補をpopup.elで表示する
-(defun flyspell-correct-word-popup-el ()
-  "Pop up a menu of possible corrections for misspelled word before point."
-  (interactive)
-  ;; use the correct dictionary
-  (flyspell-accept-buffer-local-defs)
-  (let ((cursor-location (point))
-        (word (flyspell-get-word nil)))
-    (when (consp word)
-      (let ((start (car (cdr word)))
-            (end (car (cdr (cdr word))))
-            (word (car word))
-            poss ispell-filter)
-        ;; now check spelling of word.
-        (ispell-send-string "%\n") ;put in verbose mode
-        (ispell-send-string (concat "^" word "\n"))
-        ;; wait until ispell has processed word
-        (while (progn
-                 (accept-process-output ispell-process)
-                 (not (string= "" (car ispell-filter)))))
-        ;; Remove leading empty element
-        (setq ispell-filter (cdr ispell-filter))
-        ;; ispell process should return something after word is sent.
-        ;; Tag word as valid (i.e., skip) otherwise
-        (or ispell-filter (setq ispell-filter '(*)))
-        (when (consp ispell-filter)
-          (setq poss (ispell-parse-output (car ispell-filter))))
-        (cond ((or (eq poss t) (stringp poss))
-               t) ;; don't correct word
-              ((null poss)
-               ;; ispell error
-               (error "Ispell: error in Ispell process"))
-              (t
-               ;; The word is incorrect, we have to propose a replacement.
-               (flyspell-do-correct (popup-menu* (car (cddr poss)) :scroll-bar t :margin t)
-                                    poss word cursor-location start end cursor-location)))
-        (ispell-pdict-save t)
-      )
-    )
-  )
-)
-
-;; 修正したい単語の上にカーソルをもっていき, C-M-return を押すことで候補を選択
-(add-hook 'flyspell-mode-hook
-          (lambda ()
-            (define-key flyspell-mode-map (kbd "<C-M-return>") 'flyspell-correct-word-popup-el)))
+  (add-hook hook (lambda () (flyspell-prog-mode))))
 
 ;;; flyspell-mode を自動的に開始させたいファイルを指定 (お好みでアンコメントするなり, 変更するなり)
-(add-to-list 'auto-mode-alist '("\\.txt" . flyspell-mode))
 (add-to-list 'auto-mode-alist '("\\.tex" . flyspell-mode))
 ;;; 要らないkey-bindingを無効化
 (define-key flyspell-mode-map (kbd "C-,") nil)
