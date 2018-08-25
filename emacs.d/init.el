@@ -139,56 +139,6 @@
 ;; ミニバッファの補完強化
 (require 'ido)
 (ido-mode t)
-
-;; バッファ切り替え (C-, C-.)
-(defvar my-ignore-blst             ; 移動の際に無視するバッファのリスト
-  '("*Help*" "*Compile-Log*" "*Mew completions*" "*Completions*"
-    "*Shell Command Output*" "*Apropos*" "*Buffer List*"))
-(defvar my-visible-blst       nil) ; 移動開始時の buffer list を保存
-(defvar my-bslen              15 ) ; buffer list 中の buffer name の最大長
-(defvar my-blist-display-time 2  ) ; buffer list の表示時間
-(defface my-cbface                 ; buffer list 中で current buffer を示す face
-  '((t (:foreground "wheat" :underline t))) nil)
-
-(defun my-visible-buffers (blst)
-  (unless (eq blst nil)
-    (let ((bufn (buffer-name (car blst))))
-      (if (or (= (aref bufn 0) ? ) (member bufn my-ignore-blst))
-          ;; ミニバッファと無視するバッファには移動しない
-          (my-visible-buffers (cdr blst))
-        (cons (car blst) (my-visible-buffers (cdr blst)))))))
-
-(defun my-show-buffer-list (prompt spliter)
-  (let* ((len (string-width prompt))
-         (str (mapconcat
-               (lambda (buf)
-                 (let ((bs (copy-sequence (buffer-name buf))))
-                   (when (> (string-width bs) my-bslen) ;; 切り詰め
-                     (setq bs (concat (substring bs 0 (- my-bslen 2)) "..")))
-                   (setq len (+ len (string-width (concat bs spliter))))
-                   (when (eq buf (current-buffer)) ;; 現在のバッファは強調表示
-                     (put-text-property 0 (length bs) 'face 'my-cbface bs))
-                   (cond ((>= len (frame-width)) ;; frame 幅で適宜改行
-                          (setq len (+ (string-width (concat prompt bs spliter))))
-                          (concat "\n" (make-string (string-width prompt) ? ) bs))
-                         (t bs))))
-               my-visible-blst spliter)))
-    (let (message-log-max)
-      (message "%s" (concat prompt str))
-      (when (sit-for my-blist-display-time) (message nil)))))
-
-(defun my-operate-buffer (pos)
-  (unless (window-minibuffer-p (selected-window));; ミニバッファ以外で
-    (unless (eq last-command 'my-operate-buffer)
-      ;; 直前にバッファを切り替えてなければバッファリストを更新
-      (setq my-visible-blst (my-visible-buffers (buffer-list))))
-    (let* ((blst (if pos my-visible-blst (reverse my-visible-blst))))
-      (switch-to-buffer (or (cadr (memq (current-buffer) blst)) (car blst))))
-    (my-show-buffer-list (if pos "[-->] " "[<--] ") (if pos " > "  " < " )))
-  (setq this-command 'my-operate-buffer))
-
-(global-set-key (kbd "C-,") (lambda () (interactive) (my-operate-buffer nil)))
-(global-set-key (kbd "C-.") (lambda () (interactive) (my-operate-buffer t)))
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
 
 
@@ -401,10 +351,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 画面分割
-;; "C-=" (C-S--), "C-|"で画面分割
-(global-set-key (kbd "C-=") 'split-window-vertically)
-(global-set-key (kbd "C-|") 'split-window-horizontally)
-
 ;; dsで画面分割
 (defun my-show-buffer-in-two-window ()
   (interactive)
@@ -417,10 +363,6 @@
 (global-set-key (kbd "C-S-j") 'windmove-down)
 (global-set-key (kbd "C-S-k") 'windmove-up)
 (global-set-key (kbd "C-S-l") 'windmove-right)
-
-;; popwin
-(require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -458,6 +400,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; align
 (global-set-key (kbd "C-c a"  ) 'align       )
 (global-set-key (kbd "C-c C-a") 'align-regexp)
+
+(defun align-commas (beg end)
+  (interactive "r")
+  (align-regexp beg end "\\(\\s-*\\)," 1 1 t))
+(global-set-key (kbd "C-c ,") 'algin-commas)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -467,22 +414,6 @@
 
 ;; 開いたときには一旦全展開
 (setq org-startup-folded nil)
-
-;; org-captureでメモを取る
-(setq org-directory "~/docs/")
-(setq org-default-notes-file (concat org-directory "memo.org"))
-(require 'org-capture)
-(setq org-capture-templates
-      '(("m" "Inbox" entry (file+headline nil "Inbox")
-         "** %?\n %U\n %a\n")
-        ))
-(defun my-org-capture-memo ()
-  (interactive)
-  (org-capture '(0) "m")
-)
-(global-set-key (kbd "M-m") 'my-org-capture-memo)
-(define-key org-capture-mode-map (kbd "C-x C-s") 'org-capture-finalize)
-(define-key org-capture-mode-map (kbd "C-x C-c") 'org-capture-kill)
 
 (defun my-org-visit-file (filepath)
   (let ((osf-orig org-startup-folded))
@@ -549,40 +480,6 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; w3m
-(require 'w3m)
-(load-library "w3m-filter")
-(setq w3m-use-filter t)
-(setq w3m-use-cookies t)
-(setq w3m-cookie-accept-bad-cookies t)
-(setq w3m-default-display-inline-images t)
-(setq w3m-session-load-crashed-sessions nil)
-(setq browse-url-browser-function 'w3m-browse-url)
-(global-set-key (kbd "C-x m") 'browse-url-at-point)
-
-(define-key w3m-mode-map (kbd "n"  ) 'w3m-next-anchor)
-(define-key w3m-mode-map (kbd "M-n") 'w3m-next-anchor)
-(define-key w3m-mode-map (kbd "p"  ) 'w3m-previous-anchor)
-(define-key w3m-mode-map (kbd "P"  ) 'w3m-previous-anchor)
-(define-key w3m-mode-map (kbd "M-p") 'w3m-previous-anchor)
-(define-key w3m-mode-map (kbd "b"  ) 'w3m-view-previous-page)
-
-(defun w3m-filter-alc-alt (url)
-  "英辞郎のヘッダ部分を取り除く"
-  (w3m-filter-delete-regions url "<!-- interest_match_relevant_zone_start -->" "<!-- ▼ 検索補助 ▼ -->"))
-(add-to-list 'w3m-filter-rules '("\\`http://eow\.alc\.co\.jp/[^/]+" w3m-filter-alc-alt))
-
-(defun w3m-search-eijiro (query)
-  "w3mで英辞郎 on the Web検索"
-  (interactive (list
-                (let ((w (or (thing-at-point 'word) "") ))
-                  (read-string (format "[ALC] Search for (%s): " w) nil nil w))))
-  (w3m (concat "http://eow.alc.co.jp/" (w3m-url-encode-string query 'utf-8) "/UTF-8")))
-(global-set-key (kbd "C-c e"  ) 'w3m-search-eijiro)
-(global-set-key (kbd "C-c C-e") 'w3m-search-eijiro)
-;;;;;;;;;;;;;;;;;;;;;;;; w3m
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 日本語入力
 ;; 日本語 <=> 英数の切り替え(ibus等々にやらせる)
 (global-set-key (kbd "S-C-SPC"          ) 'ignore)
@@ -596,7 +493,6 @@
 (scroll-bar-mode 0)
 (horizontal-scroll-bar-mode 0)
 (menu-bar-mode 0)
-
 
 ;; 現在行をハイライト
 (global-hl-line-mode t)
@@ -855,6 +751,7 @@
 
 
 ;; JavaScript
+(require 'js2-mode)
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
@@ -959,7 +856,7 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
+;;;;;;;;;;;;;;;;;;;;;;;; flymake
 (require 'flymake)
 (require 'flycheck)
 (add-hook 'after-init-hook 'global-flycheck-mode)
@@ -968,16 +865,6 @@
 
 ;; GUIのダイアログを抑制
 (setq flymake-gui-warnings-enabled nil)
-
-;; gccsenseおよびgccsense-flymake
-(require 'gccsense)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (flymake-mode)
-            (local-set-key (kbd "C-.") 'ac-complete-gccsense)   ;gccsense補完
-            (local-set-key (kbd "C-c .") 'ac-complete-gccsense) ;gccsense補完
-            (gccsense-flymake-setup))
-)
 
 ;; handler without makefile
 (defun flymake-c-init ()
@@ -1036,7 +923,7 @@
   (next-error))
 (global-set-key (kbd "M-P") 'my-goto-prev-error)
 (global-set-key (kbd "M-N") 'my-goto-next-error)
-;;;;;;;;;;;;;;;;;;;;;;;; flymake & gccsense
+;;;;;;;;;;;;;;;;;;;;;;;; flymake
 
 
 
@@ -1099,7 +986,7 @@
  ;; If there is more than one, they won't work right.
  '(package-hidden-regexps '(""))
  '(package-selected-packages
-   '(alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popwin popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ gccsense flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode auto-save-buffers-enhanced ace-jump-mode))
+   '(js2-mode alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode auto-save-buffers-enhanced ace-jump-mode))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
