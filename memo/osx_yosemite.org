@@ -108,5 +108,16 @@
 * homebrew
 ** install, update
 * Vivaldi
-** タブの閉じるボタンの位置を調整
-*** https://blog.surume.tk/macos-vivaldi-close-button-favicon/
+** タブの閉じるボタンの位置を調整: 以下のファイル修正を行って再起動
+*** /Applications/Vivaldi.app/Contents/Versions/<version>/Vivaldi Framework.framework/Resources/vivaldi/browser.html で、`common.css`と同様に`custom.css`を読み込むようにする
+*** /Applications/Vivaldi.app/Contents/Versions/<version>/Vivaldi Framework.framework/Resources/vivaldi/style/custom.css を以下で作成
+<pre>
+.tab-header .favicon, .tab-header .close {
+	display: block !important;
+}
+
+.tab-header .close {
+	order: 1 !important;
+	margin-right: 5px;
+}
+</pre>
