@@ -109,15 +109,15 @@
 ** install, update
 * Vivaldi
 ** タブの閉じるボタンの位置を調整: 以下のファイル修正を行って再起動
-*** /Applications/Vivaldi.app/Contents/Versions/<version>/Vivaldi Framework.framework/Resources/vivaldi/browser.html で、`common.css`と同様に`custom.css`を読み込むようにする
-*** /Applications/Vivaldi.app/Contents/Versions/<version>/Vivaldi Framework.framework/Resources/vivaldi/style/custom.css を以下で作成
+*** /Applications/Vivaldi.app/Contents/Versions/<version>/Vivaldi Framework.framework/Resources/vivaldi/style/common.css に以下を追記
 <pre>
+/* manually added to place "close" button of each tab at right hand side */
 .tab-header .favicon, .tab-header .close {
-	display: block !important;
+  display: block !important;
 }
 
 .tab-header .close {
-	order: 1 !important;
-	margin-right: 5px;
+  order: 1 !important;
+  margin-right: 5px;
 }
 </pre>
