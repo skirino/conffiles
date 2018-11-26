@@ -17,7 +17,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; packages
 (require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 (require 'async-bytecomp)
 (require 'save-packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -367,6 +375,7 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)                         ;; C-cやC-vの乗っ取りを阻止
 (define-key cua-global-keymap (kbd "C-S-SPC") 'ignore) ;; C-S-SPCを空ける(日本語モード => 戻す)
+(define-key cua-global-keymap (kbd "C-M-j") 'cua-set-rectangle-mark) ;; To use this also in terminal
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -830,6 +839,8 @@
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
+;(require 'prettier-js)
+;(add-hook 'markdown-mode-hook 'prettier-js-mode)
 (setq markdown-command "redcarpet --parse-tables")
 ;; save時にHTML変換したファイルを保存し、w3mで表示
 (defun my-markdown-export-and-view ()
@@ -982,7 +993,7 @@
  ;; If there is more than one, they won't work right.
  '(package-hidden-regexps '(""))
  '(package-selected-packages
-   '(js2-mode alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode auto-save-buffers-enhanced ace-jump-mode))
+   '(prettier-js js2-mode alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode auto-save-buffers-enhanced ace-jump-mode))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
