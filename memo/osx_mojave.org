@@ -1,5 +1,6 @@
 * システム環境設定
 ** -> キーボード
+*** キーリピート設定を変更
 *** -> 修飾キー: CapsLockキーをControl扱いにする。
 *** Fnキーを標準のファンクションキーにする
 *** キーのバックライト自動調整調整をオフにし、Fn+F5で完全にバックライトを消す
@@ -60,16 +61,11 @@
 *** 一般 -> 高度: クリップボードの共有を双方向に設定
 *** 共有フォルダ: /Users/skirino/vbshareをホストに作り、これを指定。自動マウントON、読み書き可
 *** Guest Additionを再インストール
-* Karabiner
-** インストール
-** For Japanese => Change Underscore(Ro) Key => Underscore(Ro) to JIS_YEN(\) にチェック(JIS_YENではなくbackslashにすると、Guest OSにおけるUnderscoreキーがなぜか']'になってしまう)
-** キーリピート設定を変更
-** MacのVirtualBox Linuxで、トグルではない日本語 / 英語入力モード切り替え
-*** 「かな」キーと「英数」キーは、どちらもゲストOSでは「全角/半角」キーとして扱われてしまうので、ホストOS(OSX)でKarabinerを使って以下のように信号を変換し、ゲストOSのキーバインディングを変更する。ここでは「かな」=> "Shift-かな"に変換。
-*** MacにおけるOption, CommandはそのままだとGuest側ではAlt, Windowsキーになる。逆になってほしいので入れ替える。
-*** Command+h(Option+hを押した時)はOSXによって使われてしまうので、別のキー扱いにしてguest OSに渡す。ここではCommand+y
-*** 以下のファイルを作っておくと上記2点の項目がKarabinerに追加されるので、これをチェック
------ ~/Library/Application\ Support/KeyRemap4MacBook/private.xml
+* Karabiner-Elements
+** 以下2ファイルを配置してenableする
+*** /Users/skirino/.config/karabiner/assets/complex_modifications/remap_underscore_to_backslash.json
+*** /Users/skirino/.config/karabiner/assets/complex_modifications/virtualbox_guest_vm.json
+
 <?xml version="1.0"?>
 <root>
   <appdef>

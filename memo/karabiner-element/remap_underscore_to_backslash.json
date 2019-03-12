@@ -1,0 +1,53 @@
+{
+  "title": "underscore key as backslash (unless the frontmost app is VirtualBox guest VM)",
+  "rules": [
+    {
+      "description": "underscore key as backslash (unless the frontmost app is VirtualBox guest VM)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "international1"
+          },
+          "to": [
+            {
+              "key_code": "international3"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "international1",
+            "modifiers": {
+              "mandatory": [
+                "shift"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "international1"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

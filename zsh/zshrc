@@ -272,8 +272,8 @@ export PATH=~/code/Agda/install/.cabal-sandbox/bin:$PATH
 export PATH=~/code/PureScript/purescript/.stack-work/install/x86_64-linux/lts-6.25/7.10.3/bin:$PATH
 
 # Java
-JAVA_HOME=/usr/lib/jvm/default
-JDK_HOME=/usr/lib/jvm/default
+JAVA_HOME=/home/skirino/code/Java/amazon-corretto-8
+JDK_HOME=/home/skirino/code/Java/amazon-corretto-8
 export PATH=${JAVA_HOME}/bin:$PATH
 
 # Clojure

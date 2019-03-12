@@ -1,0 +1,76 @@
+{
+  "title": "VirtualBox guest VM",
+  "rules": [
+    {
+      "description": "Command <=> Option",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_command"
+          },
+          "to": [
+            {
+              "key_code": "left_option"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
+              ]
+            }
+          ]
+        },
+        {
+          "description": "Option => Command",
+          "type": "basic",
+          "from": {
+            "key_code": "left_option"
+          },
+          "to": [
+            {
+              "key_code": "left_command"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Kana as Shift+Kana in VirtualBox VM (to differentiate Eisuu from Kana, since both are treated as Hankaku/Zenkaku in guest)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "lang1"
+          },
+          "to": [
+            {
+              "key_code": "lang1",
+              "modifiers": [
+                "shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
