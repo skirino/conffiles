@@ -40,16 +40,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; key-chord
-(require 'key-chord)
-(setq key-chord-two-keys-delay 0.02)
-(key-chord-mode t)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
-(ffap-bindings)
-
 ;; disable backup
 (setq backup-inhibited t)
 
@@ -110,35 +101,9 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; dired
-(require 'wdired)
-(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
-
-;; diredでフォルダを開く時, 新しいバッファを作成しない
-(require 'dired-single)
-(defun my-dired-init ()
-  "Bunch of stuff to run for dired, either immediately or when it's loaded."
-  (define-key dired-mode-map [return]  'dired-single-buffer)
-  (define-key dired-mode-map [mouse-1] 'dired-single-buffer-mouse)
-  (define-key dired-mode-map "^"
-    (function (lambda nil (interactive) (dired-single-buffer "..")))))
-(if (boundp 'dired-mode-map)
-    ;; dired is already loaded; add our bindings
-    (my-dired-init)
-  ;; it's not loaded yet, so add our bindings to the load-hook
-  (add-hook 'dired-load-hook 'my-dired-init))
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
 ;; キーストロークをエコーエリアに早く表示する
 (setq echo-keystrokes 0.2)
-
-;; ファイル名がかぶったときのバッファ名を適切に設定
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-(setq uniquify-ignore-buffers-re "*[^*]+*")
 
 ;; ミニバッファの補完強化
 (require 'ido)
@@ -169,9 +134,6 @@
 (require 'smartparens-config)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
-
-;; company-mode
-(global-company-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -196,7 +158,7 @@
 (require 'anzu)
 (global-anzu-mode t)
 
-;; ace-isearch: helm-swoopに映るところでエラーになる。原因不明
+;; ace-isearch: helm-swoopに移るところでエラーになる。原因不明
 ;(require 'ace-isearch)
 ;(global-ace-isearch-mode 1)
 
@@ -255,10 +217,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; multiple-cursors
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C-)") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-(") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-(") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C-)") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-)")       'mc/mark-next-like-this)
+(global-set-key (kbd "C-(")       'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-(")   'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C-)")   'mc/mark-all-like-this)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -355,13 +317,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 画面分割
-;; dsで画面分割
-(defun my-show-buffer-in-two-window ()
-  (interactive)
-  (delete-other-windows)
-  (split-window-horizontally))
-(key-chord-define-global "ds" 'my-show-buffer-in-two-window)
-
 ;; "C-S-hjkl"でウィンドウ移動
 (global-set-key (kbd "C-S-h") 'windmove-left)
 (global-set-key (kbd "C-S-j") 'windmove-down)
@@ -384,20 +339,6 @@
 (turn-off-auto-fill)
 (remove-hook 'text-mode-hook 'turn-on-auto-fill)
 (remove-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;; picture-mode
-(defun toggle-picture-mode ()
-  "Returns the major mode associated with a buffer."
-  (interactive)
-  (if (string= "picture-mode" major-mode)
-      (picture-mode-exit)
-    (picture-mode)
-  )
-)
-(key-chord-define-global "pc" 'toggle-picture-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -514,9 +455,6 @@
 (require 'highlight-indentation)
 (add-hook 'find-file-hook 'highlight-indentation-mode)
 
-;; 行の折り返し
-(key-chord-define-global "kl" 'toggle-truncate-lines)
-
 ;; 対応する括弧を表示させる
 (show-paren-mode t)
 
@@ -561,6 +499,7 @@
   (defalias 'exit 'save-buffers-kill-emacs)
 
   ;; elscreen
+  (require 'elscreen)
   (elscreen-start)
   (global-set-key [C-S-right] 'elscreen-next)
   (global-set-key (kbd "C->") 'elscreen-next)
@@ -991,9 +930,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-hidden-regexps '(""))
+ '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
-   '(prettier-js js2-mode alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ flymake-cursor flymake-coffee flycheck-rust f erlang elscreen dired-single d-mode auto-save-buffers-enhanced ace-jump-mode))
+   (quote
+    (elixir-mode ensime anzu smartparens scala-mode scala-mode2 markdown-mode prettier-js js2-mode alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ flymake-cursor flymake-coffee flycheck-rust f erlang elscreen d-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
