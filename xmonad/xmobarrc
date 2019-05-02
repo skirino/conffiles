@@ -1,7 +1,7 @@
-Config { font = "xft:IPAGothic:size=14:bold:antialias=true"
+Config { font = "xft:IPAGothic:size=24:bold:antialias=true"
        , bgColor = "black"
        , fgColor = "grey"
-       , position = Top { height = 32 }
+       , position = Top { height = 48 }
        , lowerOnStart = True
        , commands = [ Run StdinReader
                     , Run Cpu        []                                                10

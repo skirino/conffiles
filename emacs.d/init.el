@@ -335,14 +335,6 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
-(turn-off-auto-fill)
-(remove-hook 'text-mode-hook 'turn-on-auto-fill)
-(remove-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; align
 (global-set-key (kbd "C-c a"  ) 'align       )
 (global-set-key (kbd "C-c C-a") 'align-regexp)
@@ -564,10 +556,10 @@
 
         ;; フォント設定
         (let (my-font-height my-font my-font-ja my-font-size my-fontset)
-          (setq my-font-height 115)
+          (setq my-font-height 180)
           (setq my-font "DejaVu Sans Mono")
           (setq my-font-ja "IPAGothic")
-          (setq face-font-rescale-alist '(("IPAGothic" . 1.20)))
+          (setq face-font-rescale-alist '((my-font-ja . 1.20)))
           (set-face-attribute 'default nil :family my-font :height my-font-height)
 
           ;; 日本語文字に別のフォントを指定
@@ -778,18 +770,7 @@
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
-;(require 'prettier-js)
-;(add-hook 'markdown-mode-hook 'prettier-js-mode)
 (setq markdown-command "redcarpet --parse-tables")
-;; save時にHTML変換したファイルを保存し、w3mで表示
-(defun my-markdown-export-and-view ()
-  (interactive)
-  (let ((orig-buffer (current-buffer)))
-    (markdown-export-and-view)
-    (w3m-redisplay-this-page)
-    (split-window-horizontally)
-    (switch-to-buffer orig-buffer)))
-(define-key gfm-mode-map (kbd "<f6>") 'my-markdown-export-and-view)
 
 
 ;; GNU global
@@ -799,6 +780,14 @@
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               (ggtags-mode 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
+(turn-off-auto-fill)
+(remove-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'turn-off-auto-fill)
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
