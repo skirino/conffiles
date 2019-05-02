@@ -369,3 +369,8 @@ _direnv_rust_hook # invoke the hook once on startup of zsh
 ########## automatically run ls (note that this should come after alias ls='...')
 ls_as_a_function() { ls }
 add-zsh-hook chpwd ls_as_a_function
+
+
+########## https://github.com/sickill/stderred
+export STDERRED_ESC_CODE=$(tput setaf 3)
+source /usr/share/stderred/stderred.sh
