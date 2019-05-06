@@ -13,7 +13,7 @@ import qualified XMonad.StackSet as W
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-    [ ((modm              , xK_Return), spawn "dmenu_run -fn 'Monospace-18'") -- launch dmenu
+    [ ((modm              , xK_Return), spawn "dmenu_run -fn 'Monospace-24'") -- launch dmenu
     , ((modm              , xK_y     ), windowGo L False) -- actually I press Option+h; remapped to modm+y by Karabiner
     , ((modm              , xK_l     ), windowGo R False)
     , ((modm              , xK_j     ), windowGo D False)
@@ -102,7 +102,7 @@ defaults = ewmh def
   {
   -- simple stuff
     modMask            = mod4Mask -- Use super (Windows key)
-  , terminal           = "lilyterm"
+  , terminal           = "tilda"
   , focusFollowsMouse  = True
   , clickJustFocuses   = False
   , workspaces         = ["1","2","3","4","5","6","7","8","9"]
