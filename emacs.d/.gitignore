@@ -11,5 +11,6 @@ private
 places
 backups/
 undohist/
+transient/
 tramp
 network-security.data

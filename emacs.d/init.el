@@ -1,9 +1,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; emacs lispのpathを通す
+(package-initialize)
+
 (let ((default-directory "~/.emacs.d/"))
   (normal-top-level-add-subdirs-to-load-path))
 (push "/usr/local/share/emacs/site-lisp" load-path)
-(push "~/.emacs.d/symlinks/ats2-mode" load-path)
 (require 'cl)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -23,11 +24,8 @@
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
   ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+  )
 (require 'async-bytecomp)
-(require 'save-packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -513,7 +511,7 @@
   ;; GUIでの色付け
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "white"))
-  ; Transparency: needs xcompmgr
+  ; Transparency: needs xcompmgr in Linux
   (set-frame-parameter (selected-frame) 'alpha '(75 50))
   (add-to-list 'default-frame-alist '(alpha 75 50))
 
@@ -529,53 +527,53 @@
   (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up   5)))
 )
 
-(when (eq system-type 'gnu/linux)
-  (if (eq window-system 'x)
-      (progn ;; GUI
-        (my-start-gui-emacs)
+(defun my-setup-appearances-in-xwindow ()
+  (add-to-list 'default-frame-alist '(cursor-color . "white"))
+  (set-face-background 'region "Blue")
 
-        (add-to-list 'default-frame-alist '(cursor-color . "white"))
-        (set-face-background 'region "Blue")
+  ;; maximize window (X Window System-specific implementation)
+  (defun toggle-maximize (&optional f)
+    (interactive)
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+                           '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+                           '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+  )
+  (global-set-key (kbd "C-x RET RET") 'toggle-maximize)
+  ;; 起動時に最大化して分割、少し間を置かないとレイアウトがおかしくなる
+  (defun my-maximize-and-split ()
+    (interactive)
+    (toggle-maximize)
+    (split-window-horizontally)
+  )
+  (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
 
-        ;; maximize window (X Window System-specific implementation)
-        (defun toggle-maximize (&optional f)
-          (interactive)
-          (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                                 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
-          (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                                 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
-        )
-        (global-set-key (kbd "C-x RET RET") 'toggle-maximize)
-        ;; 起動時に最大化して分割、少し間を置かないとレイアウトがおかしくなる
-        (defun my-maximize-and-split ()
-          (interactive)
-          (toggle-maximize)
-          (split-window-horizontally)
-        )
-        (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
+  ;; フォント設定
+  (let (my-font-height my-font my-font-ja my-font-size my-fontset)
+    (setq my-font-height 180)
+    (setq my-font "DejaVu Sans Mono")
+    (setq my-font-ja "IPAGothic")
+    (setq face-font-rescale-alist '((my-font-ja . 1.20)))
+    (set-face-attribute 'default nil :family my-font :height my-font-height)
 
-        ;; フォント設定
-        (let (my-font-height my-font my-font-ja my-font-size my-fontset)
-          (setq my-font-height 180)
-          (setq my-font "DejaVu Sans Mono")
-          (setq my-font-ja "IPAGothic")
-          (setq face-font-rescale-alist '((my-font-ja . 1.20)))
-          (set-face-attribute 'default nil :family my-font :height my-font-height)
-
-          ;; 日本語文字に別のフォントを指定
-          (when my-font-ja
-            (let ((fn (or my-fontset (frame-parameter nil 'font)))
-                  (rg "iso10646-1"))
-              (set-fontset-font fn 'katakana-jisx0201 `(,my-font-ja . ,rg))
-              (set-fontset-font fn 'japanese-jisx0208 `(,my-font-ja . ,rg))
-              (set-fontset-font fn 'japanese-jisx0212 `(,my-font-ja . ,rg)))
-          )
-        )
-      )
-    (progn ;; CUI
-      (my-start-cui-emacs)
+    ;; 日本語文字に別のフォントを指定
+    (when my-font-ja
+      (let ((fn (or my-fontset (frame-parameter nil 'font)))
+            (rg "iso10646-1"))
+        (set-fontset-font fn 'katakana-jisx0201 `(,my-font-ja . ,rg))
+        (set-fontset-font fn 'japanese-jisx0208 `(,my-font-ja . ,rg))
+        (set-fontset-font fn 'japanese-jisx0212 `(,my-font-ja . ,rg)))
     )
   )
+)
+
+(if (display-graphic-p)
+  (progn
+    (my-start-gui-emacs)
+    (when (eq system-type 'gnu/linux)
+      (my-setup-appearances-in-xwindow))
+  )
+  (my-start-cui-emacs)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 
@@ -635,18 +633,6 @@
 (setq racer-rust-src-path "~/code/Rust/download/rust/src/")
 
 
-;; ponylang-mode
-(require 'ponylang-mode)
-
-
-;; vala-mode
-(autoload 'vala-mode "vala-mode" "Major mode for editing Vala code." t)
-(add-to-list 'auto-mode-alist          '("\\.vala$" . vala-mode))
-(add-to-list 'auto-mode-alist          '("\\.vapi$" . vala-mode))
-(add-to-list 'file-coding-system-alist '("\\.vala$" . utf-8))
-(add-to-list 'file-coding-system-alist '("\\.vapi$" . utf-8))
-
-
 ;; python
 (require 'python)
 ;; returnでカーソルのいた行もインデントするのはpythonだとダメ
@@ -657,40 +643,8 @@
 (define-key python-mode-map (kbd "RET") 'my-newline-and-indent)
 
 
-;; ruby
-(require 'starter-kit-ruby)
+;; Ruby
 (require 'ruby-mode)
-(add-hook 'ruby-mode-hook
-          '(lambda ()
-             (setq flycheck-checker 'ruby-rubocop)
-             (flycheck-mode 1)))
-
-;; inf-ruby関連のキーバインドを無効化
-(remove-hook 'ruby-mode-hook 'inf-ruby-keys)
-(remove-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
-(remove-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
-
-;; アクセス修飾子のインデントを下げる (taken from ruby-mode.el)
-(push "public"    ruby-block-mid-keywords)
-(push "protected" ruby-block-mid-keywords)
-(push "private"   ruby-block-mid-keywords)
-(setq ruby-block-mid-re (regexp-opt ruby-block-mid-keywords))
-(setq ruby-negative
-      (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|"
-              ruby-block-end-re "\\|}\\|\\]\\)"))
-
-;; 複数行のif, begin, caseなどのインデントを式の開始位置に依らないようにする
-(setq ruby-align-to-stmt-keywords t)
-
-;; カッコの内側の要素のインデントを、カッコ位置ではなく通常インデントにする
-(setq ruby-deep-indent-paren-style nil)
-
-
-;; JavaScript
-(require 'js2-mode)
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
 
 ;; Java
 (let* ((javac-path (shell-command-to-string "which javac"))
@@ -699,27 +653,8 @@
   (setenv "JDK_HOME" java-home))
 
 
-;; Clojure
-(require 'clojure-mode)
-(defun turn-on-paredit () (paredit-mode 1))
-(add-hook 'clojure-mode-hook 'turn-on-paredit)
-(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
-
-
 ;; Scala
-(require 'scala-mode2)
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-;; Run apk from within ensime
-(defun my-ensime-run-apk-in-emulator ()
-  (interactive)
-  (ensime-sbt-switch)
-  (ensime-sbt-action "android:start-emulator"))
-(define-key ensime-mode-map (kbd "C-c C-b a") 'my-ensime-run-apk-in-emulator)
-
-(defun make-play-doc-url (type &optional member)
-  (ensime-make-java-doc-url-helper
-   "file:///home/rajish/bin/play2/documentation/api/scala/" type member))
+(require 'scala-mode)
 
 
 ;; YaTeX
@@ -743,13 +678,6 @@
 
 ;; Coq
 (require 'proof-site)
-
-
-;; ATS2
-(load-library "ats2-mode")
-(load-library "flycheck-ats2")
-(with-eval-after-load 'flycheck
-  (flycheck-ats2-setup))
 
 
 ;; Erlang and Elixir
@@ -920,9 +848,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-hidden-regexps (quote ("")))
- '(package-selected-packages
-   (quote
-    (elixir-mode ensime anzu smartparens scala-mode scala-mode2 markdown-mode prettier-js js2-mode alchemist ac-alchemist flycheck-mix elm-mode racer helm-idris flycheck-pony ghc rust-mode ace-isearch smart-newline ponylang-mode wgrep vala-mode undohist undo-tree starter-kit-ruby session save-packages recentf-ext popup-kill-ring nrepl migemo highlight-indentation helm-git-grep goto-chg git-gutter-fringe+ flymake-cursor flymake-coffee flycheck-rust f erlang elscreen d-mode auto-save-buffers-enhanced ace-jump-mode)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
