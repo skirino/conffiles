@@ -1,4 +1,4 @@
-* yaourt vivaldi
+* yay vivaldi
 * キーバインド等を設定
 * markdown-hereをインストール
 * Shortkeysをインストール、以下によるスクロールを設定

@@ -3,15 +3,13 @@
 *** $ sudo pacman -Syu
 ** レポジトリと同期
 *** $ sudo pacman -Syy
-** yaourtのインストール
-*** $ sudo pacman -S yaourt
-** zsh, zsh-completions, w3m
+** yay, zsh, zsh-completions
 ** vim-minimal, viを削除
 ** その他のパッケージ
-*** git, corkscrew, meld, nkf, pwgen, tree, lilyterm, vte3, xsel, xbindkeys, xdotool, aspell, aspell-en
+*** git, meld, pwgen, vte3, xsel, xbindkeys, xdotool, aspell, aspell-en
 *** OpenJDK 8
-**** $ yaourt -R jre7-openjdk (関連パッケージも消す)
-**** $ yaourt jdk8-openjdk
+**** $ yay -R jre7-openjdk (関連パッケージも消す)
+**** $ yay jdk8-openjdk
 ** conffiles
 *** $ mkdir ~/code
 *** $ git clone https://github.com/skirino/conffiles ~/code/conffiles
@@ -31,7 +29,7 @@
 *** $ sudo systemctl enable vboxservice.service
 * local DNS server
 ** localhostのsubdomainをすべて127.0.0.1へmapする
-** $ yaourt dnsmasq
+** $ yay dnsmasq
 ** /etc/resolvconf.conf に以下を追加
 *** `name_servers=127.0.0.1`
 *** dnsmasq_resolv=/etc/dnsmasq-resolv.conf
