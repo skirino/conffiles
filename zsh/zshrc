@@ -46,7 +46,7 @@ esac
 ##############################################################
 
 ## Alias configuration
-setopt complete_aliases     # expand aliases before completing
+#setopt complete_aliases     # expand aliases before completing
 
 ## Command history configuration
 HISTFILE=${HOME}/.zsh_history
@@ -126,9 +126,9 @@ compinit
 
 ## 補完候補の色づけ
 if [ -f /usr/share/dircolors/dircolors.ansi-universal ]; then
-    eval $(dircolors /usr/share/dircolors/dircolors.ansi-universal)
+    eval "$(dircolors /usr/share/dircolors/dircolors.ansi-universal)"
 else
-    eval `dircolors`
+    eval "$(dircolors)"
 fi
 export ZLS_COLORS=$LS_COLORS
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -161,7 +161,7 @@ elif which putclip >/dev/null 2>&1 ; then
 fi
 
 # aliases
-alias ls="ls -F --color=auto"
+alias ls='ls -F --color=auto'
 alias la='ls -al'
 alias grep="grep -n --color=auto"
 alias sl='ls'
@@ -178,7 +178,7 @@ emc() {
 }
 
 alias temp='cd ~/temp'
-alias conf="cd $(dirname $(dirname $(readlink -f "$0")))"
+alias conf='cd ~/code/conffiles'
 
 alias cdu='cd ..'
 alias cduu='cd ../..'
@@ -200,38 +200,23 @@ alias genpw='echo -n $(pwgen 20 -1) | xsel --input --clipboard'
 
 # git utilities
 alias gst='git status'
-compdef _git gst=git-status
 alias gbr='git branch'
-compdef _git gbr=git-branch
 alias gbra='git branch -a'
-compdef _git gbra=git-branch
 alias glog='git log'
-compdef _git glog=git-log
 alias glog1='git log --oneline'
-compdef _git glog1=git-log
 alias gdiff='git diff'
-compdef _git gdiff=git-diff
 alias gdiffc='git diff --cached'
-compdef _git gdiffc=git-diff
 alias ggrep='git grep -n'
-compdef _git ggrep=git-grep
 alias gcherry='git cherry -v'
-compdef _git gcherry=git-cherry
 ghash() { git rev-parse ${1-HEAD}; }
 compdef _git ghash=git-rev-parse
 
 alias gci='git commit'
-compdef _git gci=git-commit
 alias gco='git checkout'
-compdef _git gco=git-checkout
 alias gadd='git add'
-compdef _git gadd=git-add
 alias gpick='git cherry-pick'
-compdef _git gpick=git-cherry-pick
 alias gfetch='git fetch --prune'
-compdef _git gfetch=git-fetch
 alias gmtool='git mergetool'
-compdef _git gmtool=git-mergetool
 alias gsubup='git submodule update'
 gpush() {
     local branch=$(git rev-parse --abbrev-ref HEAD)
@@ -312,7 +297,7 @@ esac
 
 
 ########## incremental completion by auto-fu
-source $(dirname $(readlink -f "$0"))/auto-fu/auto-fu.zsh
+source ~/code/conffiles/zsh/auto-fu/auto-fu.zsh
 zle-line-init() { auto-fu-init; }; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zle -N zle-keymap-select auto-fu-zle-keymap-select

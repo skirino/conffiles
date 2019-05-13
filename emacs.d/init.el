@@ -8,14 +8,6 @@
 (require 'cl)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-;;;;;;;;;;;;;;;;;;;;;;;; 環境変数
-(require 'exec-path-from-shell)
-(let ((envs '("PATH" "LD_LIBRARY_PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
-  (exec-path-from-shell-copy-envs envs))
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; packages
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -25,9 +17,14 @@
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
   ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
   )
-(require 'async-bytecomp)
+(require 'auto-async-byte-compile)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;; 環境変数
+(require 'exec-path-from-shell)
+(let ((envs '("PATH" "LD_LIBRARY_PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
+  (exec-path-from-shell-copy-envs envs))
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Macのキーボード
 (when (eq system-type 'darwin)
@@ -36,7 +33,6 @@
   (setq mac-option-modifier 'super)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
 ;; disable backup
@@ -73,31 +69,7 @@
     (let ((dir (file-name-directory filename)))
       (unless (file-exists-p dir)
         (make-directory dir t)))))
-
-;; (自作) 開いているファイルと関連したファイルを開く。関連するファイルは前もって登録しておく
-(require 'open-related-file)
-(global-set-key (kbd "C-c ; o") 'open-related-file-open)
-;; rails
-(open-related-file-append-group "%1/app/controllers/%2.rb" "%1/test/functional/%2_test.rb"  )
-(open-related-file-append-group "%1/app/helpers/%2.rb"     "%1/test/unit/helpers/%2_test.rb")
-(open-related-file-append-group "%1/app/models/%2.rb"      "%1/test/unit/%2_test.rb"        )
-(open-related-file-append-group "%1/app/mailers/%2.rb"     "%1/test/mailers/%2_test.rb"     )
-(open-related-file-append-group "%1/app/decorators/%2.rb"  "%1/test/decorators/%2_test.rb"  ) ;; decorators and their tests created by "draper" gem
-;; Play! framework 2 for Scala
-(open-related-file-append-group "%1/app/controllers/%2.scala" "%1/test/controllers/%2Spec.scala")
-(open-related-file-append-group "%1/app/models/%2.scala"      "%1/test/models/%2Spec.scala"     )
-(open-related-file-append-group "%1/app/utils/%2.scala"       "%1/test/utils/%2Spec.scala"      )
-(open-related-file-append-group "%1/app/workers/%2.scala"     "%1/test/workers/%2Spec.scala"    )
-(open-related-file-append-group "%1/app/extern/%2.scala"      "%1/test/extern/%2Spec.scala"     )
-(open-related-file-append-group "%1/app/dtos/%2.scala"        "%1/test/dtos/%2Spec.scala"       )
-;; Elixir mix project
-(open-related-file-append-group "%1/lib/%2.ex"  "%1/test/%2_test.exs"     )
-(open-related-file-append-group "%1/lib/%2.ex"  "%1/test/lib/%2_test.exs" )
-(open-related-file-append-group "%1/core/%2.ex" "%1/test/core/%2_test.exs")
-(open-related-file-append-group "%1/eal/%2.ex"  "%1/test/eal/%2_test.exs" )
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
 ;; キーストロークをエコーエリアに早く表示する
@@ -107,8 +79,6 @@
 (require 'ido)
 (ido-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 補完
 ;; 略語展開・補完
@@ -133,8 +103,6 @@
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 検索
 ;; migemo
@@ -203,14 +171,10 @@
   (other-window 1))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
 (require 'idle-highlight-mode)
 (add-hook 'find-file-hook '(lambda () (idle-highlight-mode t)))
 ;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; multiple-cursors
 (require 'multiple-cursors)
@@ -220,8 +184,6 @@
 (global-set-key (kbd "C-c C-(")   'mc/mark-all-like-this)
 (global-set-key (kbd "C-c C-)")   'mc/mark-all-like-this)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
 (require 'undohist)
@@ -233,8 +195,6 @@
 ;; C-\の入力切り替えは邪魔なのでundoにしておく
 (global-set-key (kbd "C-\\") 'undo-tree-undo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; カーソル移動
 ;; 最後の変更箇所にジャンプ
@@ -265,15 +225,11 @@
 (define-key global-map (kbd "C-:") 'ace-jump-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; scrolling
 (setq scroll-margin 5)
 (setq scroll-conservatively 100000)
 (setq scroll-preserve-screen-position 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; kill ring、リージョン選択
 ;; clipboard連携
@@ -312,8 +268,6 @@
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 画面分割
 ;; "C-S-hjkl"でウィンドウ移動
 (global-set-key (kbd "C-S-h") 'windmove-left)
@@ -322,16 +276,12 @@
 (global-set-key (kbd "C-S-l") 'windmove-right)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; CUA
 (cua-mode t)
 (setq cua-enable-cua-keys nil)                         ;; C-cやC-vの乗っ取りを阻止
 (define-key cua-global-keymap (kbd "C-S-SPC") 'ignore) ;; C-S-SPCを空ける(日本語モード => 戻す)
 (define-key cua-global-keymap (kbd "C-M-j") 'cua-set-rectangle-mark) ;; To use this also in terminal
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; align
 (global-set-key (kbd "C-c a"  ) 'align       )
@@ -342,8 +292,6 @@
   (align-regexp beg end "\\(\\s-*\\)," 1 1 t))
 (global-set-key (kbd "C-c ,") 'algin-commas)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; org-mode
 (require 'org)
@@ -372,8 +320,6 @@
 (define-key org-mode-map [S-right] nil)
 (define-key org-mode-map (kbd "C-c C-x C-c") nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; helm
 ;; Workaround to `void-function' while loading helm-mode: https://lists.gnu.org/archive/html/bug-gnu-emacs/2015-01/msg00351.html
@@ -414,14 +360,11 @@
 (define-key helm-map (kbd "C-S-s") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 日本語入力
 ;; 日本語 <=> 英数の切り替え(ibus等々にやらせる)
 (global-set-key (kbd "S-C-SPC"          ) 'ignore)
 (global-set-key (kbd "<zenkaku-hankaku>") 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;; mozc
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
@@ -474,8 +417,6 @@
                ("　" 0 my-face-b-1 append)
                ))))
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 (defun my-start-gui-emacs ()
@@ -577,8 +518,6 @@
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; Git
 (require 'magit)
 (setq magit-last-seen-setup-instructions "1.4.0")
@@ -598,40 +537,34 @@
   (ad-set-arg 0 (file-truename (ad-get-arg 0))))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 ;; M-x compile
 (global-set-key (kbd "C-x c") 'compile)
-
 
 ;; shell script
 (setq sh-basic-offset 2)
 (setq sh-indentation 2)
 
-
 ;; gdb
 (setq gdb-many-windows t)
 (setq gdb-use-separate-io-buffer t) ; "IO buffer" が必要ない場合は  nil で
 
-
 ;; D programming mode
 (require 'd-mode)
 
-
 ;; go-mode
 (require 'go-mode)
-
 
 ;; rust-mode
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'racer-mode-hook #'company-mode)
 (require 'rust-mode)
+(require 'flycheck-rust)
+(require 'racer)
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 (setq company-tooltip-align-annotations t)
 (setq racer-rust-src-path "~/code/Rust/download/rust/src/")
-
 
 ;; python
 (require 'python)
@@ -642,7 +575,6 @@
   (indent-according-to-mode))
 (define-key python-mode-map (kbd "RET") 'my-newline-and-indent)
 
-
 ;; Ruby
 (require 'ruby-mode)
 
@@ -652,14 +584,11 @@
   (setenv "JAVA_HOME" java-home)
   (setenv "JDK_HOME" java-home))
 
-
 ;; Scala
 (require 'scala-mode)
 
-
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
-
 
 ;; Haskell mode
 (require 'haskell-mode)
@@ -671,14 +600,11 @@
             (flymake-mode)
             ))
 
-
 ;; Idris
 (require 'idris-mode)
 
-
 ;; Coq
 (require 'proof-site)
-
 
 ;; Erlang and Elixir
 (require 'erlang-start)
@@ -693,13 +619,11 @@
   (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
 (add-hook 'erlang-mode-hook 'custom-erlang-mode-hook)
 
-
 ;; markdown mode
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
 (setq markdown-command "redcarpet --parse-tables")
-
 
 ;; GNU global
 (require 'ggtags)
@@ -709,15 +633,11 @@
               (ggtags-mode 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
 (turn-off-auto-fill)
 (remove-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook 'turn-off-auto-fill)
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake
 (require 'flymake)
@@ -788,8 +708,6 @@
 (global-set-key (kbd "M-N") 'my-goto-next-error)
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; flyspell
 (when (eq system-type 'gnu/linux)
 
@@ -828,8 +746,6 @@
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; flyspell
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -840,14 +756,15 @@
 (setq default-buffer-file-coding-system 'utf-8)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-hidden-regexps (quote ("")))
+ '(package-selected-packages
+   (quote
+    (auto-async-byte-compile smart-newline flycheck-rust wgrep undohist smartparens session scala-mode recentf-ext racer python proof-general popup-kill-ring multiple-cursors markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
