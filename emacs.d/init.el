@@ -1,4 +1,3 @@
-
 ;;;;;;;;;;;;;;;;;;;;;;;; emacs lispのpathを通す
 (package-initialize)
 
@@ -24,14 +23,6 @@
 (require 'exec-path-from-shell)
 (let ((envs '("PATH" "LD_LIBRARY_PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
   (exec-path-from-shell-copy-envs envs))
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;; Macのキーボード
-(when (eq system-type 'darwin)
-  ;; swap command and option keys
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'super)
-)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
@@ -69,6 +60,10 @@
     (let ((dir (file-name-directory filename)))
       (unless (file-exists-p dir)
         (make-directory dir t)))))
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;; disable bell
+(setq ring-bell-function 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; バッファ&ミニバッファ
@@ -375,14 +370,10 @@
 
 ;; 現在行をハイライト
 (global-hl-line-mode t)
-(defface my-hl-line-face
-  '((((class color) (background dark))  ; カラーかつ, 背景が dark ならば
-     (:background "DarkSlateBlue" t))   ; 背景を黒に.
-    (((class color) (background light)) ; カラーかつ, 背景が light でも
-     (:background "DarkSlateBlue" t))   ; 背景を黒に.
-    (t (:bold t)))
-  "hl-line's my face")
-(setq hl-line-face 'my-hl-line-face)
+(set-face-background 'hl-line "#202020")
+
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
 
 ;; インデントの強調表示
 (require 'highlight-indentation)
@@ -764,7 +755,7 @@
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (auto-async-byte-compile smart-newline flycheck-rust wgrep undohist smartparens session scala-mode recentf-ext racer python proof-general popup-kill-ring multiple-cursors markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ac-alchemist)))
+    (volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
