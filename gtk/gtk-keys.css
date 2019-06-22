@@ -1,6 +1,11 @@
 @import url("/usr/share/themes/Emacs/gtk-3.0/gtk-keys.css");
 
 /*
+ * In macOS this might be
+ * @import url("/usr/local/Cellar/gtk+3/3.24.8/share/themes/Emacs/gtk-3.0/gtk-keys.css");
+ */
+
+/*
  * Bindings for GtkTextView and GtkEntry
  */
 @binding-set gtk-emacs-text-entry

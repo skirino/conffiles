@@ -120,9 +120,16 @@ esac
 
 
 ## Completion configuration
-fpath=(${HOME}/.zsh/functions/Completion ${fpath})
-autoload -U compinit
-compinit
+case "${OSTYPE}" in
+freebsd*|darwin*)
+    fpath=($(brew --prefix)/share/zsh/site-functions ${fpath})
+    ;;
+linux*)
+    fpath=(${HOME}/.zsh/functions/Completion ${fpath})
+    ;;
+esac
+autoload -Uz compinit
+compinit -u
 
 ## 補完候補の色づけ
 if [ -f /usr/share/dircolors/dircolors.ansi-universal ]; then
