@@ -239,6 +239,17 @@
             (process-send-string proc text)
             (process-send-eof proc))))
 )
+(when (eq system-type 'darwin)
+  (setq interprogram-paste-function
+        (lambda ()
+          (shell-command-to-string "pbpaste")))
+  (setq interprogram-cut-function
+        (lambda (text &optional rest)
+          (let* ((process-connection-type nil)
+                 (proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+            (process-send-string proc text)
+            (process-send-eof proc))))
+)
 
 ;; カーソル位置から行頭まで削除する
 (defun backward-kill-line (arg)
@@ -559,6 +570,7 @@
 
 ;; python
 (require 'python)
+(setq python-indent-guess-indent-offset nil)
 ;; returnでカーソルのいた行もインデントするのはpythonだとダメ
 (defun my-newline-and-indent ()
   (interactive)
