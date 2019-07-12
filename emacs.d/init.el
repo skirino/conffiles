@@ -253,7 +253,7 @@
 
 ;; カーソル位置から行頭まで削除する
 (defun backward-kill-line (arg)
-  "Kill chars backward until encountering the end of a line."
+  "Kill chars backward until encountering the beginning of the line."
   (interactive "p")
   (kill-line 0)
 )

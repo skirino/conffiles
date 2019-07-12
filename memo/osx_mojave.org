@@ -39,6 +39,7 @@
 *** "Pro"の設定
 **** シェル終了時の動作を"ウインドウを閉じる"に変更
 **** ウインドウサイズ・フォント設定を変更
+** ~/.CFUserTextEncoding ファイルの中身を"0x08000100:0xE"の1行に変更する(emacsからpbcopyする際のencoding問題への対処)
 * Display
 ** full resolution (dot by dot)にするため、Retina Display Menu(RDM)をインストール
 ** Guest OS側で文字サイズを調整する。1.4倍ほどが適切か
