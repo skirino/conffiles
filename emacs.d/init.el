@@ -593,6 +593,9 @@
 ;; YaTeX
 (setq YaTeX-use-AMS-LaTeX t)
 
+;; jsonnet
+(require 'jsonnet-mode)
+
 ;; Haskell mode
 (require 'haskell-mode)
 ;(autoload 'ghc-init "ghc" nil t)
