@@ -240,8 +240,16 @@ export PATH=~/bin:$PATH
 
 ########## Programming
 # asdf
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/completions/asdf.bash
+case "${OSTYPE}" in
+freebsd*|darwin*)
+    source $(brew --prefix asdf)/asdf.sh
+    source $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
+    ;;
+linux*)
+    source $HOME/.asdf/asdf.sh
+    source $HOME/.asdf/completions/asdf.bash
+    ;;
+esac
 
 # Ruby
 alias irb='irb -r irb/completion'
