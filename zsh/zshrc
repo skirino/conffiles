@@ -369,4 +369,11 @@ add-zsh-hook chpwd ls_as_a_function
 
 ########## https://github.com/sickill/stderred
 export STDERRED_ESC_CODE=$(tput setaf 3)
-source /usr/share/stderred/stderred.sh
+case "${OSTYPE}" in
+freebsd*|darwin*)
+    export DYLD_INSERT_LIBRARIES="/usr/local/lib/libstderred.dylib${DYLD_INSERT_LIBRARIES:+:$DYLD_INSERT_LIBRARIES}"
+    ;;
+linux*)
+    source /usr/share/stderred/stderred.sh
+    ;;
+esac
