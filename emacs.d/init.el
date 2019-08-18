@@ -99,6 +99,26 @@
 (show-smartparens-global-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;; Git
+(require 'magit)
+(setq magit-last-seen-setup-instructions "1.4.0")
+(define-key magit-file-mode-map (kbd "C-x g") nil)
+
+;; git-gutter+ & git-gutter-fringe+
+(require 'git-gutter-fringe+)
+(global-git-gutter+-mode t)
+(global-set-key (kbd "C-c n"  ) 'git-gutter+-next-hunk)
+(global-set-key (kbd "C-c C-n") 'git-gutter+-next-hunk)
+(global-set-key (kbd "C-c p"  ) 'git-gutter+-previous-hunk)
+(global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
+(global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
+(global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
+
+;; Workaround for git-gutter+'s bug on opening a file via symlink
+(defadvice git-gutter+-process-diff (before git-gutter+-process-diff-advice activate)
+  (ad-set-arg 0 (file-truename (ad-get-arg 0))))
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;; 検索
 ;; migemo
 ;; slightly modified version "~/.emacs.d/migemo.el" (toggle migemo by "M-m" in isearch-mode)
@@ -519,25 +539,6 @@
   (my-start-cui-emacs)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
-
-;;;;;;;;;;;;;;;;;;;;;;;; Git
-(require 'magit)
-(setq magit-last-seen-setup-instructions "1.4.0")
-
-;; git-gutter+ & git-gutter-fringe+
-(require 'git-gutter-fringe+)
-(global-git-gutter+-mode t)
-(global-set-key (kbd "C-c n"  ) 'git-gutter+-next-hunk)
-(global-set-key (kbd "C-c C-n") 'git-gutter+-next-hunk)
-(global-set-key (kbd "C-c p"  ) 'git-gutter+-previous-hunk)
-(global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
-(global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
-(global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
-
-;; Workaround for git-gutter+'s bug on opening a file via symlink
-(defadvice git-gutter+-process-diff (before git-gutter+-process-diff-advice activate)
-  (ad-set-arg 0 (file-truename (ad-get-arg 0))))
-;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 ;; M-x compile
