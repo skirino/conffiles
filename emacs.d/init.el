@@ -366,11 +366,17 @@
 
 ;; helm commands
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
-(global-set-key (kbd "C-;"  ) 'helm-mini)
-(global-set-key (kbd "C-+"  ) 'helm-resume)
+(global-set-key (kbd "C-;"  ) 'helm-mini) ;; not work in terminal
+(global-set-key (kbd "C-]"  ) 'helm-mini)
+(global-set-key (kbd "C-+"  ) 'helm-resume) ;; not work in terminal
 ;(global-set-key (kbd "C-c g") 'helm-git-grep)
 
-(setq helm-locate-command "locate %s -A %s") ;; Enable AND search in helm-locate (instead regexp cannot be used)
+(when (eq system-type 'gnu/linux)
+  (setq helm-locate-command "locate %s -A %s") ;; Enable AND search in helm-locate (instead regexp cannot be used)
+)
+(when (eq system-type 'darwin)
+  (setq helm-locate-command "mdfind -name %s %s") ;; Note that AND search isn't working
+)
 (setq helm-mini-default-sources '(helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir helm-source-locate))
 
 ;; helm-swoop
@@ -771,7 +777,7 @@
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
+    (spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
