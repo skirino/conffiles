@@ -593,6 +593,7 @@
        (java-home (replace-regexp-in-string "/bin/javac" "" javac-path)))
   (setenv "JAVA_HOME" java-home)
   (setenv "JDK_HOME" java-home))
+(add-hook 'c-mode-common-hook 'google-set-c-style)
 
 ;; Scala
 (require 'scala-mode)
@@ -602,6 +603,26 @@
 
 ;; jsonnet
 (require 'jsonnet-mode)
+
+;; typescript
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+(setq tide-format-options '(:indentSize 2))
+(setq typescript-indent-level 2)
+(setq company-tooltip-align-annotations t) ;; aligns annotation to the right hand side
+(add-hook 'before-save-hook 'tide-format-before-save) ;; formats the buffer before saving
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(setq tide-tsserver-executable "node_modules/typescript/bin/tsserver")
 
 ;; Haskell mode
 (require 'haskell-mode)
@@ -777,7 +798,7 @@
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
+    (tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
