@@ -653,6 +653,9 @@
   (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
 (add-hook 'erlang-mode-hook 'custom-erlang-mode-hook)
 
+;; terraform
+(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+
 ;; markdown mode
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
@@ -798,7 +801,7 @@
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
+    (terraform-doc terraform-mode tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

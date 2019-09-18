@@ -242,13 +242,14 @@ export PATH=~/bin:$PATH
 # asdf
 case "${OSTYPE}" in
 freebsd*|darwin*)
-    source $(brew --prefix asdf)/asdf.sh
-    source $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
-    ;;
+  # We could use `brew --prefix asdf` to obtain the path but it's too slow; let's hardcode the result.
+  source /usr/local/opt/asdf/asdf.sh
+  source /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
+  ;;
 linux*)
-    source $HOME/.asdf/asdf.sh
-    source $HOME/.asdf/completions/asdf.bash
-    ;;
+  source $HOME/.asdf/asdf.sh
+  source $HOME/.asdf/completions/asdf.bash
+  ;;
 esac
 
 # Ruby
@@ -352,7 +353,6 @@ if exists percol; then
     zle -N percol_select_dir_under_current
     bindkey -M afu '^T' percol_select_dir_under_current
 fi
-
 
 ########## direnv_rust
 _direnv_rust_hook() {
