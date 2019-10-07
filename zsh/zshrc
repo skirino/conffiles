@@ -356,7 +356,7 @@ fi
 
 ########## direnv_rust
 _direnv_rust_hook() {
-  eval "$(direnv_rust)"
+  eval "$(DYLD_INSERT_LIBRARIES= direnv_rust)"
 }
 add-zsh-hook chpwd _direnv_rust_hook
 _direnv_rust_hook # invoke the hook once on startup of zsh
