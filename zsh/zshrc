@@ -311,6 +311,11 @@ linux*)
 esac
 
 
+########## completion cache
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+
 ########## incremental completion by auto-fu
 source ~/code/conffiles/zsh/auto-fu/auto-fu.zsh
 zle-line-init() { auto-fu-init; }; zle -N zle-line-init
