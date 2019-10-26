@@ -7,3 +7,6 @@
 [submodule "emacs.d/submodules/sdic"]
 	path = emacs.d/submodules/sdic
 	url = https://github.com/emacsattic/sdic.git
+[submodule "emacs.d/submodules/emacs-bazel-mode"]
+	path = emacs.d/submodules/emacs-bazel-mode
+	url = https://github.com/bazelbuild/emacs-bazel-mode.git

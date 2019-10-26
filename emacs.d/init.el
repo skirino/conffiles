@@ -656,6 +656,12 @@
 ;; terraform
 (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
 
+;; bazel
+(require 'bazel-mode)
+(add-to-list 'auto-mode-alist '("\\.bazel$"  . bazel-mode))
+(add-to-list 'auto-mode-alist '("BUILD$"     . bazel-mode))
+(add-to-list 'auto-mode-alist '("WORKSPACE$" . bazel-mode))
+
 ;; markdown mode
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
