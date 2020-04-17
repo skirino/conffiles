@@ -245,7 +245,7 @@ case "${OSTYPE}" in
 freebsd*|darwin*)
   # We could use `brew --prefix asdf` to obtain the path but it's too slow; let's hardcode the result.
   source /usr/local/opt/asdf/asdf.sh
-  source /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
+  source /usr/local/opt/asdf/share/zsh/site-functions/_asdf
   ;;
 linux*)
   source $HOME/.asdf/asdf.sh
@@ -305,6 +305,7 @@ esac
 
 
 ########## completion cache
+fpath[1,0]=~/.zsh/completion
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
@@ -328,6 +329,8 @@ afu-accept-line-with-clearing() {
 zle -N afu-accept-line-with-clearing
 bindkey -M afu "^M" afu-accept-line-with-clearing
 bindkey -M afu "^J" afu-accept-line-with-clearing
+
+compinit
 
 
 ########## percol (taken from README.md of percol)

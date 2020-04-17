@@ -689,6 +689,24 @@
 (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
 (setq flymake-check-start-time 5)
 
+;; define our own jsonnet checker: Replace `source-inplace` with `source`,
+;; as in-place flycheck files confuse bazel. This causes `imports` in jsonnet
+;; source code not working but I don't care (as it's already not working
+;; due to missing extVar).
+(flycheck-define-checker jsonnet
+  "A Jsonnet syntax checker using the jsonnet binary.
+
+See URL `https://jsonnet.org'."
+  :command ("jsonnet" source)
+  :error-patterns
+  ((error line-start "STATIC ERROR: " (file-name) ":" line ":" column
+          (zero-or-one (group "-" (one-or-more digit))) ": "
+          (message) line-end)
+   (error line-start "RUNTIME ERROR: " (message) "\n"
+          (one-or-more space) (file-name) ":" (zero-or-one "(")
+          line ":" column (zero-or-more not-newline) line-end))
+  :modes jsonnet-mode)
+
 ;; GUIのダイアログを抑制
 (setq flymake-gui-warnings-enabled nil)
 
@@ -804,10 +822,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(js-indent-level 2)
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (terraform-doc terraform-mode tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
+    (bazel-mode terraform-doc terraform-mode tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
