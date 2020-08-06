@@ -231,7 +231,7 @@ gpush() {
 }
 gpushf() {
     local branch=$(git rev-parse --abbrev-ref HEAD)
-    git push -f origin $branch:$branch
+    git push --force-with-lease origin $branch:$branch
 }
 
 

@@ -668,6 +668,9 @@
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
 (setq markdown-command "redcarpet --parse-tables")
 
+;; coconut
+(require 'coconut-mode)
+
 ;; GNU global
 (require 'ggtags)
 (add-hook 'c-mode-common-hook

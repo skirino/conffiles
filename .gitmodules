@@ -10,3 +10,6 @@
 [submodule "emacs.d/submodules/emacs-bazel-mode"]
 	path = emacs.d/submodules/emacs-bazel-mode
 	url = https://github.com/bazelbuild/emacs-bazel-mode.git
+[submodule "emacs.d/submodules/coconut-mode"]
+	path = emacs.d/submodules/coconut-mode
+	url = https://github.com/NickSeagull/coconut-mode
