@@ -145,9 +145,18 @@ zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
 
 
 # Make prompt like the following (PROMPT is underlined)
-# [2015-06-26 14:20:23] $                   [~/code]
+# [2015-06-26 14:20:23] $                   [~/code] 2s
 PROMPT="%U%B[%D{%Y-%m-%d %H:%M:%S}] %(?..{%?} )%(!.#.$)%b%u "
-RPROMPT="[%50<...<%~]"
+RPROMPT_BASE="[%50<...<%~]"
+
+preexec() {
+  seconds_last_exec="${SECONDS}"
+}
+
+function precmd() {
+  local time_taken="$(($SECONDS - ${seconds_last_exec:-$SECONDS}))"
+  RPROMPT="${RPROMPT_BASE} ${time_taken}s"
+}
 
 
 # autojump
