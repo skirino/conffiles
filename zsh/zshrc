@@ -1,19 +1,15 @@
+
 # environment variables
 export LANG=ja_JP.UTF-8
 
 # Keybind configuration
 bindkey -e
 bindkey "^u" backward-kill-line
-bindkey "^[[1~" beginning-of-line # Home gets to line head
-bindkey "^[[4~" end-of-line       # End gets to line end
 bindkey "^[[3~" delete-char       # Del
 bindkey "\e[1;5C" forward-word    # ctrl-right
 bindkey "\e[1;5D" backward-word   # ctrl-left
-#bindkey '^\' undo
-#bindkey '^[\' redo
-bindkey "\e[Z" reverse-menu-complete # reverse menu completion binded to Shift-Tab
 
-# historical backward/forward search with linehead string binded to ^P/^N
+# historical backward/forward search with linehead string bound to ^P/^N
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -27,17 +23,17 @@ bindkey "^S" history-incremental-pattern-search-forward
 ## terminal configuration
 case "${TERM}" in
 screen)
-    TERM=xterm
-    ;;
+  TERM=xterm
+  ;;
 esac
 
 # set terminal title including current directory
 case "${TERM}" in
 xterm|xterm-color|kterm|kterm-color)
-    precmd() {
-        echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-    }
-    ;;
+  precmd() {
+    echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+  }
+  ;;
 esac
 
 ##############################################################
@@ -110,30 +106,56 @@ setopt list_packed
 # assuming that coreutils package is installed on OSX
 case "${OSTYPE}" in
 freebsd*|darwin*)
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-    ;;
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:/usr/local/opt/findutils/libexec/gnuman:/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
+  ;;
 esac
-
 
 ## Completion configuration
 case "${OSTYPE}" in
 freebsd*|darwin*)
-    fpath=($(brew --prefix)/share/zsh/site-functions ${fpath})
-    ;;
+  fpath=(/usr/local/share/zsh/site-functions ${fpath})
+  # fpath=($(brew --prefix)/share/zsh/site-functions ${fpath})
+  ;;
 linux*)
-    fpath=(${HOME}/.zsh/functions/Completion ${fpath})
-    ;;
+  fpath=(${HOME}/.zsh/functions/Completion ${fpath})
+  ;;
 esac
 fpath[1,0]=~/.zsh/completion/
 autoload -Uz compinit
-compinit -u
+
+########## incremental completion by auto-fu
+source ~/code/conffiles/zsh/auto-fu/auto-fu.zsh
+zle-line-init() { auto-fu-init; }; zle -N zle-line-init
+zstyle ':completion:*' completer _oldlist _complete
+zle -N zle-keymap-select auto-fu-zle-keymap-select
+
+zstyle ':auto-fu:var' postdisplay ''
+zstyle ':auto-fu:highlight' completion fg=green,bold,underline
+zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
+zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
+
+afu-accept-line-with-clearing() {
+  afu-clearing-maybe
+  ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
+  zle afu+accept-line
+}
+zle -N afu-accept-line-with-clearing
+bindkey -M afu "^M" afu-accept-line-with-clearing
+bindkey -M afu "^J" afu-accept-line-with-clearing
+
+compinit -uC
+
+########## completion cache
+fpath[1,0]=~/.zsh/completion
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 
 ## 補完候補、ls出力の色づけ
 if [ -f /usr/share/dircolors/dircolors.ansi-universal ]; then
-    eval "$(dircolors /usr/share/dircolors/dircolors.ansi-universal)"
+  eval "$(dircolors /usr/share/dircolors/dircolors.ansi-universal)"
 else
-    export LS_COLORS='no=00:fi=00:di=36:ln=35:pi=30;44:so=35;44:do=35;44:bd=33;44:cd=37;44:or=05;37;41:mi=05;37;41:ex=01;31:*.cmd=01;31:*.exe=01;31:*.com=01;31:*.bat=01;31:*.reg=01;31:*.app=01;31:*.txt=32:*.org=32:*.md=32:*.mkd=32:*.h=32:*.hpp=32:*.c=32:*.C=32:*.cc=32:*.cpp=32:*.cxx=32:*.objc=32:*.cl=32:*.sh=32:*.bash=32:*.csh=32:*.zsh=32:*.el=32:*.vim=32:*.java=32:*.pl=32:*.pm=32:*.py=32:*.rb=32:*.hs=32:*.php=32:*.htm=32:*.html=32:*.shtml=32:*.erb=32:*.haml=32:*.xml=32:*.rdf=32:*.css=32:*.sass=32:*.scss=32:*.less=32:*.js=32:*.coffee=32:*.man=32:*.0=32:*.1=32:*.2=32:*.3=32:*.4=32:*.5=32:*.6=32:*.7=32:*.8=32:*.9=32:*.l=32:*.n=32:*.p=32:*.pod=32:*.tex=32:*.go=32:*.sql=32:*.csv=32:*.sv=32:*.svh=32:*.v=32:*.vh=32:*.vhd=32:*.bmp=33:*.cgm=33:*.dl=33:*.dvi=33:*.emf=33:*.eps=33:*.gif=33:*.jpeg=33:*.jpg=33:*.JPG=33:*.mng=33:*.pbm=33:*.pcx=33:*.pdf=33:*.pgm=33:*.png=33:*.PNG=33:*.ppm=33:*.pps=33:*.ppsx=33:*.ps=33:*.svg=33:*.svgz=33:*.tga=33:*.tif=33:*.tiff=33:*.xbm=33:*.xcf=33:*.xpm=33:*.xwd=33:*.xwd=33:*.yuv=33:*.aac=33:*.au=33:*.flac=33:*.m4a=33:*.mid=33:*.midi=33:*.mka=33:*.mp3=33:*.mpa=33:*.mpeg=33:*.mpg=33:*.ogg=33:*.opus=33:*.ra=33:*.wav=33:*.anx=33:*.asf=33:*.avi=33:*.axv=33:*.flc=33:*.fli=33:*.flv=33:*.gl=33:*.m2v=33:*.m4v=33:*.mkv=33:*.mov=33:*.MOV=33:*.mp4=33:*.mp4v=33:*.mpeg=33:*.mpg=33:*.nuv=33:*.ogm=33:*.ogv=33:*.ogx=33:*.qt=33:*.rm=33:*.rmvb=33:*.swf=33:*.vob=33:*.webm=33:*.wmv=33:*.doc=31:*.docx=31:*.rtf=31:*.odt=31:*.dot=31:*.dotx=31:*.ott=31:*.xls=31:*.xlsx=31:*.ods=31:*.ots=31:*.ppt=31:*.pptx=31:*.odp=31:*.otp=31:*.fla=31:*.psd=31:*.7z=1;35:*.apk=1;35:*.arj=1;35:*.bin=1;35:*.bz=1;35:*.bz2=1;35:*.cab=1;35:*.deb=1;35:*.dmg=1;35:*.gem=1;35:*.gz=1;35:*.iso=1;35:*.jar=1;35:*.msi=1;35:*.rar=1;35:*.rpm=1;35:*.tar=1;35:*.tbz=1;35:*.tbz2=1;35:*.tgz=1;35:*.tx=1;35:*.war=1;35:*.xpi=1;35:*.xz=1;35:*.z=1;35:*.Z=1;35:*.zip=1;35:*.ANSI-30-black=30:*.ANSI-01;30-brblack=01;30:*.ANSI-31-red=31:*.ANSI-01;31-brred=01;31:*.ANSI-32-green=32:*.ANSI-01;32-brgreen=01;32:*.ANSI-33-yellow=33:*.ANSI-01;33-bryellow=01;33:*.ANSI-34-blue=34:*.ANSI-01;34-brblue=01;34:*.ANSI-35-magenta=35:*.ANSI-01;35-brmagenta=01;35:*.ANSI-36-cyan=36:*.ANSI-01;36-brcyan=01;36:*.ANSI-37-white=37:*.ANSI-01;37-brwhite=01;37:*.log=01;32:*~=01;32:*#=01;32:*.bak=01;36:*.BAK=01;36:*.old=01;36:*.OLD=01;36:*.org_archive=01;36:*.off=01;36:*.OFF=01;36:*.dist=01;36:*.DIST=01;36:*.orig=01;36:*.ORIG=01;36:*.swp=01;36:*.swo=01;36:*,v=01;36:*.gpg=34:*.gpg=34:*.pgp=34:*.asc=34:*.3des=34:*.aes=34:*.enc=34:*.sqlite=34:';
+  export LS_COLORS='no=00:fi=00:di=36:ln=35:pi=30;44:so=35;44:do=35;44:bd=33;44:cd=37;44:or=05;37;41:mi=05;37;41:ex=01;31:*.cmd=01;31:*.exe=01;31:*.com=01;31:*.bat=01;31:*.reg=01;31:*.app=01;31:*.txt=32:*.org=32:*.md=32:*.mkd=32:*.h=32:*.hpp=32:*.c=32:*.C=32:*.cc=32:*.cpp=32:*.cxx=32:*.objc=32:*.cl=32:*.sh=32:*.bash=32:*.csh=32:*.zsh=32:*.el=32:*.vim=32:*.java=32:*.pl=32:*.pm=32:*.py=32:*.rb=32:*.hs=32:*.php=32:*.htm=32:*.html=32:*.shtml=32:*.erb=32:*.haml=32:*.xml=32:*.rdf=32:*.css=32:*.sass=32:*.scss=32:*.less=32:*.js=32:*.coffee=32:*.man=32:*.0=32:*.1=32:*.2=32:*.3=32:*.4=32:*.5=32:*.6=32:*.7=32:*.8=32:*.9=32:*.l=32:*.n=32:*.p=32:*.pod=32:*.tex=32:*.go=32:*.sql=32:*.csv=32:*.sv=32:*.svh=32:*.v=32:*.vh=32:*.vhd=32:*.bmp=33:*.cgm=33:*.dl=33:*.dvi=33:*.emf=33:*.eps=33:*.gif=33:*.jpeg=33:*.jpg=33:*.JPG=33:*.mng=33:*.pbm=33:*.pcx=33:*.pdf=33:*.pgm=33:*.png=33:*.PNG=33:*.ppm=33:*.pps=33:*.ppsx=33:*.ps=33:*.svg=33:*.svgz=33:*.tga=33:*.tif=33:*.tiff=33:*.xbm=33:*.xcf=33:*.xpm=33:*.xwd=33:*.xwd=33:*.yuv=33:*.aac=33:*.au=33:*.flac=33:*.m4a=33:*.mid=33:*.midi=33:*.mka=33:*.mp3=33:*.mpa=33:*.mpeg=33:*.mpg=33:*.ogg=33:*.opus=33:*.ra=33:*.wav=33:*.anx=33:*.asf=33:*.avi=33:*.axv=33:*.flc=33:*.fli=33:*.flv=33:*.gl=33:*.m2v=33:*.m4v=33:*.mkv=33:*.mov=33:*.MOV=33:*.mp4=33:*.mp4v=33:*.mpeg=33:*.mpg=33:*.nuv=33:*.ogm=33:*.ogv=33:*.ogx=33:*.qt=33:*.rm=33:*.rmvb=33:*.swf=33:*.vob=33:*.webm=33:*.wmv=33:*.doc=31:*.docx=31:*.rtf=31:*.odt=31:*.dot=31:*.dotx=31:*.ott=31:*.xls=31:*.xlsx=31:*.ods=31:*.ots=31:*.ppt=31:*.pptx=31:*.odp=31:*.otp=31:*.fla=31:*.psd=31:*.7z=1;35:*.apk=1;35:*.arj=1;35:*.bin=1;35:*.bz=1;35:*.bz2=1;35:*.cab=1;35:*.deb=1;35:*.dmg=1;35:*.gem=1;35:*.gz=1;35:*.iso=1;35:*.jar=1;35:*.msi=1;35:*.rar=1;35:*.rpm=1;35:*.tar=1;35:*.tbz=1;35:*.tbz2=1;35:*.tgz=1;35:*.tx=1;35:*.war=1;35:*.xpi=1;35:*.xz=1;35:*.z=1;35:*.Z=1;35:*.zip=1;35:*.ANSI-30-black=30:*.ANSI-01;30-brblack=01;30:*.ANSI-31-red=31:*.ANSI-01;31-brred=01;31:*.ANSI-32-green=32:*.ANSI-01;32-brgreen=01;32:*.ANSI-33-yellow=33:*.ANSI-01;33-bryellow=01;33:*.ANSI-34-blue=34:*.ANSI-01;34-brblue=01;34:*.ANSI-35-magenta=35:*.ANSI-01;35-brmagenta=01;35:*.ANSI-36-cyan=36:*.ANSI-01;36-brcyan=01;36:*.ANSI-37-white=37:*.ANSI-01;37-brwhite=01;37:*.log=01;32:*~=01;32:*#=01;32:*.bak=01;36:*.BAK=01;36:*.old=01;36:*.OLD=01;36:*.org_archive=01;36:*.off=01;36:*.OFF=01;36:*.dist=01;36:*.DIST=01;36:*.orig=01;36:*.ORIG=01;36:*.swp=01;36:*.swo=01;36:*,v=01;36:*.gpg=34:*.gpg=34:*.pgp=34:*.asc=34:*.3des=34:*.aes=34:*.enc=34:*.sqlite=34:';
 fi
 export ZLS_COLORS=$LS_COLORS
 if [ -n "$LS_COLORS" ]; then
@@ -158,32 +180,26 @@ function precmd() {
   RPROMPT="${RPROMPT_BASE} ${time_taken}s"
 }
 
-
-# autojump
-if [ -f /usr/share/autojump/autojump.zsh ]; then
-    source /usr/share/autojump/autojump.zsh
-fi
-
-
 # global aliases
 alias -g L='| less'
 alias -g G='| grep'
 if which pbcopy >/dev/null 2>&1 ; then
-    alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | pbcopy'
+  alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | pbcopy'
 elif which xsel >/dev/null 2>&1 ; then
-    alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | xsel --input --clipboard'
+  alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | xsel --input --clipboard'
 elif which putclip >/dev/null 2>&1 ; then
-    alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | putclip'
+  alias -g C='| ruby -e "STDOUT << STDIN.read.chomp" | putclip'
 fi
 
 # aliases
 alias ls='ls -F --color=auto'
 alias la='ls -al'
-alias grep="grep -n --color=auto"
+alias grep="grep --color=auto"
 alias sl='ls'
 alias du="du -h"
 alias df="df -h"
 alias vi='vim'
+alias c='code'
 alias emnw='emacsclient -nw'
 alias en='emacsclient -nw'
 e() {
@@ -204,11 +220,11 @@ alias cduuuuu='cd ../../../../..'
 
 case "${OSTYPE}" in
 linux*)
-    alias open='xdg-open'
-    ;;
+  alias open='xdg-open'
+  ;;
 cygwin*)
-    alias open='cygstart'
-    ;;
+  alias open='cygstart'
+  ;;
 esac
 alias o='open'
 
@@ -225,22 +241,28 @@ alias gdiffc='git diff --cached'
 alias ggrep='git grep -n'
 alias gcherry='git cherry -v'
 ghash() { git rev-parse ${1-HEAD}; }
-compdef _git ghash=git-rev-parse
 
 alias gci='git commit'
 alias gco='git checkout'
+alias gsw='git switch'
+alias gswi='git switch $(git branch | grep -v "^* " | peco)'
+alias gbrdi='git branch -D $(git branch | grep -v "^* " | peco)'
+gswic() {
+  local branch=$(git branch -a | grep "^  remotes\/origin\/" | sed 's|^  remotes/origin/||' | peco)
+  git switch -c "${branch}" "origin/${branch}"
+}
 alias gadd='git add'
 alias gpick='git cherry-pick'
 alias gfetch='git fetch --prune'
 alias gmtool='git mergetool'
 alias gsubup='git submodule update'
 gpush() {
-    local branch=$(git rev-parse --abbrev-ref HEAD)
-    git push origin $branch:$branch
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  git push origin $branch:$branch
 }
 gpushf() {
-    local branch=$(git rev-parse --abbrev-ref HEAD)
-    git push --force-with-lease origin $branch:$branch
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  git push --force-with-lease origin $branch:$branch
 }
 
 
@@ -263,39 +285,39 @@ linux*)
 esac
 
 # Ruby
-alias irb='irb -r irb/completion'
-export PATH=/usr/local/heroku/bin:$PATH
+#alias irb='irb -r irb/completion'
+#export PATH=/usr/local/heroku/bin:$PATH
 
 # Haskell
-export PATH=~/.cabal/bin:~/.local/bin:$PATH
+#export PATH=~/.cabal/bin:~/.local/bin:$PATH
 
 # Idris
-export PATH=~/code/Idris/install/.cabal-sandbox/bin:$PATH
+#export PATH=~/code/Idris/install/.cabal-sandbox/bin:$PATH
 
 # Agda
-export PATH=~/code/Agda/install/.cabal-sandbox/bin:$PATH
+#export PATH=~/code/Agda/install/.cabal-sandbox/bin:$PATH
 
 # PureScript (purerl)
-export PATH=~/code/PureScript/purescript/.stack-work/install/x86_64-linux/lts-6.25/7.10.3/bin:$PATH
+#export PATH=~/code/PureScript/purescript/.stack-work/install/x86_64-linux/lts-6.25/7.10.3/bin:$PATH
 
 # Clojure
-cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
+#cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
 # Scala
 export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:$PATH
 
 # Android
-export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+#export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
 
 # Go
-export GOPATH=$HOME/code/Go
-export PATH=$PATH:$GOPATH/bin:$GOROOT/bin:$GOPATH/go_appengine:$GOPATH/google-cloud-sdk/bin
+#export GOPATH=$HOME/code/Go
+#export PATH=$PATH:$GOPATH/bin:$GOROOT/bin:$GOPATH/go_appengine:$GOPATH/google-cloud-sdk/bin
 
 # Rust
 export PATH=$PATH:$HOME/.cargo/bin
 
 # Pony
-alias ponyc='$HOME/code/pony/ponyc/build/release/ponyc'
+#alias ponyc='$HOME/code/pony/ponyc/build/release/ponyc'
 
 # Elixir
 alias iexm='iex -S mix'
@@ -305,64 +327,13 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 ########## OS-specific settings
 case "${OSTYPE}" in
 linux*)
-    # disable screen lock by C-s
-    if [ -t 0 ]; then
-        stty -ixon
-    fi
-    ;;
+  # disable screen lock by C-s
+  if [ -t 0 ]; then
+    stty -ixon
+  fi
+  ;;
 esac
 
-
-########## completion cache
-fpath[1,0]=~/.zsh/completion
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-
-
-########## incremental completion by auto-fu
-source ~/code/conffiles/zsh/auto-fu/auto-fu.zsh
-zle-line-init() { auto-fu-init; }; zle -N zle-line-init
-zstyle ':completion:*' completer _oldlist _complete
-zle -N zle-keymap-select auto-fu-zle-keymap-select
-
-zstyle ':auto-fu:var' postdisplay ''
-zstyle ':auto-fu:highlight' completion fg=green,bold,underline
-zstyle ':auto-fu:highlight' completion/one fg=green,bold,underline
-zstyle ':auto-fu:var' autoable-function/skiplines "?" "rake*" "scp*"
-
-afu-accept-line-with-clearing() {
-    afu-clearing-maybe
-    ((afu_in_p == 1)) && { afu_in_p=0; BUFFER="$buffer_cur"; }
-    zle afu+accept-line
-}
-zle -N afu-accept-line-with-clearing
-bindkey -M afu "^M" afu-accept-line-with-clearing
-bindkey -M afu "^J" afu-accept-line-with-clearing
-
-compinit
-
-
-########## percol (taken from README.md of percol)
-exists() { which $1 &> /dev/null }
-if exists percol; then
-    percol_select_history() {
-        local tac
-        exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
-        BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
-        CURSOR=$#BUFFER         # move cursor
-        zle -R -c               # refresh
-    }
-    zle -N percol_select_history
-    bindkey -M afu '^R' percol_select_history
-
-    percol_select_dir_under_current() {
-        local buffer="$(find . -maxdepth 1 -type d | tail -n+2 | sed -e 's/^\.\///' | percol)"
-        [ -z $buffer ] || { echo; cd $buffer }
-        zle reset-prompt
-    }
-    zle -N percol_select_dir_under_current
-    bindkey -M afu '^T' percol_select_dir_under_current
-fi
 
 ########## direnv_rust
 _direnv_rust_hook() {
@@ -381,9 +352,9 @@ add-zsh-hook chpwd ls_as_a_function
 export STDERRED_ESC_CODE=$(tput setaf 3)
 case "${OSTYPE}" in
 freebsd*|darwin*)
-    export DYLD_INSERT_LIBRARIES="/usr/local/lib/libstderred.dylib${DYLD_INSERT_LIBRARIES:+:$DYLD_INSERT_LIBRARIES}"
-    ;;
+  export DYLD_INSERT_LIBRARIES="/usr/local/lib/libstderred.dylib${DYLD_INSERT_LIBRARIES:+:$DYLD_INSERT_LIBRARIES}"
+  ;;
 linux*)
-    source /usr/share/stderred/stderred.sh
-    ;;
+  source /usr/share/stderred/stderred.sh
+  ;;
 esac

@@ -100,10 +100,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Git
-(require 'magit)
-(setq magit-last-seen-setup-instructions "1.4.0")
-(define-key magit-file-mode-map (kbd "C-x g") nil)
-
 ;; git-gutter+ & git-gutter-fringe+
 (require 'git-gutter-fringe+)
 (global-git-gutter+-mode t)
@@ -134,14 +130,6 @@
   (load-library "migemo")
   (migemo-init)
 )
-
-;; anzuで検索のマッチ数をモードラインに表示
-(require 'anzu)
-(global-anzu-mode t)
-
-;; ace-isearch: helm-swoopに移るところでエラーになる。原因不明
-;(require 'ace-isearch)
-;(global-ace-isearch-mode 1)
 
 ;; M-x grepの検索結果を編集してファイルに反映
 (require 'wgrep)
@@ -237,7 +225,8 @@
 
 ;; Hit a hint
 (require 'ace-jump-mode)
-(define-key global-map (kbd "C-:") 'ace-jump-mode)
+;(define-key global-map (kbd "C-:") 'ace-jump-mode)
+(define-key global-map (kbd "C-]") 'ace-jump-char-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; scrolling
@@ -367,7 +356,7 @@
 ;; helm commands
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
 (global-set-key (kbd "C-;"  ) 'helm-mini) ;; not work in terminal
-(global-set-key (kbd "C-]"  ) 'helm-mini)
+;(global-set-key (kbd "C-]"  ) 'helm-mini)
 (global-set-key (kbd "C-+"  ) 'helm-resume) ;; not work in terminal
 ;(global-set-key (kbd "C-c g") 'helm-git-grep)
 
@@ -558,9 +547,6 @@
 (setq gdb-many-windows t)
 (setq gdb-use-separate-io-buffer t) ; "IO buffer" が必要ない場合は  nil で
 
-;; D programming mode
-(require 'd-mode)
-
 ;; go-mode
 (require 'go-mode)
 
@@ -669,7 +655,7 @@
 (setq markdown-command "redcarpet --parse-tables")
 
 ;; coconut
-(require 'coconut-mode)
+; (require 'coconut-mode)
 
 ;; GNU global
 (require 'ggtags)
@@ -733,17 +719,6 @@ See URL `https://jsonnet.org'."
 (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 (push '("\\.cxx$" flymake-cc-init) flymake-allowed-file-name-masks)
 (push '("\\.cc$"  flymake-cc-init) flymake-allowed-file-name-masks)
-
-(defun flymake-d-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "/opt/dmd/bin/dmd" (list "-unittest" "-c" "-w" "-I/opt/dmd/import/" "-I." "-I.." local-file))))
-(push '("\\.d$" flymake-d-init) flymake-allowed-file-name-masks)
-(add-to-list 'flymake-err-line-patterns
-             '("^\\([^ :]+\\)(\\([0-9]+\\)): \\(.*\\)$" 1 2 nil 3))
 
 (defun flymake-gjslint-init ()
   "Initialize flymake for gjslint"
@@ -829,7 +804,7 @@ See URL `https://jsonnet.org'."
  '(package-hidden-regexps (quote ("")))
  '(package-selected-packages
    (quote
-    (bazel-mode terraform-doc terraform-mode tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen d-mode auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
+    (bazel-mode terraform-doc terraform-mode tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
