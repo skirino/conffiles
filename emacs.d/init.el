@@ -1,28 +1,17 @@
-;;;;;;;;;;;;;;;;;;;;;;;; emacs lispのpathを通す
-(package-initialize)
+;;;;;;;;;;;;;;;;;;;;;;;; straight.el
+(let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
+      (bootstrap-version 3))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(let ((default-directory "~/.emacs.d/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(push "/usr/local/share/emacs/site-lisp" load-path)
-(require 'cl)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;; packages
-(require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  )
-(require 'auto-async-byte-compile)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;; 環境変数
-(require 'exec-path-from-shell)
-(let ((envs '("PATH" "LD_LIBRARY_PATH" "http_proxy" "https_proxy" "no_proxy" "JAVA_HOME" "JDK_HOME")))
-  (exec-path-from-shell-copy-envs envs))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ファイル関連
@@ -31,12 +20,12 @@
 
 ;; replace Emacs default auto-save
 (setq auto-save-default nil)
-(require 'auto-save-buffers-enhanced)
+(use-package auto-save-buffers-enhanced)
 (setq auto-save-buffers-enhanced-interval 1.0) ; アイドル1秒で保存
 (auto-save-buffers-enhanced t)
 
 ;; session
-(require 'session)
+(use-package session)
 (add-hook 'after-init-hook 'session-initialize)
 
 ;; ファイル更新を検知
@@ -44,10 +33,6 @@
 
 ;; 履歴を保存
 (savehist-mode t)
-
-;; 最近使ったファイル
-(setq recentf-max-saved-items 2000)
-(require 'recentf-ext)
 
 ;; ファイルの先頭が #! で始まるファイルに実行権限をつける
 (add-hook 'after-save-hook
@@ -60,9 +45,8 @@
     (let ((dir (file-name-directory filename)))
       (unless (file-exists-p dir)
         (make-directory dir t)))))
-;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;; disable bell
+; disable bell
 (setq ring-bell-function 'ignore)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -90,18 +74,22 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 
 ;; auto-complete
-(require 'auto-complete-config)
+(use-package auto-complete)
 (global-auto-complete-mode t)
 
 ;; 括弧の自動補完
-(require 'smartparens-config)
+(use-package smartparens)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Git
-;; git-gutter+ & git-gutter-fringe+
-(require 'git-gutter-fringe+)
+(setq vc-follow-symlinks t)
+; Autoload on change in symlinked file
+(setq auto-revert-check-vc-info t)
+
+;; git-gutter+
+(use-package git-gutter+)
 (global-git-gutter+-mode t)
 (global-set-key (kbd "C-c n"  ) 'git-gutter+-next-hunk)
 (global-set-key (kbd "C-c C-n") 'git-gutter+-next-hunk)
@@ -109,33 +97,16 @@
 (global-set-key (kbd "C-c C-p") 'git-gutter+-previous-hunk)
 (global-set-key (kbd "C-c s"  ) 'git-gutter+-stage-hunks)
 (global-set-key (kbd "C-c C-s") 'git-gutter+-stage-hunks)
-
-;; Workaround for git-gutter+'s bug on opening a file via symlink
-(defadvice git-gutter+-process-diff (before git-gutter+-process-diff-advice activate)
-  (ad-set-arg 0 (file-truename (ad-get-arg 0))))
+(global-set-key (kbd "C-c d"  ) 'git-gutter+-popup-hunk)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 検索
-;; migemo
-;; slightly modified version "~/.emacs.d/migemo.el" (toggle migemo by "M-m" in isearch-mode)
-;; at present only on Linux:
-(when (eq system-type 'gnu/linux)
-  (require 'migemo)
-  (setq migemo-command "cmigemo")
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (setq migemo-coding-system 'utf-8-unix)
-  (load-library "migemo")
-  (migemo-init)
-)
-
 ;; M-x grepの検索結果を編集してファイルに反映
-(require 'wgrep)
+(use-package wgrep)
 (define-key grep-mode-map (kbd "e") 'wgrep-change-to-wgrep-mode)
 
 ;; 自前grepコマンド定義
+(use-package magit)
 (setq grep-use-null-device nil)
 
 (defun my-grep ()
@@ -175,37 +146,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
-(require 'idle-highlight-mode)
-(add-hook 'find-file-hook '(lambda () (idle-highlight-mode t)))
+(use-package idle-highlight-mode
+  :config
+  (global-idle-highlight-mode)
+  (set-face-attribute 'idle-highlight nil :background "#030")
+)
 ;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
 
-;;;;;;;;;;;;;;;;;;;;;;;; multiple-cursors
-(require 'multiple-cursors)
-(global-set-key (kbd "C-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C-)")       'mc/mark-next-like-this)
-(global-set-key (kbd "C-(")       'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-(")   'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C-)")   'mc/mark-all-like-this)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
-(require 'undohist)
-(undohist-initialize)
-
-(require 'undo-tree)
-(global-undo-tree-mode t)
-
 ;; C-\の入力切り替えは邪魔なのでundoにしておく
-(global-set-key (kbd "C-\\") 'undo-tree-undo)
+(global-set-key (kbd "C-\\") 'undo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; カーソル移動
 ;; 最後の変更箇所にジャンプ
-(require 'goto-chg)
+(use-package goto-chg)
 (define-key global-map (kbd "<f8>") 'goto-last-change)
-(define-key global-map (kbd "S-<f8>") 'goto-last-change-reverse)
 
 ;; 自動インデント
+(use-package smart-newline)
 (global-set-key (kbd "C-m") 'smart-newline)
 
 ;; "C-h"をbackspaceに (これで<C-backspace>が反応しなくなるので、bindしなおす)
@@ -224,9 +183,8 @@
 (setq line-move-visual nil)
 
 ;; Hit a hint
-(require 'ace-jump-mode)
-;(define-key global-map (kbd "C-:") 'ace-jump-mode)
-(define-key global-map (kbd "C-]") 'ace-jump-char-mode)
+(use-package ace-jump-mode)
+(define-key global-map (kbd "M-SPC") 'ace-jump-word-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; scrolling
@@ -269,26 +227,6 @@
 ;; C-uに設定、C-tにもとのC-uの機能を振る
 (global-set-key (kbd "C-u") 'backward-kill-line)
 (global-set-key (kbd "C-t") 'universal-argument)
-
-;; popup-kill-ring
-(require 'popup)
-(require 'pos-tip)
-(require 'popup-kill-ring)
-(global-set-key (kbd "M-y") 'popup-kill-ring)
-(setq popup-kill-ring-interactive-insert t)
-
-;; 重複したエントリはkill-ringに入れず、順番を入れ替えるだけにする
-(defadvice kill-new (before ys:no-kill-new-duplicates activate)
-  (setq kill-ring (delete (ad-get-arg 0) kill-ring))
-)
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;; 画面分割
-;; "C-S-hjkl"でウィンドウ移動
-(global-set-key (kbd "C-S-h") 'windmove-left)
-(global-set-key (kbd "C-S-j") 'windmove-down)
-(global-set-key (kbd "C-S-k") 'windmove-up)
-(global-set-key (kbd "C-S-l") 'windmove-right)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; CUA
@@ -324,16 +262,6 @@
   (my-org-visit-file "~/docs/memo.org"))
 (global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
 (global-set-key (kbd "C-c l") '(lambda () (interactive) (find-file "~/vbshare/log")))
-
-;; 要らないkey-bindingを無効化
-(define-key org-mode-map [C-S-left]  nil)
-(define-key org-mode-map [C-S-right] nil)
-(define-key org-mode-map (kbd "C-,") nil)
-(define-key org-mode-map [S-up]    nil)
-(define-key org-mode-map [S-down]  nil)
-(define-key org-mode-map [S-left]  nil)
-(define-key org-mode-map [S-right] nil)
-(define-key org-mode-map (kbd "C-c C-x C-c") nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; helm
@@ -341,8 +269,11 @@
 (defun class-slot-initarg (class-name slot)
   (eieio--class-slot-initarg (eieio--class-v class-name) slot))
 
-(require 'helm-mode)
-;(require 'helm-git-grep)
+(use-package helm
+  :config
+  (set-face-attribute 'helm-selection nil :background "#005")
+  )
+(use-package helm-git-grep)
 (helm-mode 1)
 (setq helm-input-idle-delay 0.1)
 (setq helm-truncate-lines t)
@@ -355,10 +286,8 @@
 
 ;; helm commands
 (global-set-key (kbd "M-x"  ) 'helm-M-x)
-(global-set-key (kbd "C-;"  ) 'helm-mini) ;; not work in terminal
-;(global-set-key (kbd "C-]"  ) 'helm-mini)
-(global-set-key (kbd "C-+"  ) 'helm-resume) ;; not work in terminal
-;(global-set-key (kbd "C-c g") 'helm-git-grep)
+(global-set-key (kbd "C-]"  ) 'helm-mini)
+(global-set-key (kbd "C-c g") 'helm-git-grep)
 
 (when (eq system-type 'gnu/linux)
   (setq helm-locate-command "locate %s -A %s") ;; Enable AND search in helm-locate (instead regexp cannot be used)
@@ -369,41 +298,30 @@
 (setq helm-mini-default-sources '(helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir helm-source-locate))
 
 ;; helm-swoop
-(require 'helm-swoop)
-(global-set-key (kbd "C-S-s") 'helm-swoop)
-(define-key isearch-mode-map (kbd "C-S-s") 'helm-swoop-from-isearch) ;; When doing isearch, hand the word over to helm-swoop
-
-;; don't show error message when keys that invoke helm commands multiple times
-(define-key helm-map (kbd "M-x"  ) 'ignore)
-(define-key helm-map (kbd "C-;"  ) 'ignore)
-(define-key helm-map (kbd "C-+"  ) 'ignore)
-(define-key helm-map (kbd "C-c g") 'ignore)
-(define-key helm-map (kbd "C-S-s") 'ignore)
+(use-package helm-swoop)
+(global-set-key (kbd "C-M-s") 'helm-swoop)
+(define-key isearch-mode-map (kbd "C-M-s") 'helm-swoop-from-isearch) ;; When doing isearch, hand the word over to helm-swoop
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;; 日本語入力
-;; 日本語 <=> 英数の切り替え(ibus等々にやらせる)
-(global-set-key (kbd "S-C-SPC"          ) 'ignore)
-(global-set-key (kbd "<zenkaku-hankaku>") 'ignore)
-;;;;;;;;;;;;;;;;;;;;;;;; mozc
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 ;; メニューバー、ツールバー、スクロールバーを消す, Emacs23以降
 (tool-bar-mode 0)
-(scroll-bar-mode 0)
-(horizontal-scroll-bar-mode 0)
 (menu-bar-mode 0)
 
 ;; 現在行をハイライト
 (global-hl-line-mode t)
-(set-face-background 'hl-line "#202020")
+(set-face-background 'hl-line "#222")
+(set-face-attribute 'region nil :background "#007")
 
-(require 'volatile-highlights)
+(use-package volatile-highlights)
 (volatile-highlights-mode t)
 
 ;; インデントの強調表示
-(require 'highlight-indentation)
-(add-hook 'find-file-hook 'highlight-indentation-mode)
+(use-package highlight-indentation
+  :config
+  (add-hook 'find-file-hook 'highlight-indentation-mode)
+  (set-face-background 'highlight-indentation-face "#555")
+)
 
 ;; 対応する括弧を表示させる
 (show-paren-mode t)
@@ -416,11 +334,9 @@
 ;;; インデント時にタブを使わないでスペースを使う
 (setq-default tab-width 2 indent-tabs-mode nil)
 
-;;(defface my-face-r-1 '((t (:background "gray15"))) nil)
 (defface my-face-b-1 '((t (:background "gray"))) nil)
 (defface my-face-b-2 '((t (:background "gray20"))) nil)
 (defface my-face-u-1 '((t (:foreground "SteelBlue" :underline t))) nil)
-;;(defvar my-face-r-1 'my-face-r-1)
 (defvar my-face-b-1 'my-face-b-1)
 (defvar my-face-b-2 'my-face-b-2)
 (defvar my-face-u-1 'my-face-u-1)
@@ -436,130 +352,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目の変更
 
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
-(defun my-start-gui-emacs ()
-  (require 'server)
-  (require 'with-editor)
-  (unless (server-running-p) (server-start))
-  ;; "C-x C-c"でemacsclientによる編集を終了
-  (global-set-key (kbd "C-x C-c") 'server-edit)
-  (global-set-key (kbd "C-c C-x C-c") 'save-buffers-kill-emacs)
-  ;; "M-x exit"でemacsを終了
-  (defalias 'exit 'save-buffers-kill-emacs)
+(require 'server)
+(unless (server-running-p) (server-start))
 
-  ;; elscreen
-  (require 'elscreen)
-  (elscreen-start)
-  (global-set-key [C-S-right] 'elscreen-next)
-  (global-set-key (kbd "C->") 'elscreen-next)
-  (global-set-key [C-S-left]  'elscreen-previous)
-  (global-set-key (kbd "C-<") 'elscreen-previous)
-
-  ;; 新しくscreenを作ったら即分割する
-  (defun my-elscreen-create ()
-    (interactive)
-    (elscreen-create)
-    (split-window-horizontally)
-  )
-  (global-set-key (kbd "C-z c"  ) 'my-elscreen-create)
-  (global-set-key (kbd "C-z C-c") 'my-elscreen-create)
-
-  ;;;; Temporarily modify default-frame-alist and restore it after emacs startup to make emacsclient CUI better
-  (setq original-default-frame-alist default-frame-alist)
-
-  ;; GUIでの色付け
-  (add-to-list 'default-frame-alist '(background-color . "black"))
-  (add-to-list 'default-frame-alist '(foreground-color . "white"))
-  ; Transparency: needs xcompmgr in Linux
-  (set-frame-parameter (selected-frame) 'alpha '(75 50))
-  (add-to-list 'default-frame-alist '(alpha 75 50))
-
-  (run-with-idle-timer 3.0 nil '(lambda () (interactive)
-                                  (setq default-frame-alist original-default-frame-alist)
-                                  ))
-)
-
-(defun my-start-cui-emacs ()
-  ;; ターミナルでマウスを有効にする
-  (xterm-mouse-mode t)
-  (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 5)))
-  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up   5)))
-)
-
-(defun my-setup-appearances-in-xwindow ()
-  (add-to-list 'default-frame-alist '(cursor-color . "white"))
-  (set-face-background 'region "Blue")
-
-  ;; maximize window (X Window System-specific implementation)
-  (defun toggle-maximize (&optional f)
-    (interactive)
-    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                           '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
-    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                           '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
-  )
-  (global-set-key (kbd "C-x RET RET") 'toggle-maximize)
-  ;; 起動時に最大化して分割、少し間を置かないとレイアウトがおかしくなる
-  (defun my-maximize-and-split ()
-    (interactive)
-    (toggle-maximize)
-    (split-window-horizontally)
-  )
-  (run-with-idle-timer 0.5 nil 'my-maximize-and-split)
-
-  ;; フォント設定
-  (let (my-font-height my-font my-font-ja my-font-size my-fontset)
-    (setq my-font-height 180)
-    (setq my-font "DejaVu Sans Mono")
-    (setq my-font-ja "IPAGothic")
-    (setq face-font-rescale-alist '((my-font-ja . 1.20)))
-    (set-face-attribute 'default nil :family my-font :height my-font-height)
-
-    ;; 日本語文字に別のフォントを指定
-    (when my-font-ja
-      (let ((fn (or my-fontset (frame-parameter nil 'font)))
-            (rg "iso10646-1"))
-        (set-fontset-font fn 'katakana-jisx0201 `(,my-font-ja . ,rg))
-        (set-fontset-font fn 'japanese-jisx0208 `(,my-font-ja . ,rg))
-        (set-fontset-font fn 'japanese-jisx0212 `(,my-font-ja . ,rg)))
-    )
-  )
-)
-
-(if (display-graphic-p)
-  (progn
-    (my-start-gui-emacs)
-    (when (eq system-type 'gnu/linux)
-      (my-setup-appearances-in-xwindow))
-  )
-  (my-start-cui-emacs)
-)
+;; ターミナルでマウスを有効にする
+(xterm-mouse-mode t)
+(global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 5)))
+(global-set-key [mouse-5] '(lambda () (interactive) (scroll-up   5)))
 ;;;;;;;;;;;;;;;;;;;;;;;; 見た目、環境依存
 
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
-;; M-x compile
-(global-set-key (kbd "C-x c") 'compile)
-
 ;; shell script
 (setq sh-basic-offset 2)
 (setq sh-indentation 2)
-
-;; gdb
-(setq gdb-many-windows t)
-(setq gdb-use-separate-io-buffer t) ; "IO buffer" が必要ない場合は  nil で
-
-;; go-mode
-(require 'go-mode)
-
-;; rust-mode
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-(require 'rust-mode)
-(require 'flycheck-rust)
-(require 'racer)
-(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-(setq company-tooltip-align-annotations t)
-(setq racer-rust-src-path "~/code/Rust/download/rust/src/")
 
 ;; python
 (require 'python)
@@ -574,95 +379,46 @@
 ;; Ruby
 (require 'ruby-mode)
 
-;; Java
-(let* ((javac-path (shell-command-to-string "which javac"))
-       (java-home (replace-regexp-in-string "/bin/javac" "" javac-path)))
-  (setenv "JAVA_HOME" java-home)
-  (setenv "JDK_HOME" java-home))
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-
-;; Scala
-(require 'scala-mode)
-
-;; YaTeX
-(setq YaTeX-use-AMS-LaTeX t)
+(use-package vala-mode
+  :config
+  (add-hook 'vala-mode-hook (lambda ()
+                              (setq c-basic-offset 2)
+                              (setq indent-tabs-mode nil)
+                              ))
+  )
 
 ;; jsonnet
-(require 'jsonnet-mode)
-
-;; typescript
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-
-(setq tide-format-options '(:indentSize 2))
-(setq typescript-indent-level 2)
-(setq company-tooltip-align-annotations t) ;; aligns annotation to the right hand side
-(add-hook 'before-save-hook 'tide-format-before-save) ;; formats the buffer before saving
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-(setq tide-tsserver-executable "node_modules/typescript/bin/tsserver")
-
-;; Haskell mode
-(require 'haskell-mode)
-;(autoload 'ghc-init "ghc" nil t)
-(add-hook 'haskell-mode-hook
-          (lambda ()
-            (turn-on-haskell-indentation)
-;            (ghc-init)
-            (flymake-mode)
-            ))
-
-;; Idris
-(require 'idris-mode)
-
-;; Coq
-(require 'proof-site)
+(use-package jsonnet-mode)
 
 ;; Erlang and Elixir
-(require 'erlang-start)
-(require 'elixir-mode)
-(require 'alchemist)
-(require 'flycheck-mix)
-(flycheck-mix-setup)
-(require 'ac-alchemist)
-(add-hook 'elixir-mode-hook 'ac-alchemist-setup)
-;; erlang-modeに移動したあとでも戻れるようにする
-(defun custom-erlang-mode-hook ()
-  (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
-(add-hook 'erlang-mode-hook 'custom-erlang-mode-hook)
+(use-package elixir-mode)
+(use-package alchemist)
+(use-package flycheck-mix
+  :config
+  (flycheck-mix-setup)
+  )
+(use-package ac-alchemist
+  :config
+  (add-hook 'elixir-mode-hook 'ac-alchemist-setup)
+  )
 
 ;; terraform
-(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+(use-package terraform-mode
+  :config
+  (define-key terraform-mode-map (kbd "C-c f") 'terraform-format-buffer)
+)
 
 ;; bazel
-(require 'bazel-mode)
+(use-package bazel)
 (add-to-list 'auto-mode-alist '("\\.bazel$"  . bazel-mode))
 (add-to-list 'auto-mode-alist '("BUILD$"     . bazel-mode))
 (add-to-list 'auto-mode-alist '("WORKSPACE$" . bazel-mode))
 
 ;; markdown mode
-(require 'markdown-mode)
+(use-package markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
 (setq markdown-command "redcarpet --parse-tables")
-
-;; coconut
-; (require 'coconut-mode)
-
-;; GNU global
-(require 'ggtags)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-              (ggtags-mode 1))))
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 
 ;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
@@ -673,59 +429,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake
 (require 'flymake)
-(require 'flycheck)
-(add-hook 'after-init-hook 'global-flycheck-mode)
-(add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-(setq flymake-check-start-time 5)
-
-;; define our own jsonnet checker: Replace `source-inplace` with `source`,
-;; as in-place flycheck files confuse bazel. This causes `imports` in jsonnet
-;; source code not working but I don't care (as it's already not working
-;; due to missing extVar).
-(flycheck-define-checker jsonnet
-  "A Jsonnet syntax checker using the jsonnet binary.
-
-See URL `https://jsonnet.org'."
-  :command ("jsonnet" source)
-  :error-patterns
-  ((error line-start "STATIC ERROR: " (file-name) ":" line ":" column
-          (zero-or-one (group "-" (one-or-more digit))) ": "
-          (message) line-end)
-   (error line-start "RUNTIME ERROR: " (message) "\n"
-          (one-or-more space) (file-name) ":" (zero-or-one "(")
-          line ":" column (zero-or-more not-newline) line-end))
-  :modes jsonnet-mode)
+(use-package flycheck
+  :config
+  (setq flymake-check-start-time 5)
+  )
 
 ;; GUIのダイアログを抑制
 (setq flymake-gui-warnings-enabled nil)
-
-;; handler without makefile
-(defun flymake-c-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "gcc" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
-(push '("\\.c$" flymake-c-init) flymake-allowed-file-name-masks)
-
-(defun flymake-cc-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "g++" (list "-c" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
-(push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.cxx$" flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.cc$"  flymake-cc-init) flymake-allowed-file-name-masks)
-
-(defun flymake-gjslint-init ()
-  "Initialize flymake for gjslint"
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace)))
-    (list "gjslint" (list temp-file "--nosummary"))))
-(push '("\\.js$" flymake-gjslint-init) flymake-allowed-file-name-masks)
 
 ;; 警告エラー行にカーソルがあれば、内容をMinibuf に出力
 (defun my-flymake-show-help ()
@@ -747,44 +457,6 @@ See URL `https://jsonnet.org'."
 (global-set-key (kbd "M-N") 'my-goto-next-error)
 ;;;;;;;;;;;;;;;;;;;;;;;; flymake
 
-;;;;;;;;;;;;;;;;;;;;;;;; flyspell
-(when (eq system-type 'gnu/linux)
-
-(require 'flyspell)
-(ispell-change-dictionary "american")
-
-;; 環境依存
-(setq-default ispell-program-name
-  (first
-    (remove-if-not 'file-executable-p
-                   '("/usr/bin/aspell" "/usr/local/bin/aspell" "/usr/bin/ispell" "/usr/local/bin/ispell")
-    )
-  )
-)
-;; aspellのときちょっと速くなるらしいけど観測可能な変化なし
-;(setq ispell-list-command "list")
-
-(eval-after-load "ispell"
-  '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
-;; text-mode及びその亜種でオンにし、すぐにバッファ全体をチェック
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode t))))
-;; texの記法は無視
-(setq ispell-parser 'tex)
-;; プログラムのコメントのスペルチェック
-(dolist (hook '(c-mode-common-hook))
-  (add-hook hook (lambda () (flyspell-prog-mode))))
-
-;;; flyspell-mode を自動的に開始させたいファイルを指定 (お好みでアンコメントするなり, 変更するなり)
-(add-to-list 'auto-mode-alist '("\\.tex" . flyspell-mode))
-;;; 要らないkey-bindingを無効化
-(define-key flyspell-mode-map (kbd "C-,") nil)
-(define-key flyspell-mode-map (kbd "C-.") nil)
-(define-key flyspell-mode-map (kbd "C-;") nil)
-
-)
-;;;;;;;;;;;;;;;;;;;;;;;; flyspell
-
 ;;;;;;;;;;;;;;;;;;;;;;;; 文字コード
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -800,11 +472,6 @@ See URL `https://jsonnet.org'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js-indent-level 2)
- '(package-hidden-regexps (quote ("")))
- '(package-selected-packages
-   (quote
-    (bazel-mode terraform-doc terraform-mode tide google-c-style spinner company-lsp lsp-mode lsp-ui volatile-highlights flycheck-yamllint yaml-mode dockerfile-mode jsonnet-mode wgrep undohist smartparens smart-newline session scala-mode rust-auto-use recentf-ext racer proof-general popup-kill-ring multiple-cursors migemo markdown-mode magit idris-mode idle-highlight-mode highlight-indentation helm-swoop helm-git-grep haskell-mode goto-chg go-mode git-gutter-fringe+ ggtags flymake-cursor flycheck-rust flycheck-mix exec-path-from-shell erlang elscreen auto-save-buffers-enhanced anzu ace-jump-mode ace-isearch ac-alchemist)))
  '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
