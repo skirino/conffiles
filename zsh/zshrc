@@ -200,14 +200,8 @@ alias du="du -h"
 alias df="df -h"
 alias vi='vim'
 alias c='code'
-alias emnw='emacsclient -nw'
 alias en='emacsclient -nw'
-e() {
-    emacsclient -c -F '((background-color . "black") (foreground-color . "white") (alpha 75 50))' $* &
-}
-emc() {
-    emacsclient -n $* && xdotool key "super+e"
-}
+alias e='emacsclient -nw'
 
 alias temp='cd ~/temp'
 alias conf='cd ~/code/conffiles'
