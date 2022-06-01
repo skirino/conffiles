@@ -106,8 +106,8 @@ setopt list_packed
 # assuming that coreutils package is installed on OSX
 case "${OSTYPE}" in
 freebsd*|darwin*)
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
-  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:/usr/local/opt/findutils/libexec/gnuman:/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
+  #export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+  #export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:/usr/local/opt/findutils/libexec/gnuman:/usr/local/opt/gnu-tar/libexec/gnuman:/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
   ;;
 esac
 
@@ -298,7 +298,7 @@ esac
 #cljrun() { java -cp ~/.lein/self-installs/leiningen-*.jar clojure.main $* }
 
 # Scala
-export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:$PATH
+#export PATH=~/code/Scala/scala/bin:~/code/Scala/sbt/bin:$PATH
 
 # Android
 #export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
