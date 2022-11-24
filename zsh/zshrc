@@ -125,7 +125,8 @@ fpath[1,0]=~/.zsh/completion/
 autoload -Uz compinit
 
 ########## incremental completion by auto-fu
-source ~/code/conffiles/zsh/auto-fu/auto-fu.zsh
+conf_zsh_dir=$(dirname $(realpath "$0"))
+source "${conf_zsh_dir}/auto-fu/auto-fu.zsh"
 zle-line-init() { auto-fu-init; }; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zle -N zle-keymap-select auto-fu-zle-keymap-select
@@ -273,7 +274,7 @@ freebsd*|darwin*)
   ;;
 linux*)
   source $HOME/.asdf/asdf.sh
-  source $HOME/.asdf/completions/asdf.bash
+  source $HOME/.asdf/completions/_asdf
   ;;
 esac
 
@@ -303,12 +304,13 @@ esac
 
 
 ########## direnv_rust
-_direnv_rust_hook() {
-  eval "$(DYLD_INSERT_LIBRARIES= direnv_rust)"
-}
-add-zsh-hook chpwd _direnv_rust_hook
-_direnv_rust_hook # invoke the hook once on startup of zsh
-
+if command -v direnv_rust; then
+  _direnv_rust_hook() {
+    eval "$(DYLD_INSERT_LIBRARIES= direnv_rust)"
+  }
+  add-zsh-hook chpwd _direnv_rust_hook
+  _direnv_rust_hook # invoke the hook once on startup of zsh
+fi
 
 ########## automatically run ls (note that this should come after alias ls='...')
 ls_as_a_function() { ls }
@@ -322,6 +324,8 @@ freebsd*|darwin*)
   #export DYLD_INSERT_LIBRARIES="/usr/local/lib/libstderred.dylib${DYLD_INSERT_LIBRARIES:+:$DYLD_INSERT_LIBRARIES}"
   ;;
 linux*)
-  source /usr/share/stderred/stderred.sh
+  if [ -f /usr/share/stderred/stderred.sh ]; then
+    source /usr/share/stderred/stderred.sh
+  fi
   ;;
 esac
