@@ -154,6 +154,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;; ハイライト表示
 
 ;;;;;;;;;;;;;;;;;;;;;;;; undo & redo
+(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "M-z") 'undo)
+(global-set-key (kbd "M-Z") 'undo-redo)
+
 ;; C-\の入力切り替えは邪魔なのでundoにしておく
 (global-set-key (kbd "C-\\") 'undo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -261,7 +265,6 @@
   (interactive)
   (my-org-visit-file "~/docs/memo.org"))
 (global-set-key (kbd "C-c m") 'my-org-visit-memo-file)
-(global-set-key (kbd "C-c l") '(lambda () (interactive) (find-file "~/vbshare/log")))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;; helm
@@ -377,30 +380,30 @@
 (define-key python-mode-map (kbd "RET") 'my-newline-and-indent)
 
 ;; Ruby
-(require 'ruby-mode)
+;(require 'ruby-mode)
 
-(use-package vala-mode
-  :config
-  (add-hook 'vala-mode-hook (lambda ()
-                              (setq c-basic-offset 2)
-                              (setq indent-tabs-mode nil)
-                              ))
-  )
+;(use-package vala-mode
+;  :config
+;  (add-hook 'vala-mode-hook (lambda ()
+;                              (setq c-basic-offset 2)
+;                              (setq indent-tabs-mode nil)
+;                              ))
+;  )
 
 ;; jsonnet
 (use-package jsonnet-mode)
 
 ;; Erlang and Elixir
-(use-package elixir-mode)
-(use-package alchemist)
-(use-package flycheck-mix
-  :config
-  (flycheck-mix-setup)
-  )
-(use-package ac-alchemist
-  :config
-  (add-hook 'elixir-mode-hook 'ac-alchemist-setup)
-  )
+;(use-package elixir-mode)
+;(use-package alchemist)
+;(use-package flycheck-mix
+;  :config
+;  (flycheck-mix-setup)
+;  )
+;(use-package ac-alchemist
+;  :config
+;  (add-hook 'elixir-mode-hook 'ac-alchemist-setup)
+;  )
 
 ;; terraform
 (use-package terraform-mode
@@ -419,6 +422,14 @@
 (add-to-list 'auto-mode-alist '("\\.md$"       . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . gfm-mode))
 (setq markdown-command "redcarpet --parse-tables")
+
+;; pony
+;(use-package ponylang-mode)
+;(use-package flycheck-pony)
+
+;(use-package go-mode)
+
+;(use-package scala-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;; プログラミング支援
 
 ;;;;;;;;;;;;;;;;;;;;;;;; auto-fill
@@ -472,7 +483,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(session-use-package t nil (session)))
+ '(session-use-package t nil (session))
+)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
