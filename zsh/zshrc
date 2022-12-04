@@ -260,6 +260,16 @@ gpushf() {
 }
 
 
+# bazel
+if [ -v GITPOD_WORKSPACE_ID ]; then
+  b() {
+    bazel "$@" --config=gitpod
+  }
+else
+  alias b='bazel'
+fi
+
+
 ########## environment variables
 export PATH=~/bin:$PATH
 
