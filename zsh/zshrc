@@ -320,7 +320,7 @@ esac
 
 
 ########## direnv_rust
-if command -v direnv_rust; then
+if command -v direnv_rust > /dev/null; then
   _direnv_rust_hook() {
     eval "$(DYLD_INSERT_LIBRARIES= direnv_rust)"
   }
