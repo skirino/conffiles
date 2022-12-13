@@ -1,6 +1,7 @@
 
 # environment variables
 export LANG=ja_JP.UTF-8
+export LESSCHARSET=utf-8
 
 # Keybind configuration
 bindkey -e
