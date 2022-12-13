@@ -169,8 +169,13 @@ zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
 
 # Make prompt like the following (PROMPT is underlined)
 # [2015-06-26 14:20:23] $                   [~/code] 2s
-PROMPT="%U%B[%D{%Y-%m-%d %H:%M:%S}] %(?..{%?} )%(!.#.$)%b%u "
-RPROMPT_BASE="[%50<...<%~]"
+if [ -v GITPOD_WORKSPACE_ID ]; then
+  PROMPT='%F{green}%U%B[%D{%Y-%m-%d %H:%M:%S}]%f %(?..{%?} )%(!.#.$)%b%u '
+  RPROMPT_BASE='[%50<...<%~]'
+else
+  PROMPT='%U%B[%D{%Y-%m-%d %H:%M:%S}] %(?..{%?} )%(!.#.$)%b%u '
+  RPROMPT_BASE='[%50<...<%~]'
+fi
 
 preexec() {
   seconds_last_exec="${SECONDS}"
