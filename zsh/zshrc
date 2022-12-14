@@ -294,7 +294,7 @@ fi
 
 
 ########## environment variables
-export PATH=~/bin:$PATH
+export PATH=~/bin:$(realpath "$(dirname "$0")/../bin"):$PATH
 
 
 ########## Programming
