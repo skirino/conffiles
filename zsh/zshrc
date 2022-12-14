@@ -279,7 +279,14 @@ gpushf() {
 # bazel
 if [ -v GITPOD_WORKSPACE_ID ]; then
   b() {
-    bazel "$@" --config=gitpod
+    local command_index=1
+    for arg in "$@"; do
+      if [[ "${arg}" != "--"* ]]; then
+        break
+      fi
+      command_index=$((command_index+1))
+    done
+    bazel "${@:1:$command_index}" --config=gitpod "${@:$command_index+1}"
   }
 else
   alias b='bazel'
