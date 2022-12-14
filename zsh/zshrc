@@ -209,14 +209,24 @@ alias vi='vim'
 alias en='emacsclient -nw'
 alias e='emacsclient -nw'
 
-alias temp='cd ~/temp'
-alias conf='cd ~/code/conffiles'
-
 alias cdu='cd ..'
 alias cduu='cd ../..'
 alias cduuu='cd ../../..'
 alias cduuuu='cd ../../../..'
 alias cduuuuu='cd ../../../../..'
+
+if [ -d ~/temp ]; then
+  alias temp='cd ~/temp'
+fi
+if [ -d ~/code/conffiles ]; then
+  alias conf='cd ~/code/conffiles'
+fi
+if [ -d ~/.dotfiles ]; then
+  alias conf='cd ~/.dotfiles'
+fi
+if [ -d /workspace/monorepo ]; then
+  alias mr='cd /workspace/monorepo'
+fi
 
 case "${OSTYPE}" in
 linux*)
